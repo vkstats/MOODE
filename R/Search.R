@@ -1,0 +1,43 @@
+Search<-function()
+{
+  start_time<-Sys.time()
+  cand<-candidate_set(Levels)   # form the candidate set of treatments, primary terms
+
+  # build candidate set, with potential term
+  if(orth=='Y')
+  { cand.full<-candidate_set_orth(cand)}
+  if(orth=='N')
+  {cand.full<-candidate_set_full(cand)}
+
+  crit.values<-matrix(0,ncol=1, nrow=Nstarts)
+  for (k in 1:Nstarts)
+  {
+    initial<-initial.full(cand.full)
+    X1<-initial$X1
+    X2<-initial$X2
+    if (k==1)
+    {
+      crit.opt<-criteria(X1,X2,criterion.choice)$compound # choose the ***opt. criterion*** to be used
+      X1.opt<-X1; X2.opt<-X2
+    }
+    s<-1
+    while (s==1)
+    {
+      Xs<-swap(X1,X2,cand.full)
+      X1<-Xs$X1; X2<-Xs$X2;
+      s<-Xs$search
+    }
+    crit.values[k]<-Xs$compound # track the change of criterion values
+    if (crit.opt>Xs$compound)
+    {
+      X1.opt<-Xs$X1; X2.opt<-Xs$X2
+      crit.opt<-Xs$compound
+    }
+  }
+  finish_time<-Sys.time()
+  time<-finish_time-start_time
+
+  criteria.opt<-criteria(X1.opt,X2.opt,criterion.choice) #***opt. criterion***
+  list (time=time, X1=X1.opt, X2=X2.opt,  df=criteria.opt$df, compound=criteria.opt$compound,
+        path=crit.values,criteria.opt=criteria.opt)
+}
