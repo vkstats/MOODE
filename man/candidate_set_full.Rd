@@ -7,13 +7,14 @@
 candidate_set_full(cand)
 }
 \arguments{
-\item{cand}{Candidate set.}
+\item{cand}{Candidate set of primary terms, the first column contains treatment labels. 
+Usually obtained as output from the "candidate_set" function.}
 }
 \value{
-The full extended candidate set.
+The full extended candidate set: the column of treatment labels, then $P$ primary terms, then $Q$ potential terms.
 }
 \description{
-This function forms the full extended candidate set, primary terms, with labels, not orthonormalised.
+This function forms the full extended candidate set by joining primary and potential terms, with labels, not orthonormalised.
 }
 \examples{
 candidate_set_full(candidate_set(rep(list(1:3),5))) # Full extended candidate set of 5 factors each of 3 levels
