@@ -1,4 +1,6 @@
-#' This function evaluates the Generalised D-criterion (Goos et al., 2005) for given primary and potential model matrices.
+#' Calculates the values of the Generalised Ds-criterion and its components
+#'
+#' This function evaluates the Generalised Ds-criterion (Goos et al., 2005) for given primary and potential model matrices.
 #' The weights kappa.Ds, kappa.LoF and kappa.bias are taken from the global environment.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
@@ -17,7 +19,7 @@
 #' X.potential <- cbind(X.primary[,1], X.primary[,2]^3, X.primary[,3]^3) # cubic terms
 #' criteria.GD(X1 = X.primary, X2 = X.potential)
 
-criteria.GD<-function(X1, X2, eps=10^-23)        # GD criteria evaluation; X1,X2 -   matrices of primary and potential terms, with labels
+criteria.GD<-function(X1, X2, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
 {
   Ds<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
