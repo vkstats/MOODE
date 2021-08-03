@@ -1,8 +1,8 @@
-#' Forms the candidate set
+#' Forms the candidate set of primary terms
 #'
-#' This function forms the candidate set as all possible combinations of factors levels.
+#' This function forms the candidate set of primary terms from the factors' levels, adds labels, with optional transforming the coordinates.
 #' @param Levels Levels of each factor.
-#' @return The candidate set.
+#' @return The extended and labelled candidate set.
 #' @export
 #' @examples
 #' candidate_set(rep(list(1:3),5)) # Candidate set of 5 factors each of 3 levels

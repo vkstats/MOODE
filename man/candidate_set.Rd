@@ -2,7 +2,7 @@
 % Please edit documentation in R/candidate_set.R
 \name{candidate_set}
 \alias{candidate_set}
-\title{Forms the candidate set}
+\title{Forms the candidate set of primary terms}
 \usage{
 candidate_set(Levels)
 }
@@ -10,10 +10,10 @@ candidate_set(Levels)
 \item{Levels}{Levels of each factor.}
 }
 \value{
-The candidate set.
+The extended and labelled candidate set.
 }
 \description{
-This function forms the candidate set as all possible combinations of factors levels.
+This function forms the candidate set of primary terms from the factors' levels, adds labels, with optional transforming the coordinates.
 }
 \examples{
 candidate_set(rep(list(1:3),5)) # Candidate set of 5 factors each of 3 levels
