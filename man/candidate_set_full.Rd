@@ -2,7 +2,7 @@
 % Please edit documentation in R/candidate_set_full.R
 \name{candidate_set_full}
 \alias{candidate_set_full}
-\title{Forms the full extended candidate set}
+\title{Forms the full candidate set}
 \usage{
 candidate_set_full(cand)
 }
@@ -11,7 +11,7 @@ candidate_set_full(cand)
 Usually obtained as output from the "candidate_set" function.}
 }
 \value{
-The full extended candidate set: the column of treatment labels, then $P$ primary terms, then $Q$ potential terms.
+The full extended candidate set: the column of treatment labels, then P primary terms, then Q potential terms.
 }
 \description{
 This function forms the full extended candidate set by joining primary and potential terms, with labels, not orthonormalised.

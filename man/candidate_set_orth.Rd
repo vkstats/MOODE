@@ -2,7 +2,7 @@
 % Please edit documentation in R/candidate_set_orth.R
 \name{candidate_set_orth}
 \alias{candidate_set_orth}
-\title{Forms the candidate set}
+\title{Forms the orthonormalised full candidate set}
 \usage{
 candidate_set_orth(cand)
 }
@@ -13,7 +13,7 @@ candidate_set_orth(cand)
 The orthonormalised full candidate set containing primary and potential terms, with labels.
 }
 \description{
-This function forms the full extended orthonormalised candidate set, with labels.
+This function forms the full extended orthonormalised candidate set of primary and potential terms, with labels.
 }
 \examples{
 candidate_set_orth(candidate_set(rep(list(1:3),5))) # Candidate set of 5 factors each of 3 levels

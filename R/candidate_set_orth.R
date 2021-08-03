@@ -1,6 +1,6 @@
-#' Forms the candidate set
+#' Forms the orthonormalised full candidate set
 #'
-#' This function forms the full extended orthonormalised candidate set, with labels.
+#' This function forms the full extended orthonormalised candidate set of primary and potential terms, with labels.
 #' @param cand Candidate set containing primary terms, with labels in the first column.
 #' @return The orthonormalised full candidate set containing primary and potential terms, with labels.
 #' @export
