@@ -17,5 +17,10 @@ The full extended candidate set: the column of treatment labels, then P primary 
 This function forms the full extended candidate set by joining primary and potential terms, with labels, not orthonormalised.
 }
 \examples{
-candidate_set_full(candidate_set(rep(list(1:3),5))) # Full extended candidate set of 5 factors each of 3 levels
+
+# Full extended candidate set for two 3-level factors, full quadratic polynomial model
+
+K<-2; Levels <- rep(list(1:3),K);
+Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2)
+candidate_set_full(candidate_set(Levels))
 }

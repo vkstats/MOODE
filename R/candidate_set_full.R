@@ -6,10 +6,15 @@
 #' @return The full extended candidate set: the column of treatment labels, then P primary terms, then Q potential terms.
 #' @export
 #' @examples
-#' candidate_set_full(candidate_set(rep(list(1:3),5))) # Full extended candidate set of 5 factors each of 3 levels
+#' 
+#' # Full extended candidate set for two 3-level factors, full quadratic polynomial model
+#' 
+#' K<-2; Levels <- rep(list(1:3),K);
+#' Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2)
+#' candidate_set_full(candidate_set(Levels))
 
 candidate_set_full<-function(cand)
 {
-  cand.full<-cbind(cand,potential.matrix(cand)[,-1])
+  cand.full<-cbind(cand, potential.matrix(cand)[,-1])
   return (cand.full)
 }

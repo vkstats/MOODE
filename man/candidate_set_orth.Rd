@@ -16,5 +16,11 @@ The orthonormalised full candidate set containing primary and potential terms, w
 This function forms the full extended orthonormalised candidate set of primary and potential terms, with labels.
 }
 \examples{
-candidate_set_orth(candidate_set(rep(list(1:3),5))) # Candidate set of 5 factors each of 3 levels
+
+# Full extended orthonormalised candidate set for two 3-level factors, 
+# full quadratic polynomial model as primary model and all three-order terms as potential.
+
+K<-2; Levels <- rep(list(1:3),K);
+Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2) 
+candidate_set_orth(candidate_set(Levels)) 
 }

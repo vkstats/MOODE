@@ -5,13 +5,19 @@
 #' @return The orthonormalised full candidate set containing primary and potential terms, with labels.
 #' @export
 #' @examples
-#' candidate_set_orth(candidate_set(rep(list(1:3),5))) # Candidate set of 5 factors each of 3 levels
+#' 
+#' # Full extended orthonormalised candidate set for two 3-level factors, 
+#' # full quadratic polynomial model as primary model and all three-order terms as potential.
+#' 
+#' K<-2; Levels <- rep(list(1:3),K);
+#' Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2) 
+#' candidate_set_orth(candidate_set(Levels)) 
 
 candidate_set_orth<-function(cand)
 {
-  potential<-potential.matrix(cand)           # potential matrix for extended model, labelled
-  cand.full.not.orth<-cbind(cand[,-1],potential[,-1])                                 # extended model matrix, no labels
-  cand.full<-cbind(cand[,1],orthonormalization(cand.full.not.orth,basis=FALSE))        # orthonormalisation, adding labels
-  return (cand.full)
+  potential<-potential.matrix(cand)                 # potential matrix for extended model, labelled
+  cand.not.orth<-cbind(cand[,-1],potential[,-1])    # extended model matrix, no labels
+  cand.full.orth<-cbind(cand[,1],orthonormalization(cand.full.not.orth,basis=FALSE))   # orthonormalisation, adding labels
+  return (cand.full.orth)
 }
 
