@@ -28,7 +28,7 @@ K <-1; P<-3; Q<-1; Levels <- list(1:5)
 # Generating candidate sets: primary and full orthonormalised ones
 cand.primary <- candidate_set(Levels);
 cand.not.orth <-cbind(cand.primary[,-1], cand.primary[,3]*cand.primary[,4])
-cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.full.not.orth,basis=FALSE))
+cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.not.orth,basis=FALSE))
 # Choosing a design
 index <- c(rep(1,2),3,4, rep(5,3)); Nruns<- length(index)
 X.primary <- cand.full.orth[index, 1:(P+1)]

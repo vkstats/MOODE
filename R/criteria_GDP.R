@@ -1,6 +1,35 @@
-
-### Functions used to find GDP-optimal designs (nearly optimal)
-### Minimising. Components: Ds, DPs, LoF(DP), bias(D)
+#' Calculates the values of the Generalised DPs-criterion and its components
+#'
+#' This function evaluates the Generalised DPs-criterion for given primary and potential model matrices. 
+#' Components: Ds-, DPs-, LoF(DP)- and Bias(D)-optimality.
+#' The weights kappa.Ds, kappa.DP, kappa.LoF and kappa.bias are taken from the global environment.
+#'
+#' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
+#' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
+#' @param eps Computational tolerance, the default value is 10^-23
+#'
+#' @return A list of values: indicator of whether the evaluation was successful ("eval"), Ds-criterion value -- intercept excluded ("Ds"),
+#' DPs-criterion value -- intercept excluded ("DPs"), Lack-of-fit(DP) criterion value ("LoF"), the bias component value ("bias"), 
+#' the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
+#' @export
+#' @examples 
+#'#Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
+#'K <-1; P<-3; Q<-2; Levels <- list(1:5)
+#' # Generating candidate sets: primary and full orthonormalised ones
+#'cand.primary <- candidate_set(Levels);
+#'cand.not.orth <-cbind(cand.primary[,-1], cand.primary[,3]^3, cand.primary[,4]^2)
+#'cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.not.orth,basis=FALSE))
+#' # Choosing a design
+#'index <- c(rep(1,2),3,rep(4,2),rep(5,3)); Nruns<- length(index)
+#'X.primary <- cand.full.orth[index, 1:(P+1)]
+#'X.potential <- cand.full.orth[index, (c(1,(P+2):(P+Q+1)))]
+#' # Evaluating a compound GDP-criterion
+#'kappa.Ds = kappa.DP = kappa.LoF = kappa.bias = 0.25; tau2 <-1;
+#'alpha.DP = alpha.LoF = 0.05;
+#'criteria.GDP(X1 = X.primary, X2 = X.potential)
+#' 
+#'Output: Ds = 1.2774, DP = 8.8705, LoF = 4.3585, bias = 1.3501, df = 4, compound = 2.8576
+#'
 criteria.GDP<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ds<-0; DP<-0; LoF<-0; bias<-0;
