@@ -12,12 +12,20 @@
 #' and the value of the compound criterion ("compound").
 #' @export
 #' @examples 
-#' kappa.Ds = kappa.LoF = kappa.bias = 1./3;
-#' cand.primary <- candidate_set(rep(list(1:3), 2));
-#' index <- c(1,2,4,6,7); P <- 6; Q <- 2;
-#' X.primary <- cand.primary[index,1:(P+1)]
-#' X.potential <- cbind(X.primary[,1], X.primary[,2]^3, X.primary[,3]^3) # cubic terms
-#' criteria.GD(X1 = X.primary, X2 = X.potential)
+#'#Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
+#'K <-1; P<-3; Q<-1; Levels <- list(1:5)
+#' # Generating candidate sets: primary and full orthonormalised ones
+#'cand.primary <- candidate_set(Levels);
+#'cand.not.orth <-cbind(cand.primary[,-1], cand.primary[,3]*cand.primary[,4])
+#'cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.full.not.orth,basis=FALSE))
+#' # Choosing a design
+#'index <- c(rep(1,2),3,4, rep(5,3)); Nruns<- length(index)
+#'X.primary <- cand.full.orth[index, 1:(P+1)]
+#'X.potential <- cand.full.orth[index, (c(1,(P+2):(P+Q+1)))]
+#' # Evaluating a compound GD-criterion
+#'kappa.Ds = kappa.LoF = kappa.bias = 1./3; tau2 <-1;
+#'criteria.GD(X1 = X.primary, X2 = X.potential)
+#' # Output: Ds = 1.4045, LoF = .7213, bias = 1.4331, df = 3, compound = 1.1427
 
 criteria.GD<-function(X1, X2, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
 {
