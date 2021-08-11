@@ -28,7 +28,7 @@
 #'alpha.LP = alpha.LoFL = 0.05;
 #'criteria.GLP(X1 = X.primary, X2 = X.potential)
 #' 
-#'Output: Ls = .5315, LP = 4.0969, LoF = 5.3727, bias = 1.4013, df = 4, compound = 2.0122
+#'Output: eval = 1, Ls = .5315, LP = 4.0969, LoF = 5.3727, bias = 1.4013, df = 4, compound = 2.0122
 #'
 criteria.GLP<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
@@ -41,7 +41,7 @@ criteria.GLP<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary an
   if (D>eps)
   {
     Minv<-solve(M)
-  } else {return (list (Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
+  } else {return (list (eval=0,Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
 
   if ((kappa.Ls>0)||(kappa.LP>0))
   {
@@ -52,7 +52,7 @@ criteria.GLP<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary an
     if (df>0)
     {
       LP<-Ls*qf(1-alpha.LP,1,df)
-    } else {return (list (Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
+    } else {return (list (eval=0, Ls=Ls, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
   }
   if (((kappa.LoF>0) && (df>0))||(kappa.bias>0))  # check for A calculation
   {
@@ -75,6 +75,6 @@ criteria.GLP<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary an
   }
 
   compound<-Ls^kappa.Ls*LP^kappa.LP*LoF^kappa.LoF*bias^kappa.bias
-  list (Ls=Ls, LP=LP, LoF=LoF, bias=bias, df=df, compound=compound)
+  list (eval=1, Ls=Ls, LP=LP, LoF=LoF, bias=bias, df=df, compound=compound)
 }
 

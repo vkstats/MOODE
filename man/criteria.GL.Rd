@@ -37,5 +37,5 @@ X.potential <- cand.full.orth[index, (c(1,(P+2):(P+Q+1)))]
 kappa.Ls = kappa.LoF = kappa.bias = 1./3; tau2 <-1;
 W = matrix(c(0.8, 0.2), nrow = 1)
 criteria.GL(X1 = X.primary, X2 = X.potential)
-# Output: Ls = .5613, LoF = .7213, bias = 1.4331, df = 3, compound = .8418
+# Output: eval = 1, Ls = .5613, LoF = .7213, bias = 1.4331, df = 3, compound = .8418
 }

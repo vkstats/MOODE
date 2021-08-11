@@ -39,6 +39,6 @@ kappa.Ds = kappa.DP = kappa.LoF = kappa.bias = 0.25; tau2 <-1;
 alpha.DP = alpha.LoF = 0.05;
 criteria.GDP(X1 = X.primary, X2 = X.potential)
 
-Output: Ds = 1.2774, DP = 8.8705, LoF = 4.3585, bias = 1.3501, df = 4, compound = 2.8576
+Output: eval = 1, Ds = 1.2774, DP = 8.8705, LoF = 4.3585, bias = 1.3501, df = 4, compound = 2.8576
 
 }

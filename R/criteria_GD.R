@@ -25,7 +25,7 @@
 #' # Evaluating a compound GD-criterion
 #'kappa.Ds = kappa.LoF = kappa.bias = 1./3; tau2 <-1;
 #'criteria.GD(X1 = X.primary, X2 = X.potential)
-#' # Output: Ds = 1.4045, LoF = .7213, bias = 1.4331, df = 3, compound = 1.1427
+#' # Output: eval = 1, Ds = 1.4045, LoF = .7213, bias = 1.4331, df = 3, compound = 1.1427
 
 criteria.GD<-function(X1, X2, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
 {

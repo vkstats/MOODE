@@ -39,6 +39,6 @@ kappa.Ls = kappa.LP = kappa.LoF = kappa.bias = 0.25; tau2 <-1;
 alpha.LP = alpha.LoFL = 0.05;
 criteria.GLP(X1 = X.primary, X2 = X.potential)
 
-Output: Ls = .5315, LP = 4.0969, LoF = 5.3727, bias = 1.4013, df = 4, compound = 2.0122
+Output: eval = 1, Ls = .5315, LP = 4.0969, LoF = 5.3727, bias = 1.4013, df = 4, compound = 2.0122
 
 }

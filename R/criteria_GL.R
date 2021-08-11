@@ -26,7 +26,7 @@
 #'kappa.Ls = kappa.LoF = kappa.bias = 1./3; tau2 <-1;
 #'W = matrix(c(0.8, 0.2), nrow = 1)
 #'criteria.GL(X1 = X.primary, X2 = X.potential)
-#' # Output: Ls = .5613, LoF = .7213, bias = 1.4331, df = 3, compound = .8418
+#' # Output: eval = 1, Ls = .5613, LoF = .7213, bias = 1.4331, df = 3, compound = .8418
 
 
 criteria.GL<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
@@ -40,7 +40,7 @@ criteria.GL<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and
   if (D>eps)
   {
     Minv<-solve(M)
-  } else {return (list (Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
+  } else {return (list (eval=0, Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
 
   if (kappa.Ls>0)
   {
@@ -64,5 +64,5 @@ criteria.GL<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and
   }
 
   compound<-Ls^kappa.Ls*LoF^kappa.LoF*bias^kappa.bias
-  list (Ls=Ls, LoF=LoF, bias=bias, df=df, compound=compound)
+  list (eval=1, Ls=Ls, LoF=LoF, bias=bias, df=df, compound=compound)
 }
