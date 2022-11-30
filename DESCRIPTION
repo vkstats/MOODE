@@ -6,7 +6,7 @@ Author: Olga Egorova, Vasiliki Koutra, Steven Gilmour
 Maintainer: Vasiliki Koutra <vasiliki.koutra@kcl.ac.uk>
 Description: Multi-objective Optimal Design of experiments (MOODS) for targeting the experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
 License: GPL-3
-Depends: methods, R (>= 3.5.2)
+Depends: methods, far, R (>= 3.5.2)
 Imports: far
 Encoding: UTF-8
 LazyData: true
