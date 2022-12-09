@@ -1,6 +1,6 @@
 
 
-initial.full<-function(cand.full)          # cand.full - extended model matrix with labels, returns initial primary and potential matrices
+initial.full<-function(cand.full, P, Q)          # cand.full - extended model matrix with labels, returns initial primary and potential matrices
 {
   eps<-10^(-6)
   det<-0

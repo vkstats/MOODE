@@ -2,7 +2,7 @@
 ## Functions calculating different criteria values
 ### Obtain simple criteria values: Ds, DP, L, LP (all non-orthogonal here)
 
-criteria.values<-function(X1)
+criteria.values<-function(X1, P, Nruns)
 {
 
   ##if X1.orth extra functions

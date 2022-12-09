@@ -1,18 +1,18 @@
 #'Create a label
-label<-function(treat_set)                  # treat_set is not scaled to [-1,1]
+label<-function(treat_set, Levels, K)                  # treat_set is not scaled to [-1,1]
 {
   if (K>1){
-    n<-c(rep(1,K-1),length(Levels[[K]]))
-    levelprod<-rep(1,K)
+    n <- c(rep(1,K-1),length(Levels[[K]]))
+    levelprod <- rep(1,K)
     for (i in (K-1):1)
     {
-      n[i]<-length(Levels[[i]])             # n[i] - number of levels of the i-th factor
-      levelprod[i]<-levelprod[i+1]*n[i+1]   # levelprod[i]=n[i+1]*...*n[K]
+      n[i] <- length(Levels[[i]])             # n[i] - number of levels of the i-th factor
+      levelprod[i] <- levelprod[i+1]*n[i+1]   # levelprod[i]=n[i+1]*...*n[K]
     }
 
-    N<-nrow(treat_set)
-    Label<-rep(1,N)
-    m<-as.numeric(lapply(Levels, min))
+    N <- nrow(treat_set)
+    Label <- rep(1, N)
+    m <- as.numeric(lapply(Levels, min))
     for (i in 1:N)                          # labelling
     {
       for (j in 1:K)

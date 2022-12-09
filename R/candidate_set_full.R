@@ -15,6 +15,6 @@
 
 candidate_set_full<-function(cand)
 {
-  cand.full<-cbind(cand, potential.matrix(cand)[,-1])
+  cand.full<-cbind(cand, potential.matrix(cand, K)[,-1])
   return (cand.full)
 }

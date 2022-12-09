@@ -29,14 +29,14 @@
 #' # Output: eval = 1, Ls = .5613, LoF = .7213, bias = 1.4331, df = 3, compound = .8418
 
 
-criteria.GL<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.GL<-function(X1, X2, P, Q, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
-  D<-prod(round(eigen(M,symmetric=TRUE,only.values=TRUE)$values,8))/Nruns
+  D<-prod(round(eigen(M, symmetric=TRUE, only.values=TRUE)$values, 8))/Nruns
   if (D>eps)
   {
     Minv<-solve(M)
@@ -49,7 +49,7 @@ criteria.GL<-function(X1,X2,eps=10^-23)      # X1, X2 -- matrices of primary and
 
   if ((kappa.LoF>0)||(kappa.bias>0))           # check for A calculation
   {
-    M12<-crossprod(X1[,-1],X2[,-1])
+    M12<-crossprod(X1[,-1], X2[,-1])
     A<-Minv%*%M12
   }
   if (kappa.LoF>0)

@@ -27,7 +27,7 @@
 #'criteria.GD(X1 = X.primary, X2 = X.potential)
 #' # Output: eval = 1, Ds = 1.4045, LoF = .7213, bias = 1.4331, df = 3, compound = 1.1427
 
-criteria.GD<-function(X1, X2, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
+criteria.GD<-function(X1, X2, P, Q, Nruns, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
 {
   Ds<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))

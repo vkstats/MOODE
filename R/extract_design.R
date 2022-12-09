@@ -1,7 +1,7 @@
 
 ### Obtaining the  design matrix, no lables, transformed to [-1,1]
 
-extract.design<-function(X1)
+extract.design<-function(X1, Levels, Nruns)
 {
   labels<-as.vector(X1[,1])                        # extract labels
   cand<-as.matrix(expand.grid(Levels))

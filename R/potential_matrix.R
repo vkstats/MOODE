@@ -1,4 +1,15 @@
-potential.matrix<-function(cand)   # cand -- matrix with labels
+#' Forms the matrix of the potential terms
+#'
+#' This function forms the matrix of the potential (polynomial) terms. 
+#' 
+#' @param cand Candidate set of primary terms, the first column contains treatment labels. 
+#' Usually obtained as output from the "candidate_set" function.
+#' @param pmat Potential terms can be reduced cubic, cubic, quartic
+#' @return 
+#' @export
+#' @examples
+
+potential.matrix<-function(cand, K)   # cand -- matrix with labels
 {
   cand.X2<-matrix(0,nrow=nrow(cand),ncol=1)
   cand.X3<-matrix(0,nrow=nrow(cand),ncol=1)
@@ -7,8 +18,7 @@ potential.matrix<-function(cand)   # cand -- matrix with labels
   #Model:full quadratic
   #Note that the order is: 1 (labels), 2 (intercept),
   # 3:K+2 (linear terms), K+3:2K+2 (quadratic terms)
-  #Potential terms can be
-  #reduced cubic, cubic, quartic
+  #
 
   nL=K+2
   nQ1=K+3

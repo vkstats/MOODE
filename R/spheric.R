@@ -1,5 +1,5 @@
 
-spheric<-function(candlt)          # cand - treatment matrix, with labels
+spheric<-function(candlt, K)          # cand - treatment matrix, with labels
 {
   treat<-candlt[,-1]
   cand<-treat[apply(treat^2,1,sum)==0,]
