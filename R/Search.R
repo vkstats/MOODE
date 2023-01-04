@@ -11,6 +11,9 @@ Search<-function(object.settings)
   cand <- object.settings$cand
   cand.full <- object.settings$cand.full
   criterion.choice <- object.settings$criterion.choice
+  K <- object.settings$K
+  Parameters <- object.settings$Parameters
+  Cubic <- object.settings$Cubic
   
   start_time<-Sys.time()
   cand<-candidate_set(Levels, K, Parameters)   # form the candidate set of treatments, primary terms
