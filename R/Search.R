@@ -46,7 +46,8 @@ Search<-function(object.settings)
     s<-1
     while (s==1)
     {
-      Xs<-swap(X1, X2, P, Q, Nruns, cand.full, criterion.choice)
+      Xs<-swap(X1, X2, P, Q, Nruns, cand.full, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
+               kappa.LoF, kappa.bias, criterion.choice)
       X1<-Xs$X1; X2<-Xs$X2;
       s<-Xs$search
     }
