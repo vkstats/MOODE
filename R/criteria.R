@@ -13,7 +13,6 @@ criteria<-function(X1, X2, P, Q,
   if(criterion.choice=="GL"){Xcrit<-criteria.GL(X1, X2, P, Q, kappa.Ls, kappa.LoF, kappa.bias, Nruns)}
   if(criterion.choice=="GLP"){Xcrit<-criteria.GLP(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, Nruns)}
   if(criterion.choice=="GD") {Xcrit<-criteria.GD(X1, X2, P, Q, kappa.Ds, kappa.LoF, kappa.bias, Nruns)}
-  #'kappa.Ds = kappa.DP = kappa.LoF = kappa.bias = 0.25
   if(criterion.choice=="GDP") {Xcrit<-criteria.GDP(X1, X2, P, Q, kappa.Ds, kappa.DP, kappa.LoF, kappa.bias, Nruns)}
   if(criterion.choice=="MSE.L") {Xcrit<-criteria.mseL(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns)}
   if(criterion.choice=="MSE.D") {Xcrit<-criteria.mseD(X1, X2, P, Q, kappa.DP, kappa.LoF, kappa.mse, Nruns)}

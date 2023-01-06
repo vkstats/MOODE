@@ -33,7 +33,8 @@ Search<-function(object.settings)
     X2<-initial$X2
     if (k==1)
     {
-      crit.opt<-criteria(X1, X2, P, Q, Nruns, criterion.choice)$compound # choose the ***opt. criterion*** to be used
+      crit.opt<-criteria(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
+                         kappa.LoF, kappa.bias, Nruns, criterion.choice)$compound # choose the ***opt. criterion*** to be used
       X1.opt<-X1; X2.opt<-X2
     }
     s<-1
