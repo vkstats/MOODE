@@ -1,6 +1,8 @@
 ### Swapping treatments
-swap<-function(X1, X2, P, Q, Nruns, cand.full, criterion.choice) {
-  Xcrit<-criteria(X1, X2, P, Q, Nruns, criterion.choice)  #***opt. criterion***
+swap<-function(X1, X2, P, Q, Nruns, cand.full, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
+               kappa.LoF, kappa.bias, criterion.choice) {
+  Xcrit<-criteria(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
+                  kappa.LoF, kappa.bias, Nruns, criterion.choice)  #***opt. criterion***
   Xcomp<-Xcrit$compound
   search<-0
   n<-nrow(cand.full)
@@ -16,7 +18,8 @@ swap<-function(X1, X2, P, Q, Nruns, cand.full, criterion.choice) {
         {
           Xc1[l,]<-cand.full[i, 1:(P+1)]
           Xc2[l,]<-cand.full[i, c(1,(P+2):(P+Q+1))]
-          Ccrit<-criteria(X1=Xc1, X2=Xc2, P, Q, Nruns, criterion.choice) #***opt. criterion***
+          Ccrit<-criteria(X1=Xc1, X2=Xc2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
+                          kappa.LoF, kappa.bias,  Nruns, criterion.choice) #***opt. criterion***
           Ccomp<-Ccrit$compound
           if (Xcomp>Ccomp)    # if the new design is better (minimising)
           {
@@ -28,5 +31,6 @@ swap<-function(X1, X2, P, Q, Nruns, cand.full, criterion.choice) {
       }
     }
   }
-  list (X1=X1, X2=X2, compound=Xcomp, search=search, crit=criteria(X1, X2, P, Q, Nruns, criterion.choice))
+  list (X1=X1, X2=X2, compound=Xcomp, search=search, 
+        crit=criteria(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, kappa.LoF, kappa.bias, Nruns, criterion.choice))
 }

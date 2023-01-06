@@ -32,7 +32,7 @@
 #' # Output: eval = 1, DP = 2.682, LoF = 6.455, mse = 1.072, df = 4, compound = 2.648
 #' 
 #' 
-criteria.mseP<-function(X1, X2, P, Q, kappa.Ds, kappa.DP, kappa.LoF, kappa.mse, Nruns,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.mseP<-function(X1, X2, P, Q, kappa.DP, kappa.Ds, kappa.LoF, kappa.mse, Nruns,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ds<-0; DP<-0; LoF<-0; bias<-0;mse<-0;
   DF<-nlevels(as.factor(X1[,1]))
@@ -45,7 +45,7 @@ criteria.mseP<-function(X1, X2, P, Q, kappa.Ds, kappa.DP, kappa.LoF, kappa.mse, 
     Minv<-solve(M)
   } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if M is computationally singular
 
-  if ((kappa.Ds>0) || (kappa.DP>0))
+  if ((kappa.Ds>0) || (kappa.DP>0)) # kappa.Ds needed?
   {
     if (D^(1.0/(P-1))>0)
     {

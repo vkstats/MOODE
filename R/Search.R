@@ -15,7 +15,13 @@ Search<-function(object.settings)
   Parameters <- object.settings$Parameters
   Cubic <- object.settings$Cubic
   orth<- object.settings$orth
-    
+  kappa.Ls <- object.settings$kappa.Ls
+  kappa.LP<- object.settings$kappa.LP
+  kappa.Ds <- object.settings$kappa.Ds
+  kappa.DP<- object.settings$kappa.DP
+  kappa.LoF <- object.settings$kappa.LoF
+  kappa.bias <- object.settings$kappa.bias
+  
   start_time<-Sys.time()
   cand<-candidate_set(Levels, K, Parameters, Cubic)   # form the candidate set of treatments, primary terms
 
