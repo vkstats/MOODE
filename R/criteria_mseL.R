@@ -30,7 +30,7 @@
 #'criteria.mseL(X1 = X.primary, X2 = X.potential)
 #' # Output: eval = 1, LP = 2.3863, LoF = 7.1846, mse = 1.5994, df = 4, compound = 2.8047
 #' 
-criteria.mseL<-function(X1, X2, P, Q, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.mseL<-function(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LP<-0; LoF<-0; mse<-0;
   DF<-nlevels(as.factor(X1[,1]))              

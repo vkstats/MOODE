@@ -13,7 +13,7 @@
 #' Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2)
 #' candidate_set_full(candidate_set(Levels))
 
-candidate_set_full<-function(cand)
+candidate_set_full<-function(cand, K)
 {
   cand.full<-cbind(cand, potential.matrix(cand, K)[,-1])
   return (cand.full)

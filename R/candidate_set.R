@@ -13,7 +13,7 @@
 #' Parameters <- c(1, rep(1, K), rep(1, K), rep(1, K*(K-1)/2))
 #' candidate_set(Levels) 
 
-candidate_set <- function(Levels, K, Parameters)
+candidate_set <- function(Levels, K, Parameters, Cubic)
 {
   cand <- as.matrix(expand.grid(Levels))
   candl <- cbind(label(cand, Levels, K), cand)                           # labelling

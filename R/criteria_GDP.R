@@ -30,7 +30,7 @@
 #' 
 #'Output: eval = 1, Ds = 1.2774, DP = 8.8705, LoF = 4.3585, bias = 1.3501, df = 4, compound = 2.8576
 #'
-criteria.GDP<-function(X1, X2, P, Q, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.GDP<-function(X1, X2, P, Q, kappa.Ds, kappa.DP, kappa.LoF, kappa.bias, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ds<-0; DP<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))

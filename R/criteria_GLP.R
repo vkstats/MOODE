@@ -30,7 +30,7 @@
 #' 
 #'Output: eval = 1, Ls = .5315, LP = 4.0969, LoF = 5.3727, bias = 1.4013, df = 4, compound = 2.0122
 #'
-criteria.GLP<-function(X1, X2, P, Q, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.GLP<-function(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LP<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
