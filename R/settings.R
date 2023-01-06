@@ -1,5 +1,6 @@
 settings <- function(K, Klev, Nruns = 40,
             criterion.choice="MSE.P", kappa.DP=1, kappa.LoF=0, kappa.mse=0,
+            kappa.Ds=0, kappa.Ls=0,
             Nstarts = 10,     # Number of random starts of the search
             Biter=50,      # Number of MC iterations for the MSE criteria
             Cubic = "Y", # 'Y' - cubic, 'N' - spheric coordinates

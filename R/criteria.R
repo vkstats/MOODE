@@ -16,6 +16,6 @@ criteria<-function(X1, X2, P, Q,
   if(criterion.choice=="GDP") {Xcrit<-criteria.GDP(X1, X2, P, Q, kappa.Ds, kappa.DP, kappa.LoF, kappa.bias, Nruns)}
   if(criterion.choice=="MSE.L") {Xcrit<-criteria.mseL(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns)}
   if(criterion.choice=="MSE.D") {Xcrit<-criteria.mseD(X1, X2, P, Q, kappa.DP, kappa.LoF, kappa.mse, Nruns)}
-  if(criterion.choice=="MSE.P") {Xcrit<-criteria.mseP(X1, X2, P, Q, kappa.DP, kappa.LoF, kappa.mse, Nruns)}
+  if(criterion.choice=="MSE.P") {Xcrit<-criteria.mseP(X1, X2, P, Q, kappa.Ds, kappa.DP, kappa.LoF, kappa.mse, Nruns)}
   return(Xcrit)
 }
