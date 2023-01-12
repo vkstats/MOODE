@@ -4,17 +4,18 @@
 \alias{candidate_set_full}
 \title{Forms the full candidate set}
 \usage{
-candidate_set_full(cand)
+candidate_set_full(cand, K)
 }
 \arguments{
-\item{cand}{Candidate set of primary terms, the first column contains treatment labels. 
+\item{cand}{Candidate set of treatments, the first column contains treatment labels. 
 Usually obtained as output from the "candidate_set" function.}
 }
 \value{
-The full extended candidate set: the column of treatment labels, then P primary terms, then Q potential terms.
+The full extended candidate set: the column of treatment labels, then named columns with polynomial terms up to the order of 4. 
+For example, "x12" stands for $x_1^2$, and "x1x2 stands for $x_1x_2$, and "x23x4" -- for $x_2^3x_4$
 }
 \description{
-This function forms the full extended candidate set by joining primary and potential terms, with labels, not orthonormalised.
+This function forms the full extended candidate set with all possible primary and potential terms, with labels, not orthonormalised.
 }
 \examples{
 

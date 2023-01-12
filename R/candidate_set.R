@@ -1,24 +1,24 @@
-#' Forms the candidate set of primary terms
+#' Forms the labelled candidate set of treatments
 #'
-#' This function forms the candidate set of primary terms from the factors' levels, 
-#' adds labels, with optional transforming the coordinates.
+#' This function forms the candidate set of treatments from the factors' levels, 
+#' adds labels, with optional spherical transformation of the coordinates.
 #' @param Levels Levels of each factor.
-#' @return The extended and labelled candidate set.
+#' @param K Number of factors.
+#' @param Cubic Indicator whether the experimental region is cubic ('Y') or spherical ('N').
+#' @return Matrix of candidate set of treatments, with treatment labels contained in the first column.
 #' @export
 #' @examples
-#' 
-#' # Candidate set for five 3-level factors, full quadratic polynomial model
+#'
+#' # Candidate treatment set for five 3-level factors
 #' 
 #' K<-5; Levels <- rep(list(1:3),K);
-#' Parameters <- c(1, rep(1, K), rep(1, K), rep(1, K*(K-1)/2))
-#' candidate_set(Levels) 
+#' candidate_set(Levels, K) 
 
-candidate_set <- function(Levels, K, Parameters, Cubic)
+candidate_set <- function(Levels, K, Cubic = 'Y')
 {
   cand <- as.matrix(expand.grid(Levels))
-  candl <- cbind(label(cand, Levels, K), cand)                           # labelling
-  candlt <- cbind(candl[,1], apply(as.matrix(candl[,-1]), 2, transform))   # rescaling
-      if (Cubic=='N') {candlt<-as.matrix(spheric(candlt, K))}     # spheric coords
-      candset<-extend(candlt, K, Parameters)                                  # extended matrix
-  return (candset)
+  candl <- cbind(label(cand, Levels, K), cand)                        # creating a column of treatment labels
+  cand.trt <- cbind(candl[,1], apply(as.matrix(candl[,-1]), 2, transform))   # rescaling the factors' values to [-1, 1]
+      if (Cubic=='N') {cand.trt<-as.matrix(spheric(cand.trt, K))}     # spheric coords
+  return (cand.trt)
 }

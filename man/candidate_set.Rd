@@ -2,24 +2,28 @@
 % Please edit documentation in R/candidate_set.R
 \name{candidate_set}
 \alias{candidate_set}
-\title{Forms the candidate set of primary terms}
+\title{Forms the labelled candidate set of treatments}
 \usage{
-candidate_set(Levels)
+candidate_set(Levels, K, Cubic = "Y")
 }
 \arguments{
 \item{Levels}{Levels of each factor.}
+
+\item{K}{Number of factors.}
+
+\item{Cubic}{Indicator whether the experimental region is cubic ('Y') or spherical ('N').}
 }
 \value{
-The extended and labelled candidate set.
+Matrix of candidate set of treatments, with treatment labels contained in the first column.
 }
 \description{
-This function forms the candidate set of primary terms from the factors' levels, adds labels, with optional transforming the coordinates.
+This function forms the candidate set of treatments from the factors' levels, 
+adds labels, with optional spherical transformation of the coordinates.
 }
 \examples{
 
-# Candidate set for five 3-level factors, full quadratic polynomial model
+# Candidate treatment set for five 3-level factors
 
 K<-5; Levels <- rep(list(1:3),K);
-Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2)
-candidate_set(Levels) 
+candidate_set(Levels, K) 
 }
