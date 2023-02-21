@@ -3,7 +3,7 @@
 #' This function 
 #' @param K Number of factors.
 #' @param Levels List of length K of the vectors containing values of the factors.
-#' @param Klev If all factors have the sam number of levels: number of levels of each factor.
+#' @param Klev If all factors have the same number of levels: number of levels of each factor.
 #' @return The object
 #' @export
 #' @examples
@@ -14,7 +14,7 @@
 
 
 
-settings <- function(K, Klev, Levels, 
+settings <- function(K, Levels, Klev,
                      Nruns = 40, 
                      criterion.choice="MSE.P", 
                      kappa.Ds = 0.0, kappa.DP = 1.0, kappa.Ls = 0.0, kappa.LP = 0.0,
