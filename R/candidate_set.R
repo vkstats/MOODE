@@ -17,8 +17,8 @@
 candidate_set <- function(Levels, K, Cubic = 'Y')
 {
   cand <- as.matrix(expand.grid(Levels))
-  candl <- cbind(label(cand, Levels, K), cand)                        # creating a column of treatment labels
-  cand.trt <- cbind(candl[,1], apply(as.matrix(candl[,-1]), 2, transform))   # rescaling the factors' values to [-1, 1]
+  candl <- cbind(label(cand, Levels, K), cand)                         # creating a column of treatment labels
+  cand.trt <- cbind(candl[,1], apply(as.matrix(candl[,-1]), 2, Transform))   # rescaling the factors' values to [-1, 1]
       if (Cubic=='N') {cand.trt<-as.matrix(spheric(cand.trt, K))}     # spheric coords
   return (cand.trt)
 }

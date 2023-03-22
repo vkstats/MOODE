@@ -29,6 +29,7 @@
 
 criteria.GD<-function(X1, X2, P, Q, kappa.Ds, kappa.LoF, kappa.bias, Nruns, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
 {
+  
   Ds<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
   df<-Nruns-DF                                # df - pure error degrees of freedom

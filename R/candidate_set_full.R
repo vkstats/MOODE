@@ -15,9 +15,9 @@
 
 candidate_set_full = function(cand, K) {
   
-  cand.terms = cand[,-1]  #  linear terms
-  
-  ### Naming linear and generating and naming quadratic terms
+  cand.terms = cand[, -1, drop = F]  #  linear terms
+
+    ### Naming linear and generating and naming quadratic terms
   for (k in 1:K) {
     colnames(cand.terms)[k] = paste("x", as.character(k), sep = "")  # named linear terms, e.g. "x3"
     cand.terms = cbind(cand.terms, cand.terms[,k]^2)

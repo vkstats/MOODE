@@ -2,14 +2,13 @@ Package: MOODE
 Type: Package
 Title: Multi-objective optimal design of experiments
 Version: 0.1.0
-Author: Olga Egorova, Vasiliki Koutra, Steven Gilmour
+Author: Olga Egorova, Vasiliki Koutra, Steven Gilmour, Luzia Trinca
 Maintainer: Vasiliki Koutra <vasiliki.koutra@kcl.ac.uk>
-Description: Multi-objective Optimal Design of experiments (MOODS) for targeting the experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
+Description: Multi-objective Optimal Design of Experiments (MOODE) for targeting the experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
 License: GPL-3
-Depends: methods, far, R (>= 3.5.2)
-Imports: far
+Depends: R (>= 3.5.2), methods, far 
+Imports: far 
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.1
 NeedsCompilation: no
 Packaged: 2021-07-19 16:43:03 UTC; vallia

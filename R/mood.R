@@ -1,4 +1,4 @@
-#' Setting up the parameters of the experiment, criteria and search procedure.
+#' Setting up the mood object; the parameters of the experiment, criteria and search procedure.
 #'
 #' This function 
 #' @param K Number of factors.
@@ -9,24 +9,20 @@
 #' @examples
 #' 
 #'  
-#' 
-#' 
 
-
-
-settings <- function(K, Levels, Klev,
+mood <- function(K, Levels, Klev,
                      Nruns = 40, 
                      criterion.choice="MSE.P", 
                      kappa.Ds = 0.0, kappa.DP = 1.0, kappa.Ls = 0.0, kappa.LP = 0.0,
-                     kappa.LoF = 0.0, kappa.mse = 0.0,  
+                     kappa.LoF = 0.0, kappa.mse = 0.0,  kappa.bias = 0.0,
                      Nstarts = 10,     # Number of random starts of the search
                      Cubic = "Y",      # 'Y' - cubic, 'N' - spheric coordinates
                      tau2 = 1, 
                      Biter=50,         # Number of MC iterations for the MSE criteria
                      MC = "Y",         # Whether MC is used in MSE 'Y' - Yes, 'N' - No
                      
-                     prob.DP = 0.95, prob.LP = 0.95,  prob.LoF = 0.95,
-                     alpha.DP = 0.05, alpha.LP = 0.05, alpha.LoF= 0.05,  
+                     prob.DP = 0.95, prob.LP = 0.95,  prob.LoF = 0.95, prob.LoFL = 0.95,
+                     alpha.DP = 0.05, alpha.LP = 0.05, alpha.LoF = 0.05,  alpha.LoFL = 0.05,
                      
                      primary.model = "first order",
                      potential.model = "second order",
@@ -35,10 +31,8 @@ settings <- function(K, Levels, Klev,
                      
                      orth='N'){
   
-  
-  
   if (length(Klev) == 1) {
-    Levels<-rep(list(1:Klev), K)   # Levels of each factor if all factors have the same number of levels
+    Levels <- rep(list(1:Klev), K)   # Levels of each factor if all factors have the same number of levels
   } 
   
   if (is.na(primary.terms)) {  # if primary terms are not specified explicitly
@@ -90,14 +84,14 @@ settings <- function(K, Levels, Klev,
           for (j in (k+1):(K-1)) {
             for (i in (j+1):K){        # LxLxL terms: "x1x2x3", "x1x3x4", etc.
               potential.terms = c(potential.terms, 
-                                  paste("x", as.character(k), "x", as.character(j), "x", as.character(i), sep = "")   
+                                  paste("x", as.character(k), "x", as.character(j), "x", as.character(i), sep = ""))   
             }
           }
         }
       }
       for (k in 1:K){     # cubic terms: "x13", "x33", etc.
         potential.terms = c(potential.terms, 
-                            paste("x", as.character(k) , as.character(3), sep = "")   
+                            paste("x", as.character(k) , as.character(3), sep = ""))   
       }
       
     }
@@ -131,8 +125,8 @@ settings <- function(K, Levels, Klev,
                "orth" = orth, "Z0" = Z0,"W" = W, "primary terms" = primary.terms, 
               "potential terms" = potential.terms,
               "kappa.DP" = kappa.DP,"kappa.LoF" = kappa.LoF,"kappa.mse" = kappa.mse, #weights
-              "P" = P, "Q" = Q, "kappa.Ls" = kappa.Ls, "kappa.Ds" = kappa.Ds)
-  class(out) <- append(class(out), "settings")
+              "P" = P, "Q" = Q, "kappa.Ls" = kappa.Ls, "kappa.Ds" = kappa.Ds, "kappa.bias" = kappa.bias)
+  class(out) <- append(class(out), "mood")
 #  return(attach(out, warn.conflicts = F)) ## remember, this also basically does "print(out)"
  return(out) 
 }

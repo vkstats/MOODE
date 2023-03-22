@@ -6,10 +6,13 @@
 #' @export
 
 
-criteria<-function(X1, X2, P, Q, 
-                   kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
-                   kappa.LoF, kappa.bias, 
-                   Nruns, criterion.choice){
+objfun<-function(X1, X2, P, Q, 
+                 kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
+                 kappa.LoF, kappa.bias, 
+                 Nruns, criterion.choice){
+
+  
+
   if(criterion.choice=="GL"){Xcrit<-criteria.GL(X1, X2, P, Q, kappa.Ls, kappa.LoF, kappa.bias, Nruns)}
   if(criterion.choice=="GLP"){Xcrit<-criteria.GLP(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, Nruns)}
   if(criterion.choice=="GD") {Xcrit<-criteria.GD(X1, X2, P, Q, kappa.Ds, kappa.LoF, kappa.bias, Nruns)}

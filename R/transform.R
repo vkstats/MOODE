@@ -1,5 +1,5 @@
 
-transform<-function(x)            # transformation to [-1,1]
+Transform<-function(x)            # transformation to [-1,1]
 {
   a<-min(x)
   b<-max(x)
