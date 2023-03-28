@@ -30,10 +30,24 @@
 #'criteria.mseL(X1 = X.primary, X2 = X.potential)
 #' # Output: eval = 1, LP = 2.3863, LoF = 7.1846, mse = 1.5994, df = 4, compound = 2.8047
 #' 
-criteria.mseL<-function(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LP<-0; LoF<-0; mse<-0;
-  DF<-nlevels(as.factor(X1[,1]))              
+  DF<-nlevels(as.factor(X1[,1]))  
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P; Q<-search.object$Q
+  tau2<-search.object$tau2
+  W<-search.object$W
+  
+  kappa.Ls<-search.object$kappa.Ls
+  kappa.LP<-search.object$kappa.LP
+  kappa.LoF<-search.object$kappa.LoF
+  kappa.mse<-search.object$kappa.mse
+  
+  alpha.LP<-search.object$alpha.LP
+  alpha.LoFL<-search.object$alpha.LoFL
+  
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
@@ -41,7 +55,7 @@ criteria.mseL<-function(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns, eps
   if (D>eps)
   {
     Minv<-solve(M)
-  } else {return (list (eval=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
+  } else {return (list (eval=0, LP=0, LoF=0, mse=0, df=df, compound=10^6));}
 
   if ((kappa.Ls>0)||(kappa.LP>0))
   {
@@ -52,7 +66,7 @@ criteria.mseL<-function(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns, eps
     if (df>0)
     {
       LP<-Ls*qf(1-alpha.LP,1,df)              # LPs
-    } else {return (list (eval=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
+    } else {return (list (eval=0, LP=0, LoF=0, mse=0, df=df, compound=10^6));}
   }
   if (((kappa.LoF>0) && (df>0))||(kappa.mse>0))         # check for A calculation
   {
@@ -66,7 +80,7 @@ criteria.mseL<-function(X1, X2, P, Q, kappa.LP, kappa.LoF, kappa.mse, Nruns, eps
       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)            # dispersion matrix + Iq/tau2
       L0.inv.trace<-Re(sum(1./eigen(L0,only.values=TRUE)$values))       # trace of the inverse matrix
       LoF<-L0.inv.trace*qf(1-alpha.LoFL,1,df)/Q
-    } else {return (list (eval=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
+    } else {return (list (eval=0, LP=0, LoF=0, mse=0, df=df, compound=10^6));}
   }
   if (kappa.mse>0)
   {

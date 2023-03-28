@@ -1,27 +1,31 @@
 ### Swapping treatments
-point.swap<-function(X1, X2, P, Q, Nruns, cand.full, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
-                     kappa.LoF, kappa.bias, criterion.choice) {
+point.swap<-function(X1, X2, cand.full, search.object) {
   
-  Xcrit<-objfun(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
-                kappa.LoF, kappa.bias, Nruns, criterion.choice)  
+  Xcrit<-objfun(X1, X2, search.object)  
   Xcomp<-Xcrit$compound
   search<-0
   n<-nrow(cand.full)
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P
+  Q<-search.object$Q
+  primary.terms<-search.object$primary.terms
+  potential.terms<-search.object$potential.terms
+  
   for (l in 1:Nruns)
   {
-    move<-ifelse(l==1||((l>1)&&(X1[l,1]!=X1[(l-1),1])),1,0)
+    move<-ifelse(l==1||((l>1)&&(X1[l,"label"]!=X1[(l-1),"label"])),1,0)
     if (move == 1){
       Xc1<-X1
       Xc2<-X2
       for (i in 1:n)
       {
-        if (X1[l,1]!=cand.full[i,1])  # look at labels
+        if (X1[l,1]!=cand.full[i,"label"])  # look at labels
         {
-          Xc1[l,]<-cand.full[i, 1:(P+1)]
-          Xc2[l,]<-cand.full[i, c(1,(P+2):(P+Q+1))]
+          Xc1[l,]<-cand.full[i, c("label", primary.terms)]
+          Xc2[l,]<-cand.full[i, c("label", potential.terms)]
           
-          Ccrit<-objfun(X1=Xc1, X2=Xc2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
-                          kappa.LoF, kappa.bias,  Nruns, criterion.choice)
+          Ccrit<-objfun(X1=Xc1, X2=Xc2, search.object)
           Ccomp<-Ccrit$compound
           if (Xcomp>Ccomp)    # if the new design is better (minimising)
           {
@@ -34,5 +38,5 @@ point.swap<-function(X1, X2, P, Q, Nruns, cand.full, kappa.Ls, kappa.LP, kappa.D
     }
   }
   list (X1=X1, X2=X2, compound=Xcomp, search=search, 
-        crit=objfun(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, kappa.LoF, kappa.bias, Nruns, criterion.choice))
+        crit=objfun(X1, X2, search.object))
 }

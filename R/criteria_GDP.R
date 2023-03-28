@@ -30,11 +30,24 @@
 #' 
 #'Output: eval = 1, Ds = 1.2774, DP = 8.8705, LoF = 4.3585, bias = 1.3501, df = 4, compound = 2.8576
 #'
-criteria.GDP<-function(X1, X2, P, Q, kappa.DP, kappa.Ds, kappa.LoF, kappa.bias, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.GDP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ds<-0; DP<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
-  df<-Nruns-DF                                # df - pure error degrees of freedom
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P; Q<-search.object$Q
+  tau2<-search.object$tau2
+  
+  kappa.Ds<-search.object$kappa.Ds
+  kappa.DP<-search.object$kappa.DP
+  kappa.LoF<-search.object$kappa.LoF
+  kappa.bias<-search.object$kappa.bias
+  
+  alpha.DP<-search.object$alpha.DP
+  alpha.LoF<-search.object$alpha.LoF
+  
+  df<-Nruns-DF # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
   D<-prod(round(eigen(M, symmetric=TRUE, only.values=TRUE)$values,8))/Nruns

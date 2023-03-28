@@ -34,6 +34,20 @@ criteria.GLP<-function(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, 
 {
   Ls<-0; LP<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P; Q<-search.object$Q
+  tau2<-search.object$tau2
+  W<-search.object$W
+  
+  kappa.Ls<-search.object$kappa.Ls
+  kappa.LP<-search.object$kappa.LP
+  kappa.LoF<-search.object$kappa.LoF
+  kappa.bias<-search.object$kappa.bias
+  
+  alpha.LP<-search.object$alpha.LP
+  alpha.LoFL<-search.object$alpha.LoFL
+  
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms

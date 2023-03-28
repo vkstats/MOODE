@@ -30,10 +30,26 @@
 #'criteria.mseD(X1 = X.primary, X2 = X.potential)
 #' # Output: eval = 1, DP = 2.682, LoF = 6.455, mse = .8854, df = 4, compound = 2.4842
 
-criteria.mseD<-function(X1, X2, P, Q, kappa.DP, kappa.LoF, kappa.mse, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.mseD<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
-  Ds<-0; DP<-0; LoF<-0; bias<-0; mse<-0;
+  Ds<-0; DP<-0; LoF<-0; mse<-0;
   DF<-nlevels(as.factor(X1[,1]))
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P; Q<-search.object$Q
+  tau2<-search.object$tau2
+  tau<-search.object$tau
+  Z0<-search.object$Z0
+  Biter<-search.object$Biter
+  
+  kappa.Ds<-search.object$kappa.Ds
+  kappa.DP<-search.object$kappa.DP
+  kappa.LoF<-search.object$kappa.LoF
+  kappa.mse<-search.object$kappa.mse
+  
+  alpha.DP<-search.object$alpha.DP
+  alpha.LoF<-search.object$alpha.LoF
+  
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
@@ -41,20 +57,20 @@ criteria.mseD<-function(X1, X2, P, Q, kappa.DP, kappa.LoF, kappa.mse, Nruns, eps
   if (D>eps)
   {
     Minv<-solve(M)
-  } else {return (list (eval=0, DP=0, LoF=0, bias=0, df=df, compound=10^6));} # if M is computationally singular
+  } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if M is computationally singular
   if (kappa.Ds>0 || (kappa.DP>0))  
   {
     if (D^(1.0/(P-1))>0)
     {
       Ds<-(D/Nruns)^(-1.0/(P-1))
-    } else {return (list (eval=0, DP=0, LoF=0, bias=0, df=df, compound=10^6));} # Ds
+    } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # Ds
   }
   if (kappa.DP>0)
   {
     if (df>0)
     {
       DP<-Ds*qf(1-alpha.DP,P-1,df)             # DPs
-    } else {return (list (eval=0, DP=0, LoF=0, bias=0, df=df, compound=10^6));} # if df=0
+    } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
   if (((kappa.LoF>0) && (df>0))||(kappa.mse>0))  # check for A calculation
   {
@@ -67,7 +83,7 @@ criteria.mseD<-function(X1, X2, P, Q, kappa.DP, kappa.LoF, kappa.mse, Nruns, eps
     {
       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
       LoF<-(det(L0))^(-1.0/Q)*qf(1-alpha.LoF,Q,df) #Ds
-    } else {return (list (eval=0, DP=0, LoF=0, bias=0, df=df, compound=10^6));} # if df=0
+    } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
   if (kappa.mse>0)
   {

@@ -75,6 +75,7 @@ candidate_set_full = function(cand, K) {
   }
   
   cand.terms = cbind(cand[,1], cand.terms)    # append the column of labels
+  colnames(cand.terms)[1] <- "label"
   
   return (cand.terms)
 }

@@ -29,10 +29,20 @@
 #' # Output: eval = 1, Ls = .5613, LoF = .7213, bias = 1.4331, df = 3, compound = .8418
 
 
-criteria.GL<-function(X1, X2, P, Q, kappa.Ls, kappa.LoF, kappa.bias, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.GL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P; Q<-search.object$Q
+  tau2<-search.object$tau2
+  W<-search.object$W
+  
+  kappa.Ls<-search.object$kappa.Ls
+  kappa.LoF<-search.object$kappa.LoF
+  kappa.bias<-search.object$kappa.bias
+  
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms

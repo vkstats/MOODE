@@ -32,10 +32,26 @@
 #' # Output: eval = 1, DP = 2.682, LoF = 6.455, mse = 1.072, df = 4, compound = 2.648
 #' 
 #' 
-criteria.mseP<-function(X1, X2, P, Q, kappa.DP, kappa.Ds, kappa.LoF, kappa.mse, Nruns,eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.mseP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
-  Ds<-0; DP<-0; LoF<-0; bias<-0;mse<-0;
+  Ds<-0; DP<-0; LoF<-0; mse<-0;
   DF<-nlevels(as.factor(X1[,1]))
+  
+  Nruns<-search.object$Nruns
+  P<-search.object$P; Q<-search.object$Q
+  tau2<-search.object$tau2
+  tau<-search.object$tau
+  Z0<-search.object$Z0
+  Biter<-search.object$Biter
+  
+  kappa.Ds<-search.object$kappa.Ds
+  kappa.DP<-search.object$kappa.DP
+  kappa.LoF<-search.object$kappa.LoF
+  kappa.mse<-search.object$kappa.mse
+  
+  alpha.DP<-search.object$alpha.DP
+  alpha.LoF<-search.object$alpha.LoF
+  
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
