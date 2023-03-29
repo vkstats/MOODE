@@ -13,11 +13,11 @@
 #' Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2) 
 #' candidate_set_orth(candidate_set(Levels)) 
 
-candidate_set_orth<-function(cand)
+candidate_set_orth<-function(cand.full, primary.terms, potential.terms)
 {
-  potential<-potential.matrix(cand)                 # potential matrix for extended model, labelled
-  cand.not.orth<-cbind(cand[,-1],potential[,-1])    # extended model matrix, no labels
-  cand.full.orth<-cbind(cand[,1],orthonormalization(cand.full.not.orth,basis=FALSE))   # orthonormalisation, adding labels
+  cand.not.orth<-cand.full[, c(primary.terms, potential.terms)]    # extended model matrix, no labels
+  cand.full.orth<-cbind(cand.full[,"label"],
+                        orthonormalization(cand.full.not.orth, basis=FALSE))   # orthonormalisation, adding labels
   return (cand.full.orth)
 }
 

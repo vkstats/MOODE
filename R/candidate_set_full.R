@@ -13,11 +13,11 @@
 #' K<-2; Levels <- rep(list(1:3),K);
 #' candidate_set_full(candidate_set(Levels, K), K)
 
-candidate_set_full = function(cand, K) {
+candidate_set_full = function(cand.trt, K) {
   
-  cand.terms = cand[, -1, drop = F]  #  linear terms
-
-    ### Naming linear and generating and naming quadratic terms
+  cand.terms = cand.trt[, -1, drop = F]  #  linear terms
+  
+  ### Naming linear and generating and naming quadratic terms
   for (k in 1:K) {
     colnames(cand.terms)[k] = paste("x", as.character(k), sep = "")  # named linear terms, e.g. "x3"
     cand.terms = cbind(cand.terms, cand.terms[,k]^2)
@@ -74,7 +74,73 @@ candidate_set_full = function(cand, K) {
     colnames(cand.terms)[nterms + k] = paste("x", as.character(k) , as.character(3), sep = "")   # cubic terms: "x13", "x33", etc.
   }
   
-  cand.terms = cbind(cand[,1], cand.terms)    # append the column of labels
+  ### Fourth order terms
+  
+  if (K>1){
+    nterms = ncol(cand.terms); int4.count = 0
+    for (k in 1:(K-1)){
+      for (j in (k+1):K) { 
+        # Quadratic x Quadratic
+        cand.terms = cbind(cand.terms, cand.terms[,k]^2*cand.terms[,j]^2)
+        int4.count = int4.count + 1
+        colnames(cand.terms)[nterms + int4.count] = paste("x", as.character(k), as.character(2),
+                                                    "x", as.character(j), as.character(2))
+        # Cubic x Linear
+        cand.terms = cbind(cand.terms, cand.terms[,k]^3*cand.terms[,j], 
+                           cand.terms[,k]*cand.terms[,j]^3)
+        int4.count = int4.count + 2
+        colnames(cand.terms)[nterms + int4.count - c(1,0)] = 
+          c(paste("x", as.character(k), as.character(3), "x", as.character(j), sep = ""),
+            paste("x", as.character(k), "x", as.character(j), as.character(3), sep = ""))
+      }
+    }
+  }
+  # QxLxL, LxQxL and LxLxQ terms: "x12x2x3", "x1x22x4", etc.
+  if (K > 2) {
+    nterms = ncol(cand.terms); int5.count = 0
+    for (k in 1:(K-2)){
+      for (j in (k+1):(K-1)) {
+        for (i in (j+1):K){  
+          cand.terms = cbind(cand.terms, cand.terms[,k]^2*cand.terms[,j]*cand.terms[,i], 
+                             cand.terms[,k]*cand.terms[,j]^2*cand.terms[,i],
+                             cand.terms[,k]*cand.terms[,j]*cand.terms[,i]^2)
+          int5 = int5.count + 3
+          colnames(cand.terms)[nterms + int5 - c(2,1,0)] = 
+            c(paste("x", as.character(k), as.character(2), "x", as.character(j), "x", as.character(i), sep = ""),
+              paste("x", as.character(k), "x", as.character(j), as.character(2), "x", as.character(i), sep = ""),
+              paste("x", as.character(k), "x", as.character(j), "x", as.character(i), as.character(2), sep = ""))
+        }
+      }
+    }
+  }
+  
+  if (K > 3) {
+    nterms = ncol(cand.terms); int6.count = 0
+    for (k in 1:(K-3)){
+      for (j in (k+1):(K-2)) {
+        for (i in (j+1):(K-1)){
+          for (l in (i+1):K){   # LxLxLxL terms: "x1x2x3x4", etc.
+            cand.terms = cbind(cand.terms, 
+                               cand.terms[,k]*cand.terms[,j]*cand.terms[,i]*cand.terms[,i])
+            int6.count = int6.count + 1
+            colnames(cand.terms)[nterms + int5] = 
+              paste("x", as.character(k), "x", as.character(j),
+                    "x", as.character(i), "x", as.character(l),sep = "")
+          }
+        }
+      }
+    }
+  }
+  
+  nterms = ncol(cand.terms)
+  for (k in 1:K){
+    cand.terms = cbind(cand.terms, cand.terms[,k]^4)
+    colnames(cand.terms)[nterms + k] = paste("x", as.character(k), as.character(4))
+  }
+  
+  #########################################################################
+  
+  cand.terms = cbind(cand.trt[,1], cand.terms)    # append the column of labels
   colnames(cand.terms)[1] <- "label"
   
   return (cand.terms)

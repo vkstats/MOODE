@@ -14,7 +14,7 @@
 #' K<-5; Levels <- rep(list(1:3),K);
 #' candidate_set(Levels, K) 
 
-candidate_set <- function(Levels, K, Cubic = TRUE)
+candidate_trt_set <- function(Levels, K, Cubic = TRUE)
 {
   cand <- as.matrix(expand.grid(Levels))
   candl <- cbind(label(cand, Levels, K), cand)                         # creating a column of treatment labels

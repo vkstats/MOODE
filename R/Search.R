@@ -53,27 +53,25 @@ Search <- function(mood.object, pointex = T)
                         "kappa.mse" = kappa.mse)
   
   start_time <- Sys.time()
-  cand <- candidate_set(Levels, K, Cubic)   # form the candidate set of treatments, primary terms
   
-  # build candidate set, with potential terms
-  if (orth)
-  {
-    cand.full <- candidate_set_orth(cand)
-  }
-  else
-  {
-    cand.full <- candidate_set_full(cand, K)
+  cand.trt <- candidate_trt_set(Levels, K, Cubic)   # form the candidate set of treatments
+  cand.full <- candidate_set_full(cand.trt, K)      # build candidate set, with potential terms
+  
+  if (orth){
+    cand.full <- candidate_set_orth(cand.full,
+                                    primary.terms, potential.terms)
+    print("Point exchange algorithm will be  used for othonormalised candidate sets")
   }
 
   crit.values<-matrix(0,ncol=1, nrow=Nstarts)
-  for (k in 1:Nstarts)
-  {
+  for (k in 1:Nstarts){
+    
     initial <- initial.full(cand.full, Nruns, primary.terms, potential.terms)
     
     X1 <- initial$X1
     X2 <- initial$X2
-    if (k==1)
-    {
+    if (k==1){
+      
       crit.opt <- objfun(X1, X2, search.object)$compound
       X1.opt <- X1; X2.opt <- X2
     }
@@ -83,8 +81,7 @@ Search <- function(mood.object, pointex = T)
       if(pointex) {
         Xs <- point.swap(X1, X2, cand.full, search.object)
       } else {
-        Xs <- coord.swap(X1, X2, K, P, Q, Nruns, Levels, kappa.Ls, kappa.LP, kappa.Ds, kappa.DP, 
-                         kappa.LoF, kappa.bias, criterion.choice)
+        Xs <- coord.swap(X1, X2, K, Levels, search.object)
       }
       X1 <- Xs$X1; X2 <- Xs$X2;
       s <- Xs$search
