@@ -4,7 +4,18 @@
 \alias{criteria.GLP}
 \title{Calculates the values of the Generalised LPs-criterion and its components}
 \usage{
-criteria.GLP(X1, X2, eps = 10^-23)
+criteria.GLP(
+  X1,
+  X2,
+  P,
+  Q,
+  kappa.Ls,
+  kappa.LP,
+  kappa.LoF,
+  kappa.bias,
+  Nruns,
+  eps = 10^-23
+)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,11 +26,11 @@ criteria.GLP(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), Ls-criterion value -- intercept excluded ("Ls"),
-LPs-criterion value -- intercept excluded ("LPs"), Lack-of-fit(LP) criterion value ("LoF"), the bias component value ("bias"), 
+LPs-criterion value -- intercept excluded ("LPs"), Lack-of-fit(LP) criterion value ("LoF"), the bias component value ("bias"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{
-This function evaluates the Generalised LPs-criterion for given primary and potential model matrices. 
+This function evaluates the Generalised LPs-criterion for given primary and potential model matrices.
 Components: Ls-, LPs-, LoF(LP)- and Bias(L)-optimality.
 The weights kappa.Ls, kappa.LP, kappa.LoF and kappa.bias are taken from the global environment.
 }

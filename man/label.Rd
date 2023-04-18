@@ -4,7 +4,7 @@
 \alias{label}
 \title{Create a label}
 \usage{
-label(treat_set)
+label(treat_set, Levels, K)
 }
 \description{
 Create a label

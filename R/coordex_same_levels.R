@@ -1,16 +1,16 @@
- # Co-ordinate exchange algorithm 
+# Co-ordinate exchange algorithm, only for all same-levels factors
 
-coord.swap <- function(X1, X2, K, Levels, search.object) { 
+coord.swap.same <- function(X1, X2, K, Levels, search.object) { 
   
   Xcrit <- objfun(X1, X2, search.object) 
   Xcomp <- Xcrit$compound
   search <- 0
   
   # columns are factors, rows are levels
-  #levels_scaled <- sapply(Levels, Transform) 
+  levels_scaled <- sapply(Levels, Transform) 
   
   # list of factors' levels scaled to [-1,1]
-  levels_scaled <- lapply(Levels, Transform) 
+  #levels_scaled <- lapply(Levels, Transform) 
   
   Nruns <- search.object$Nruns
   primary.terms <- search.object$primary.terms
@@ -31,14 +31,14 @@ coord.swap <- function(X1, X2, K, Levels, search.object) {
         dc <- d
         Xc1 <- X1
         Xc2 <- X2
-      
-        #for (k in levels_scaled[!levels_scaled[, j - 1] == dc[i, j], j - 1]) {
-        for (k in levels_scaled[[j-1]][!levels_scaled[[j - 1]] == dc[i, j]]) {
+        
+        for (k in levels_scaled[!levels_scaled[, j - 1] == dc[i, j], j - 1]) {
+        #for (k in levels_scaled[[j-1]][!levels_scaled[[j - 1]] == dc[i, j]]) {
           dc[i, j] <- k
-
+          
           candij <- candidate_set_full(matrix(dc[i, ], nrow = 1, 
                                               dimnames = list(1, colnames(d))), K)
-
+          
           Xc1[i, ] <- candij[, c("label", primary.terms)]
           Xc2[i, ] <- candij[, c("label", potential.terms)]
           Ccrit <- objfun(X1 = Xc1, X2 = Xc2, search.object) 
@@ -54,8 +54,7 @@ coord.swap <- function(X1, X2, K, Levels, search.object) {
       }
     }
   }
- list(X1 = X1, X2 = X2, compound=Xcomp, search=search, 
-      crit=objfun(X1, X2, search.object))
+  list(X1 = X1, X2 = X2, compound=Xcomp, search=search, 
+       crit=objfun(X1, X2, search.object))
 }
-  
-  
+

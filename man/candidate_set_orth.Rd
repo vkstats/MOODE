@@ -4,7 +4,7 @@
 \alias{candidate_set_orth}
 \title{Forms the orthonormalised full candidate set}
 \usage{
-candidate_set_orth(cand)
+candidate_set_orth(cand.full, primary.terms, potential.terms)
 }
 \arguments{
 \item{cand}{Candidate set containing primary terms, with labels in the first column.}

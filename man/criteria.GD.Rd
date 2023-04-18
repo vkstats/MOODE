@@ -4,7 +4,7 @@
 \alias{criteria.GD}
 \title{Calculates the values of the Generalised Ds-criterion and its components}
 \usage{
-criteria.GD(X1, X2, eps = 10^-23)
+criteria.GD(X1, X2, search.object, eps = 10^-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,7 +15,7 @@ criteria.GD(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), Ds-criterion value -- intercept excluded ("Ds"),
-Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the number of pure error degrees of freedom ("df") 
+Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the number of pure error degrees of freedom ("df")
 and the value of the compound criterion ("compound").
 }
 \description{

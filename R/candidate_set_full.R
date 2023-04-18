@@ -123,7 +123,7 @@ candidate_set_full = function(cand.trt, K) {
             cand.terms = cbind(cand.terms, 
                                cand.terms[,k]*cand.terms[,j]*cand.terms[,i]*cand.terms[,i])
             int6.count = int6.count + 1
-            colnames(cand.terms)[nterms + int5] = 
+            colnames(cand.terms)[nterms + int6.count] = 
               paste("x", as.character(k), "x", as.character(j),
                     "x", as.character(i), "x", as.character(l),sep = "")
           }

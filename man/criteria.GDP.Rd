@@ -4,7 +4,7 @@
 \alias{criteria.GDP}
 \title{Calculates the values of the Generalised DPs-criterion and its components}
 \usage{
-criteria.GDP(X1, X2, eps = 10^-23)
+criteria.GDP(X1, X2, search.object, eps = 10^-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,11 +15,11 @@ criteria.GDP(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), Ds-criterion value -- intercept excluded ("Ds"),
-DPs-criterion value -- intercept excluded ("DPs"), Lack-of-fit(DP) criterion value ("LoF"), the bias component value ("bias"), 
+DPs-criterion value -- intercept excluded ("DPs"), Lack-of-fit(DP) criterion value ("LoF"), the bias component value ("bias"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{
-This function evaluates the Generalised DPs-criterion for given primary and potential model matrices. 
+This function evaluates the Generalised DPs-criterion for given primary and potential model matrices.
 Components: Ds-, DPs-, LoF(DP)- and Bias(D)-optimality.
 The weights kappa.Ds, kappa.DP, kappa.LoF and kappa.bias are taken from the global environment.
 }

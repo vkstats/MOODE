@@ -4,7 +4,7 @@
 \alias{criteria.mseL}
 \title{Calculates the values of the MSE LPs-criterion and its components}
 \usage{
-criteria.mseL(X1, X2, eps = 10^-23)
+criteria.mseL(X1, X2, search.object, eps = 10^-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,7 +15,7 @@ criteria.mseL(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), LPs-criterion value -- intercept excluded ("LP"),
-Lack-of-fit(LP) criterion value ("LoF"), the MSE(L) component value ("mse"), 
+Lack-of-fit(LP) criterion value ("LoF"), the MSE(L) component value ("mse"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{

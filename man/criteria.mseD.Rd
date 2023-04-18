@@ -4,7 +4,7 @@
 \alias{criteria.mseD}
 \title{Calculates the values of the MSE DPs-criterion and its components}
 \usage{
-criteria.mseD(X1, X2, eps = 10^-23)
+criteria.mseD(X1, X2, search.object, eps = 10^-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,7 +15,7 @@ criteria.mseD(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), DPs-criterion value -- intercept excluded ("DP"),
-Lack-of-fit(DP) criterion value ("LoF"), the MSE(D) component value ("mse"), 
+Lack-of-fit(DP) criterion value ("LoF"), the MSE(D) component value ("mse"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{

@@ -9,6 +9,7 @@ License: GPL-3
 Depends: R (>= 3.5.2), methods, far 
 Imports: far 
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 NeedsCompilation: no
 Packaged: 2021-07-19 16:43:03 UTC; vallia
+Roxygen: list(markdown = TRUE)

@@ -4,7 +4,7 @@
 \alias{criteria.mseP}
 \title{Calculates the values of the MSE DPs-criterion using the point prior for the MSE(D)-component estimation}
 \usage{
-criteria.mseP(X1, X2, eps = 10^-23)
+criteria.mseP(X1, X2, search.object, eps = 10^-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,7 +15,7 @@ criteria.mseP(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), DPs-criterion value -- intercept excluded ("DP"),
-Lack-of-fit(DP) criterion value ("LoF"), the MSE(D) component value ("mse"), 
+Lack-of-fit(DP) criterion value ("LoF"), the MSE(D) component value ("mse"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{
@@ -41,5 +41,6 @@ kappa.DP = kappa.LoF = kappa.mse = 1./3; tau2 <-1; tau <- sqrt(tau2)
 alpha.DP = alpha.LoF = 0.05; Biter <- 1000; 
 criteria.mseD(X1 = X.primary, X2 = X.potential)
 # Output: eval = 1, DP = 2.682, LoF = 6.455, mse = 1.072, df = 4, compound = 2.648
+
 
 }

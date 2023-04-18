@@ -1,3 +1,5 @@
+
+
 Search <- function(mood.object, pointex = T)
 {
   K <- mood.object$K
@@ -81,7 +83,7 @@ Search <- function(mood.object, pointex = T)
       if(pointex) {
         Xs <- point.swap(X1, X2, cand.full, search.object)
       } else {
-        Xs <- coord.swap(X1, X2, K, Levels, search.object)
+        Xs <- coord.swap.same(X1, X2, K, Levels, search.object)
       }
       X1 <- Xs$X1; X2 <- Xs$X2;
       s <- Xs$search

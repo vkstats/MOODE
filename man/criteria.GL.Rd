@@ -4,7 +4,7 @@
 \alias{criteria.GL}
 \title{Calculates the values of the Generalised Ls-criterion and its components}
 \usage{
-criteria.GL(X1, X2, eps = 10^-23)
+criteria.GL(X1, X2, search.object, eps = 10^-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
@@ -15,7 +15,7 @@ criteria.GL(X1, X2, eps = 10^-23)
 }
 \value{
 A list of values: indicator of whether the evaluation was successful ("eval"), Ls-criterion value -- intercept excluded ("Ls"),
-Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the number of pure error degrees of freedom ("df") 
+Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the number of pure error degrees of freedom ("df")
 and the value of the compound criterion ("compound").
 }
 \description{

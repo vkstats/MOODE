@@ -4,14 +4,14 @@
 \alias{candidate_set_full}
 \title{Forms the full candidate set of treatments polynomial terms}
 \usage{
-candidate_set_full(cand, K)
+candidate_set_full(cand.trt, K)
 }
 \arguments{
-\item{cand}{Candidate set of treatments, the first column contains treatment labels. 
+\item{cand}{Candidate set of treatments, the first column contains treatment labels.
 Usually obtained as output from the "candidate_set" function.}
 }
 \value{
-The full extended candidate set: the column of treatment labels, then named columns with polynomial terms up to the order of 3. 
+The full extended candidate set: the column of treatment labels, then named columns with polynomial terms up to the order of 3.
 For example, "x12" stands for $x_1^2$, and "x1x2 stands for $x_1x_2$, and "x23x4" -- for $x_2^3x_4$.
 }
 \description{
