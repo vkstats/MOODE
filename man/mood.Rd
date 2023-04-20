@@ -2,7 +2,7 @@
 % Please edit documentation in R/mood.R
 \name{mood}
 \alias{mood}
-\title{Setting up the parameters of a factorial experiment to search for multi-objective optimal design.}
+\title{Setting up the parameters of a factorial experiment to search for multi-objective optimal completely randomised design.}
 \usage{
 mood(
   K = 3,
@@ -27,9 +27,9 @@ mood(
   prob.LoF = 0.95,
   prob.LoFL = 0.95,
   primary.model = "first_order",
-  potential.model = "quadratic_terms",
-  primary.terms = NULL,
-  potential.terms = NULL,
+  potential.model = NA,
+  primary.terms = NA,
+  potential.terms = NA,
   orth = FALSE
 )
 }
@@ -92,6 +92,30 @@ Possible values are:
 }
 \value{
 List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
+\itemize{
+\item \code{K} Number of factors.
+\item \code{Klev} Number of levels of each factor, if all factors have the same number of levels.
+\item \code{Levels} List of length K of the vectors containing values of the factors.
+\item \code{Nruns} Number of runs of the experiment.
+\item \code{criterion.choice} Compound criterion to be used for the optimal design search or evaluation.
+\item \code{Nstarts} The number of randomly generated start designs of the search algorithm.
+\item \code{Biter} Number of samples for evaluating the MSE determinant-based component criterion.
+\item \code{tau2} The variance scaling parameter for the prior distribution of the potential terms.
+\item \code{tau}  The square root of \code{tau2}
+\item \code{Cubic} Whether the experimental region is cubic (\code{TRUE}) or spherical (\code{FALSE}).
+\item \code{MC} Indicator of the multiple comparison (Bonferroni) correction for trace-based criteria.
+\item \verb{prob.DP, prob.LP, prob.LoF, prob.LoFL} Confidence levels for the DP-, LP-, lack of fit determinant- and trace-based criteria.
+\item \verb{alpha.DP, alpha.LP, alpha.LoF, alpha.LoFL} Significance levels for the DP-, LP-, lack of fit determinant- and trace-based criteria.
+\item \code{orth} Whether the candidate sets are orthonormalised (\code{TRUE}) or not (\code{FALSE}).
+\item \code{Z0} Z0 matrix.
+\item \code{W} Weight matrix for Ls criterion.
+\item \code{primary.terms} Fitted (primary) model terms.
+\item \code{potential.terms} Potential terms.
+\item \code{P} The number of terms in the fitted model (including intercept).
+\item \code{Q} The number of potential terms.
+\item \verb{kappa.Ds, kappa.DP, kappa.Ls, kappa.LP,  kappa.LoF, kappa.bias, kappa.mse} Compound criterion weights.
+\item \code{warning.msg} Warning messages.
+}
 }
 \description{
 Creates an object containing the parameters of the experiment, compound optimality criterion with the
@@ -131,18 +155,24 @@ Possible elements of the \code{potential.model} vector argument:
 \itemize{
 \item Single factor powers,  are coded as a string starting with with "x" and followed by
 the index of the factor and the power: \code{"x32"}.
-For example, \eqn{x_3^2} is coded as \code{"x32"}; \code{"x22"} stands for \eqn{x_2^2}, and \code{"x4"} stands for the linear term \eqn{x_4}.
+For example, \eqn{$x_3^2$} is coded as \code{"x32"}; \code{"x22"} stands for \eqn{x_2^2}, and \code{"x4"} stands for the linear term \eqn{x_4}.
 \item Interaction of factors' powers are coded by merging the individual factors'
 powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is coded as \code{"x1x22"},
-\eqn{x_3x_1^2x_4} -- as \code{"x12x3x4"}.
+\eqn{x_3x_12x_4} -- as \code{"x12x3x4"}.
 }
 }
 \examples{
 
-example1_mood <- mood(K = 5, Klev = 3, Nruns = 40, criterion.choice = "GDP", 
-kappa.Ds = kappa.DP = kappa.LoF = 1./3, Nstarts = 100, tau2 = 0.1, primary.model = "second order",
+example1 <- mood(K = 5, Klev = 3, Nruns = 40, criterion.choice = "GDP", 
+kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3, 
+Nstarts = 50, tau2 = 0.1, primary.model = "second_order",
 potential.model = NA, potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5"))
-example1_mood
+example1
 
- 
+example2 <- mood(K = 3, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
+kappa.LP = 1./2, kappa.LoF = 1./4, kappa.mse = 1./4,
+Nstarts = 50, tau2 = 1, primary.terms = "first_order",
+potential.model = NA, potential.terms = c("x12", "x12x2", "x12x3"))
+example2
+
 }

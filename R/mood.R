@@ -1,4 +1,4 @@
-#' Setting up the parameters of a factorial experiment to search for multi-objective optimal design.
+#' Setting up the parameters of a factorial experiment to search for multi-objective optimal completely randomised design.
 #' @description Creates an object containing the parameters of the experiment, compound optimality criterion with the
 #'  weights and parameters of the search.
 #' 
@@ -76,15 +76,45 @@
 #' 
 #' 
 #' @return List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
+#' \itemize{
+#' \item `K` Number of factors.
+#' \item `Klev` Number of levels of each factor, if all factors have the same number of levels.
+#' \item `Levels` List of length K of the vectors containing values of the factors.
+#' \item `Nruns` Number of runs of the experiment.
+#' \item `criterion.choice` Compound criterion to be used for the optimal design search or evaluation.
+#' \item `Nstarts` The number of randomly generated start designs of the search algorithm.
+#' \item `Biter` Number of samples for evaluating the MSE determinant-based component criterion.
+#' \item `tau2` The variance scaling parameter for the prior distribution of the potential terms.
+#' \item `tau`  The square root of `tau2`
+#' \item `Cubic` Whether the experimental region is cubic (`TRUE`) or spherical (`FALSE`).
+#' \item `MC` Indicator of the multiple comparison (Bonferroni) correction for trace-based criteria.
+#' \item `prob.DP, prob.LP, prob.LoF, prob.LoFL` Confidence levels for the DP-, LP-, lack of fit determinant- and trace-based criteria.
+#' \item `alpha.DP, alpha.LP, alpha.LoF, alpha.LoFL` Significance levels for the DP-, LP-, lack of fit determinant- and trace-based criteria.
+#' \item `orth` Whether the candidate sets are orthonormalised (`TRUE`) or not (`FALSE`).
+#' \item `Z0` Z0 matrix.
+#' \item `W` Weight matrix for Ls criterion.
+#' \item `primary.terms` Fitted (primary) model terms.
+#' \item `potential.terms` Potential terms.
+#' \item `P` The number of terms in the fitted model (including intercept).
+#' \item `Q` The number of potential terms.
+#' \item `kappa.Ds, kappa.DP, kappa.Ls, kappa.LP, 
+#' kappa.LoF, kappa.bias, kappa.mse` Compound criterion weights.
+#' \item `warning.msg` Warning messages.
+#' }
 #' @examples
 #' 
-#'example1 <- mood(K = 5, Klev = 3, Nruns = 40, 
-#' criterion.choice = "GDP", 
+#'example1 <- mood(K = 5, Klev = 3, Nruns = 40, criterion.choice = "GDP", 
 #'kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3, 
-#'Nstarts = 50, tau2 = 0.1, primary.model = "second order",
+#'Nstarts = 50, tau2 = 0.1, primary.model = "second_order",
 #' potential.model = NA, potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5"))
 #'example1
 #'
+#'example2 <- mood(K = 3, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
+#'kappa.LP = 1./2, kappa.LoF = 1./4, kappa.mse = 1./4,
+#'Nstarts = 50, tau2 = 1, primary.terms = "first_order",
+#' potential.model = NA, potential.terms = c("x12", "x12x2", "x12x3"))
+#' example2
+#' 
 mood <- function(K = 3, Klev = 3, Levels, 
                  Nruns = 15, 
                  criterion.choice = "MSE.P", 
@@ -100,9 +130,9 @@ mood <- function(K = 3, Klev = 3, Levels,
                  prob.DP = 0.95, prob.LP = 0.95, prob.LoF = 0.95, prob.LoFL = 0.95,
                  
                  primary.model = "first_order",
-                 potential.model = "quadratic_terms", 
+                 potential.model = NA, 
                  
-                 primary.terms = NULL, potential.terms = NULL,
+                 primary.terms = NA, potential.terms = NA,
                  
                  orth=FALSE){      # Orthonormalised terms 
   
@@ -112,7 +142,7 @@ mood <- function(K = 3, Klev = 3, Levels,
     Levels<-rep(list(1:Klev), K)   # Levels of each factor if all factors have the same number of levels
   } 
   
-  if (any(is.null(primary.terms))){   # if primary terms are not specified explicitly
+  if (any(is.na(primary.terms))){   # if primary terms are not specified explicitly
     primary.terms <- c()
     if (any(primary.model %in% c("main_effects","first_order", "second_order",
                                  "third order", "cubic"))) {
@@ -166,7 +196,7 @@ mood <- function(K = 3, Klev = 3, Levels,
     }
   }
     
-  if (any(is.null(potential.terms))) {  # if potential terms are not specified explicitly
+  if (any(is.na(potential.terms))) {  # if potential terms are not specified explicitly
     potential.terms <- c()
     if ("linear_interactions" %in% potential.model) {
       if (K>1){
@@ -269,7 +299,7 @@ mood <- function(K = 3, Klev = 3, Levels,
   P <- length(primary.terms) + 1    # number of the primary parameters, including intercept
   Q <- length(potential.terms)      # number of the potential terms 
   
-  Z0<-diag(1, Nruns)-matrix(1/Nruns, nrow=Nruns, ncol=Nruns)   # for excluding the intercept
+  Z0 <- diag(1, Nruns)-matrix(1/Nruns, nrow=Nruns, ncol=Nruns)   # for excluding the intercept
   tau<-tau2^0.5 
   
   # Weights on parameters for Ls/LP-criteria. 
