@@ -93,7 +93,27 @@ Search <- function(mood.object, pointex = TRUE, update.info = TRUE)
     print("Point exchange algorithm will be  used for othonormalised candidate sets")
   }
 
+  ###### if coordinate exchange, need to change labels as well
+  if (!pointex){
+    # list of factors' levels scaled to [-1,1]
+    levels_scaled <- lapply(Levels, Transform) 
+    levels_steps <- rep(1, K)  
+    
+    for (i in (K-1):1)
+    { # how much label changes per one level change of each of the factors
+      # based on how the labelling is organised in the label() function
+      levels_steps[i] <- levels_steps[i+1]*length(Levels[[i+1]])
+    }
+    steps = 2./(sapply(Levels, length) - 1) # how long is one step for each factor
+    
+    search.object$levels_scaled <- levels_scaled # list of levels, scaled to [-1,1]
+    search.object$levels_steps <- levels_steps   # difference in labels when levels moved to the next
+    search.object$steps <- steps
+    search.object$levels_lengths <- sapply(Levels, length)
+  }
+  
   crit.values<-matrix(0,ncol=1, nrow=Nstarts)
+  
   for (k in 1:Nstarts){
     
     if (update.info){
@@ -114,8 +134,7 @@ Search <- function(mood.object, pointex = TRUE, update.info = TRUE)
       if(pointex) {
         Xs <- point.swap(X1, X2, cand.full, search.object)
       } else {
-        #Xs <- coord.swap(X1, X2, K, Levels, search.object)
-        Xs <- coord.swap.same(X1, X2, K, Levels, search.object)
+        Xs <- coord.swap(X1, X2, K, Levels, search.object)
       }
       X1 <- Xs$X1; X2 <- Xs$X2;
       s <- Xs$search
