@@ -5,8 +5,7 @@
 \title{Setting up the parameters of a factorial experiment to search for multi-objective optimal completely randomised design.}
 \usage{
 mood(
-  K = 3,
-  Klev = 3,
+  K,
   Levels,
   Nruns = 15,
   criterion.choice = "MSE.P",
@@ -36,9 +35,7 @@ mood(
 \arguments{
 \item{K}{Number of factors.}
 
-\item{Klev}{Number of levels of each factor, if all factors have the same number of levels.}
-
-\item{Levels}{List of length K of the vectors containing values of the factors.}
+\item{Levels}{Either (a) a common number of levels for each factor or (b) a list of length K of the vectors containing levels of each factor.}
 
 \item{Nruns}{Number of runs of the experiment.}
 
@@ -88,7 +85,7 @@ Possible values are:
 
 \item{potential.terms}{Vector of the names of the potential terms, see Details.}
 
-\item{orth}{Indicator of whether to orthonormalise the potential and primary terms (TRUE) or not (FALSE).}
+\item{orth}{Indicator of whether to orthonormalise the potential and primary terms (\verb{TRUE') or not (}FALSE').}
 }
 \value{
 List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
@@ -126,7 +123,7 @@ The function provides different ways of specifying the levels of the factors and
 
 Specifying the factors and levels
 
-If all \code{K} factors have the same number of levels, \code{Klev} parameter is used to input that number.
+If all \code{K} factors have the same number of levels, \code{Levels} parameter is used to input that number.
 Otherwise, \code{Levels} is set to be a list of vectors containing the values of the factors, e.g.
 \code{list(1:3, 1:2, 1:4)} for 3 factors with equally spaced \eqn{3, 2} and \eqn{4} levels respectively.
 
@@ -143,6 +140,8 @@ Possible values of the \code{primary.model} argument are:
 \item \code{third_order} -- full second order polynomial model and all interactions of degree 3
 \item \code{cubic} -- third order polynomial model with cubic terms
 }
+The intercept is always included as a primary term.
+
 Possible elements of the \code{potential.model} vector argument:
 \itemize{
 \item \code{linear_interactions} -- linear interactions among the factors
@@ -163,7 +162,7 @@ powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is c
 }
 \examples{
 
-example1 <- mood(K = 5, Klev = 3, Nruns = 40, criterion.choice = "GDP", 
+example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
 kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3, 
 Nstarts = 50, tau2 = 0.1, primary.model = "second_order",
 potential.model = NA, potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5"))

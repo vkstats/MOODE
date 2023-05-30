@@ -50,6 +50,10 @@ criteria.GDP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matri
   df<-Nruns-DF # df - pure error degrees of freedom
 
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
+  
+  # correction to remove intercept and do Ds?
+  # M <- t(X1[, -1]) %*% search.object$Z0 %*% X1[, -1] 
+  
   D<-prod(round(eigen(M, symmetric=TRUE, only.values=TRUE)$values,8))/Nruns
   if (D>eps)
   {

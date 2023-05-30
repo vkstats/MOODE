@@ -7,20 +7,28 @@
 candidate_set_orth(cand.full, primary.terms, potential.terms)
 }
 \arguments{
-\item{cand}{Candidate set containing primary terms, with labels in the first column.}
+\item{cand.full}{Candidate set containing terms up to 4th order, with labels in the first column.}
+
+\item{primary.terms}{Character vector identifying primary model terms.}
+
+\item{potential.terms}{Character vector identifying potential model terms.}
 }
 \value{
 The orthonormalised full candidate set containing primary and potential terms, with labels.
 }
 \description{
-This function forms the full extended orthonormalised candidate set of primary and potential terms, with labels.
+This function forms the full extended orthonormalised candidate set of primary and potential terms, with an intercept column and labels.
 }
 \examples{
 
-# Full extended orthonormalised candidate set for two 3-level factors, 
+# Full extended orthonormalised candidate set for two 4-level factors, 
 # full quadratic polynomial model as primary model and all three-order terms as potential.
 
-K<-2; Levels <- rep(list(1:3),K);
+K<-2; Levels <- rep(list(1:4),K)
+cand.trt <- candidate_trt_set(Levels, K)
+cand.full <- candidate_set_full(cand.trt, K)
+prime.terms <- colnames(cand.full)[2:7]
+poten.terms <- colnames(cand.full)[8:11]
 Parameters <- c(1, rep(1,K), rep(1,K), K*(K-1)/2) 
-candidate_set_orth(candidate_set(Levels)) 
+candidate_set_orth(cand.full, prime.terms, poten.terms) 
 }

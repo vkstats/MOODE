@@ -1,6 +1,6 @@
  # Co-ordinate exchange algorithm 
 
-coord.swap <- function(X1, X2, K, Levels, search.object) { 
+coord.swap <- function(X1, X2, K, Levels, cand.trt, search.object) { 
   
   Xcrit <- objfun(X1, X2, search.object) 
   Xcomp <- Xcrit$compound
@@ -31,8 +31,7 @@ coord.swap <- function(X1, X2, K, Levels, search.object) {
         dc <- d
         Xc1 <- X1
         Xc2 <- X2
-      
-        #for (k in levels_scaled[!levels_scaled[, j - 1] == dc[i, j], j - 1]) {
+        
         for (k in levels_scaled[[j-1]][!levels_scaled[[j - 1]] == dc[i, j]]) {
           dc[i, j] <- k
 
@@ -41,6 +40,12 @@ coord.swap <- function(X1, X2, K, Levels, search.object) {
 
           Xc1[i, ] <- candij[, c("label", primary.terms)]
           Xc2[i, ] <- candij[, c("label", potential.terms)]
+
+          # correcting trt labels
+          new_lab <- which(apply(cand.trt[, -1], 1, \(x) all.equal(x, dc[i, -1], check.attributes = F) == T))
+          Xc1[i, 1] <- cand.trt[new_lab, 1]
+          Xc2[i, 1] <- Xc1[i, 1]
+          
           Ccrit <- objfun(X1 = Xc1, X2 = Xc2, search.object) 
           Ccomp <- Ccrit$compound
           if (Xcomp > Ccomp) {   # if the new design is better (minimising)

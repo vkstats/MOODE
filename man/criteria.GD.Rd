@@ -4,12 +4,14 @@
 \alias{criteria.GD}
 \title{Calculates the values of the Generalised Ds-criterion and its components}
 \usage{
-criteria.GD(X1, X2, search.object, eps = 10^-23)
+criteria.GD(X1, X2, search.object, eps = 1e-23)
 }
 \arguments{
 \item{X1}{The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.}
 
 \item{X2}{The matrix of potential terms, with the first column containing the labels of treatments.}
+
+\item{search.object}{Object of class \code{\link[=mood]{mood()}} specifying experiment parameters.}
 
 \item{eps}{Computational tolerance, the default value is 10^-23}
 }
@@ -24,17 +26,21 @@ The weights kappa.Ds, kappa.LoF and kappa.bias are taken from the global environ
 }
 \examples{
 #Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
-K <-1; P<-3; Q<-1; Levels <- list(1:5)
-# Generating candidate sets: primary and full orthonormalised ones
-cand.primary <- candidate_set(Levels);
-cand.not.orth <-cbind(cand.primary[,-1], cand.primary[,3]*cand.primary[,4])
-cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.not.orth,basis=FALSE))
+# setting up the example
+ex.mood <- mood(K = 1, Klev = 5, Nruns = 7, criterion.choice = "GDP", 
+               kappa.Ds = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3, kappa.DP = 0, 
+               tau2 = 1, primary.model = "second_order",
+               potential.model = "cubic_terms")
+# Generating candidate set: orthonormalised
+K <- ex.mood$K
+Levels <- ex.mood$Levels 
+cand.not.orth <- candidate_set_full(candidate_trt_set(Levels, K), K)
+cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mood$potential.terms)
 # Choosing a design
-index <- c(rep(1,2),3,4, rep(5,3)); Nruns<- length(index)
-X.primary <- cand.full.orth[index, 1:(P+1)]
-X.potential <- cand.full.orth[index, (c(1,(P+2):(P+Q+1)))]
+index <- c(rep(1, 2), 3, 4, rep(5, 3))
+X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
+X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 # Evaluating a compound GD-criterion
-kappa.Ds = kappa.LoF = kappa.bias = 1./3; tau2 <-1;
-criteria.GD(X1 = X.primary, X2 = X.potential)
-# Output: eval = 1, Ds = 1.4045, LoF = .7213, bias = 1.4331, df = 3, compound = 1.1427
+criteria.GD(X1 = X.primary, X2 = X.potential, ex.mood)
+# Output: eval = 1, Ds = 0.7334291, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.9202307
 }

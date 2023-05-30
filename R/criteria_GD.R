@@ -5,6 +5,7 @@
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
+#' @param search.object Object of class [mood()] specifying experiment parameters.
 #' @param eps Computational tolerance, the default value is 10^-23
 #'
 #' @return A list of values: indicator of whether the evaluation was successful ("eval"), Ds-criterion value -- intercept excluded ("Ds"),
@@ -13,21 +14,26 @@
 #' @export
 #' @examples 
 #'#Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
-#'K <-1; P<-3; Q<-1; Levels <- list(1:5)
-#' # Generating candidate sets: primary and full orthonormalised ones
-#'cand.primary <- candidate_set(Levels);
-#'cand.not.orth <-cbind(cand.primary[,-1], cand.primary[,3]*cand.primary[,4])
-#'cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.not.orth,basis=FALSE))
-#' # Choosing a design
-#'index <- c(rep(1,2),3,4, rep(5,3)); Nruns<- length(index)
-#'X.primary <- cand.full.orth[index, 1:(P+1)]
-#'X.potential <- cand.full.orth[index, (c(1,(P+2):(P+Q+1)))]
-#' # Evaluating a compound GD-criterion
-#'kappa.Ds = kappa.LoF = kappa.bias = 1./3; tau2 <-1;
-#'criteria.GD(X1 = X.primary, X2 = X.potential)
-#' # Output: eval = 1, Ds = 1.4045, LoF = .7213, bias = 1.4331, df = 3, compound = 1.1427
+#'# setting up the example
+#'ex.mood <- mood(K = 1, Klev = 5, Nruns = 7, criterion.choice = "GDP", 
+#'                kappa.Ds = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3, kappa.DP = 0, 
+#'                tau2 = 1, primary.model = "second_order",
+#'                potential.model = "cubic_terms")
+#'# Generating candidate set: orthonormalised
+#'K <- ex.mood$K
+#'Levels <- ex.mood$Levels 
+#'cand.not.orth <- candidate_set_full(candidate_trt_set(Levels, K), K)
+#'cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mood$potential.terms)
+#'# Choosing a design
+#'index <- c(rep(1, 2), 3, 4, rep(5, 3))
+#'X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
+#'X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#'# Evaluating a compound GD-criterion
+#'criteria.GD(X1 = X.primary, X2 = X.potential, ex.mood)
+#'# Output: eval = 1, Ds = 0.7334291, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.9202307
 
-criteria.GD<-function(X1, X2, search.object, eps=10^-23)        # X1,X2 -   matrices of primary and potential terms, with labels
+
+criteria.GD<-function(X1, X2, search.object, eps = 1e-23)        # X1,X2 -   matrices of primary and potential terms, with labels
 {
   
   Ds<-0; LoF<-0; bias<-0;
@@ -43,8 +49,10 @@ criteria.GD<-function(X1, X2, search.object, eps=10^-23)        # X1,X2 -   matr
   
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
+  # kept this form, using the *full* info matrix and dividing by the sum of sqaured intercept column (which could be orth.) 
+  # to make the other criteria here work
   M<-crossprod(X1[,-1])
-  D<-prod(round(eigen(M,symmetric=TRUE,only.values=TRUE)$values,8))/Nruns
+  D <- prod(round(eigen(M,symmetric=TRUE,only.values=TRUE)$values,8)) / sum(X1[, 2]^2)
 
   if (D>eps)
   {
@@ -59,14 +67,14 @@ criteria.GD<-function(X1, X2, search.object, eps=10^-23)        # X1,X2 -   matr
     } else {return (list (eval=0, Ds=0, LoF=0, bias=0,compound=10^6));} # Ds
   }
 
-  if ((kappa.LoF>0) ||(kappa.bias>0))  # check for A calculation
+  if ((kappa.LoF>0) || (kappa.bias>0))  # check for A calculation
   {
     M12<-crossprod(x=X1[,-1],y=X2[,-1])
-    A<-Minv%*%M12
+    A <- crossprod(Minv, M12)
   }
   if (kappa.LoF>0)
   {
-    L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
+    L0 <- crossprod(X2[,-1]) - crossprod(M12, A) + diag(1./tau2,nrow=Q)
     LoF<-(det(L0))^(-1.0/Q)
   }
   if (kappa.bias>0)

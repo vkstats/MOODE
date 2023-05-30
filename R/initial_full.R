@@ -9,6 +9,9 @@ initial.full<-function(cand.full, Nruns,
   {
     index<-sample(1:nrow(cand.full), size=Nruns, replace=TRUE)
     X1<-cand.full[index, c("label", primary.terms)]
+#    cat(index, "\n")
+#    cat(potential.terms, "\n")
+#    print(cand.full)
     X2<-cand.full[index, c("label", potential.terms)]
     det<-round(prod(eigen(t(X1[,-1])%*%X1[,-1], symmetric=TRUE, only.values=TRUE)$values), 6)  # det of the information matrix
   }

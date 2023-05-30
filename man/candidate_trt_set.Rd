@@ -4,14 +4,14 @@
 \alias{candidate_trt_set}
 \title{Forms the labelled candidate set of treatments}
 \usage{
-candidate_trt_set(Levels, K, Cubic = TRUE)
+candidate_trt_set(Levels, K, Hypercube = TRUE)
 }
 \arguments{
 \item{Levels}{Levels of each factor.}
 
 \item{K}{Number of factors.}
 
-\item{Cubic}{Indicator whether the experimental region is cubic ('Y') or spherical ('N').}
+\item{Hypercube}{Indicates if the experimental region is a hypercube ('TRUE') or spherical ('FALSE').}
 }
 \value{
 Matrix of candidate set of treatments, with treatment labels contained in the first column.
@@ -25,5 +25,5 @@ adds labels, with optional spherical transformation of the coordinates.
 # Candidate treatment set for five 3-level factors
 
 K<-5; Levels <- rep(list(1:3),K);
-candidate_set(Levels, K) 
+candidate_trt_set(Levels, K) 
 }

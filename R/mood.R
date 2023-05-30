@@ -3,8 +3,7 @@
 #'  weights and parameters of the search.
 #' 
 #' @param K Number of factors.
-#' @param Klev Number of levels of each factor, if all factors have the same number of levels.
-#' @param Levels List of length K of the vectors containing values of the factors.
+#' @param Levels Either (a) a common number of levels for each factor or (b) a list of length K of the vectors containing levels of each factor.
 #' @param Nruns Number of runs of the experiment.
 #' @param criterion.choice Compound criterion to be used for the optimal design search or evaluation. 
 #' Possible values are: 
@@ -32,14 +31,14 @@
 #' @param potential.model The order of the potential/extra polynomial terms. Alternatively can be specified through the `potential.terms` parameter, see Details.
 #' @param primary.terms Vector of the names of the primary terms, see Details.
 #' @param potential.terms Vector of the names of the potential terms, see Details.
-#' @param orth Indicator of whether to orthonormalise the potential and primary terms (TRUE) or not (FALSE).
+#' @param orth Indicator of whether to orthonormalise the potential and primary terms (`TRUE') or not (`FALSE').
 #' 
 #' @export
 #' @details The function provides different ways of specifying the levels of the factors and the models.
 #' 
 #' Specifying the factors and levels
 #' 
-#' If all `K` factors have the same number of levels, `Klev` parameter is used to input that number.
+#' If all `K` factors have the same number of levels, `Levels` parameter is used to input that number.
 #' Otherwise, `Levels` is set to be a list of vectors containing the values of the factors, e.g.
 #' `list(1:3, 1:2, 1:4)` for 3 factors with equally spaced \eqn{3, 2} and \eqn{4} levels respectively.
 #' 
@@ -56,6 +55,8 @@
 #' \item `third_order` -- full second order polynomial model and all interactions of degree 3
 #' \item `cubic` -- third order polynomial model with cubic terms 
 #' }
+#' The intercept is always included as a primary term. 
+#'
 #' Possible elements of the `potential.model` vector argument:
 #' \itemize{ 
 #' \item `linear_interactions` -- linear interactions among the factors
@@ -103,7 +104,7 @@
 #' }
 #' @examples
 #' 
-#'example1 <- mood(K = 5, Klev = 3, Nruns = 40, criterion.choice = "GDP", 
+#'example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
 #'kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3, 
 #'Nstarts = 50, tau2 = 0.1, primary.model = "second_order",
 #' potential.model = NA, potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5"))
@@ -115,7 +116,8 @@
 #' potential.model = NA, potential.terms = c("x12", "x12x2", "x12x3"))
 #' example2
 #' 
-mood <- function(K = 3, Klev = 3, Levels, 
+mood <- function(K, 
+                 Levels, 
                  Nruns = 15, 
                  criterion.choice = "MSE.P", 
                  kappa.Ds = 0.0, kappa.DP = 1.0, 
@@ -138,8 +140,11 @@ mood <- function(K = 3, Klev = 3, Levels,
   
   warning.msg <- c()
   
-  if (!is.na(Klev) && (length(Klev) == 1)) {
-    Levels<-rep(list(1:Klev), K)   # Levels of each factor if all factors have the same number of levels
+# need some checks on inputs
+  Klev = NA
+  if (identical(length(Levels), as.integer(1))) {
+    Klev = Levels
+    Levels <- rep(list(1:Klev), K)   # Levels of each factor if all factors have the same number of levels
   } 
   
   if (any(is.na(primary.terms))){   # if primary terms are not specified explicitly
@@ -159,10 +164,12 @@ mood <- function(K = 3, Klev = 3, Levels,
     
     if (any(primary.model %in% c("first_order", "second_order", 
                                  "third_order", "cubic"))){
-      for (k in 1:(K-1)){  # interaction terms
-        for (j in (k+1):K) {
-          primary.terms <- c(primary.terms, 
-                            paste("x", as.character(k), "x", as.character(j), sep = ""))
+      if(K > 1) { 
+        for (k in 1:(K-1)){  # interaction terms
+          for (j in (k+1):K) {
+            primary.terms <- c(primary.terms, 
+                              paste("x", as.character(k), "x", as.character(j), sep = ""))
+          }
         }
       }
     }
@@ -196,6 +203,9 @@ mood <- function(K = 3, Klev = 3, Levels,
     }
   }
     
+  # primary terms always contains the intercept
+  primary.terms<- c("intercept", primary.terms)
+  
   if (any(is.na(potential.terms))) {  # if potential terms are not specified explicitly
     potential.terms <- c()
     if ("linear_interactions" %in% potential.model) {
@@ -322,15 +332,19 @@ mood <- function(K = 3, Klev = 3, Levels,
   
   # Criterion choice check
   
+ 
+  
   if (!(criterion.choice %in% c("GD", "GL", "GDP", "GLP", "MSE.D", "MSE.L", "MSE.P"))) {
     print ("Error: invalid criterion choice. Please choose any of the following: 
            GD, GL, GDP, GLP, MSE.D, MSE.L, MSE.P")
     return()
   }
-  
+ 
+ 
+   
   # Kappa-s check
-  if ((is.na(potential.terms) || is.null(potential.terms) || (length(potential.terms) == 0)) && 
-      (is.na(potential.model) || is.null(potential.model) || (length(potential.model) == 0))){
+  if ((any(is.na(potential.terms)) || is.null(potential.terms) || (length(potential.terms) == 0)) && 
+      (any(is.na(potential.model)) || is.null(potential.model) || (length(potential.model) == 0))){
     kappa.LoF <- 0; kappa.mse <- 0; kappa.bias <- 0
     warning.msg <- append(warning.msg,  "No potential terms have been specified. 
                                         Corresponding weights have been set to 0. 
@@ -364,15 +378,21 @@ mood <- function(K = 3, Klev = 3, Levels,
     print("Error: the sum of criteria weights kappa.DP, kappa.LoF and kappa.mse should be equal to 1")
     return()
   }
+  
+  
   if ((criterion.choice == "MSE.L") && ((kappa.LP + kappa.LoF + kappa.mse) != 1.0)) {
     print("Error: the sum of criteria weights kappa.LP, kappa.LoF and kappa.mse should be equal to 1")
     return()
   }
+
   
+    
   cat(warning.msg, sep = "\n") # print out warning messages
   
+  
   # create the output
-  out <- list("K" = K, "Klev" = Klev, 
+  out <- list("K" = K,
+              "Klev" = Klev,
               "Levels" = Levels, "Nruns" = Nruns, 
               "criterion.choice" = criterion.choice,
               "Nstarts" = Nstarts, "Biter" = Biter, "tau2" = tau2,

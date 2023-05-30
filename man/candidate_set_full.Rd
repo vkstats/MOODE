@@ -7,12 +7,14 @@
 candidate_set_full(cand.trt, K)
 }
 \arguments{
-\item{cand}{Candidate set of treatments, the first column contains treatment labels.
-Usually obtained as output from the "candidate_set" function.}
+\item{cand.trt}{Candidate set of treatments, the first column contains treatment labels.
+Usually obtained as output from the \link{candidate_trt_set} function.}
+
+\item{K}{Number of factors.}
 }
 \value{
-The full extended candidate set: the column of treatment labels, then named columns with polynomial terms up to the order of 3.
-For example, "x12" stands for $x_1^2$, and "x1x2 stands for $x_1x_2$, and "x23x4" -- for $x_2^3x_4$.
+The full extended candidate set: the column of treatment labels, then named columns with polynomial terms up to the 4th order.
+For example, "x12" stands for \eqn{x_1^2}, and "x1x2 stands for \eqn{x_1x_2}, and "x23x4" for \eqn{x_2^3x_4}.
 }
 \description{
 This function forms the full extended candidate set with all polynomial terms, with labels, not orthonormalised.
@@ -22,5 +24,5 @@ This function forms the full extended candidate set with all polynomial terms, w
 # Full extended candidate set for two 3-level factors
 
 K<-2; Levels <- rep(list(1:3),K);
-candidate_set_full(candidate_set(Levels, K), K)
+candidate_set_full(candidate_trt_set(Levels, K), K)
 }
