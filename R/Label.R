@@ -21,5 +21,6 @@ label<-function(treat_set, Levels, K)                  # treat_set is not scaled
       }
     }
   } else {Label<-seq(1:length(Levels[[1]]))}
+  
   return(matrix(Label,ncol=1))
 }
