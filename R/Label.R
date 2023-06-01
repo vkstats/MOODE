@@ -1,4 +1,5 @@
 #'Create a label
+#'@noRd
 label<-function(treat_set, Levels, K)                  # treat_set is not scaled to [-1,1]
 {
   if (K>1){

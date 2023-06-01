@@ -2,10 +2,10 @@
 #'
 #' This function evaluates the Generalised LPs-criterion for given primary and potential model matrices. 
 #' Components: Ls-, LPs-, LoF(LP)- and Bias(L)-optimality.
-#' The weights kappa.Ls, kappa.LP, kappa.LoF and kappa.bias are taken from the global environment.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
+#' @param search.object Object of class [mood()] specifying experiment parameters.
 #' @param eps Computational tolerance, the default value is 10^-23
 #'
 #' @return A list of values: indicator of whether the evaluation was successful ("eval"), Ls-criterion value -- intercept excluded ("Ls"),
@@ -13,24 +13,26 @@
 #' the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 #' @export
 #' @examples 
-#'#Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
-#'K <-1; P<-3; Q<-2; Levels <- list(1:5)
+#'#' # Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
+#' ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "GLP", 
+#'                kappa.Ls = .25, kappa.LoF = .25, kappa.bias = .25, kappa.LP = .25, 
+#'                tau2 = 1, primary.model = "second_order",
+#'                potential.terms = "x14")
 #' # Generating candidate sets: primary and full orthonormalised ones
-#'cand.primary <- candidate_set(Levels);
-#'cand.not.orth <-cbind(cand.primary[,-1], cand.primary[,3]^3, cand.primary[,4]^2)
-#'cand.full.orth <- cbind(cand.primary[,1], far::orthonormalization(cand.not.orth,basis=FALSE))
+#' K <- ex.mood$K
+#' Levels <- ex.mood$Levels 
+#' cand.not.orth <- candidate_set_full(candidate_trt_set(Levels, K), K)
+#' cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mood$potential.terms)
 #' # Choosing a design
-#'index <- c(rep(1,2),3,rep(4,2),rep(5,3)); Nruns<- length(index)
-#'X.primary <- cand.full.orth[index, 1:(P+1)]
-#'X.potential <- cand.full.orth[index, (c(1,(P+2):(P+Q+1)))]
-#' # Evaluating a compound GLP-criterion
-#'kappa.Ls = kappa.LP = kappa.LoF = kappa.bias = 0.25; tau2 <-1;
-#'alpha.LP = alpha.LoFL = 0.05;
-#'criteria.GLP(X1 = X.primary, X2 = X.potential)
-#' 
-#'Output: eval = 1, Ls = .5315, LP = 4.0969, LoF = 5.3727, bias = 1.4013, df = 4, compound = 2.0122
+#' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
+#' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
+#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' # Evaluating a compound GDP-criterion
+#' criteria.GLP(X1 = X.primary, X2 = X.potential, ex.mood)
+#'# Output: eval = 1, Ls = 0.2952603, LP = 4.584705, LoF = 3.895182, bias = 1.03807, df = 4, compound = 1.529564
 #'
-criteria.GLP<-function(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, Nruns, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+
+criteria.GLP<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LP<-0; LoF<-0; bias<-0;
   DF<-nlevels(as.factor(X1[,1]))
@@ -50,8 +52,9 @@ criteria.GLP<-function(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, 
   
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
+  # kept this form, using the *full* info matrix and dividing by the sum of squared intercept column (which could be orth.)
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
-  D<-prod(round(eigen(M, symmetric=TRUE, only.values=TRUE)$values,8))/Nruns
+  D<-prod(round(eigen(M, symmetric=TRUE, only.values=TRUE)$values,8)) / sum(X1[, 2]^2)
   if (D>eps)
   {
     Minv<-solve(M)
@@ -59,7 +62,11 @@ criteria.GLP<-function(X1, X2, P, Q, kappa.Ls, kappa.LP, kappa.LoF, kappa.bias, 
 
   if ((kappa.Ls>0)||(kappa.LP>0))
   {
-    Ls<-W%*%(diag(Minv)[-1])
+    # to remove intercept as nuisance parameter  
+    M0 <- search.object$Z0 %*% X1[, -c(1, 2)]
+    M0 <- crossprod(X1[, -c(1, 2)], M0)
+    M0inv <- solve(M0)
+    Ls<-W[, -1] %*% diag(M0inv)
   }
   if (kappa.LP>0)
   {

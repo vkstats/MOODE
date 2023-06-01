@@ -1,6 +1,6 @@
  # Co-ordinate exchange algorithm 
 
-coord.swap <- function(X1, X2, K, Levels, cand.trt, search.object) { 
+coord.swap <- function(X1, X2, K, Levels, search.object) { 
   
   Xcrit <- objfun(X1, X2, search.object) 
   Xcomp <- Xcrit$compound

@@ -69,7 +69,7 @@
 #' \itemize{
 #' \item Single factor powers,  are coded as a string starting with with "x" and followed by 
 #' the index of the factor and the power: `"x32"`. 
-#' For example, \eqn{$x_3^2$} is coded as `"x32"`; `"x22"` stands for \eqn{x_2^2}, and `"x4"` stands for the linear term \eqn{x_4}.
+#' For example, \eqn{x_3^2} is coded as `"x32"`; `"x22"` stands for \eqn{x_2^2}, and `"x4"` stands for the linear term \eqn{x_4}.
 #' \item Interaction of factors' powers are coded by merging the individual factors' 
 #' powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is coded as `"x1x22"`, 
 #' \eqn{x_3x_12x_4} -- as `"x12x3x4"`.
@@ -307,20 +307,22 @@ mood <- function(K,
   }
   
   P <- length(primary.terms) + 1    # number of the primary parameters, including intercept
-  Q <- length(potential.terms)      # number of the potential terms 
+#  P <- length(primary.terms)    # number of the primary parameters, including intercept
+  
+    Q <- length(potential.terms)      # number of the potential terms 
   
   Z0 <- diag(1, Nruns)-matrix(1/Nruns, nrow=Nruns, ncol=Nruns)   # for excluding the intercept
   tau<-tau2^0.5 
   
   # Weights on parameters for Ls/LP-criteria. 
   # Default: quadratic terms are assigned 1/4 of the weights on the rest of the parameters  
-  W<-matrix(1, nrow=1, ncol = P-1)  
+  W<-matrix(1, nrow=1, ncol = P-1)
   colnames(W) <- primary.terms
   quadratic.names <- c()
   for (k in 1:K){      # quadratic terms
     quadratic.names <- c(quadratic.names, paste("x", as.character(k), as.character(2), sep = ""))
   }
-  W[quadratic.names] <- 1./4
+  W[(colnames(W) %in% quadratic.names)] <- 1./4
   W <- matrix(W/sum(W), nrow=1)
   
   # Confidence levels
@@ -353,6 +355,7 @@ mood <- function(K,
   
   kappa.all <- c(kappa.Ds, kappa.Ls, kappa.DP, kappa.LP, 
                  kappa.LoF, kappa.bias, kappa.mse)
+  
   if ((any(kappa.all < 0)) || (any(kappa.all>1))) {
     print("Error: criteria weights should be between 0 and 1")
     return()

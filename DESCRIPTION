@@ -7,7 +7,8 @@ Maintainer: Vasiliki Koutra <vasiliki.koutra@kcl.ac.uk>
 Description: Multi-objective Optimal Design of Experiments (MOODE) for targeting the experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
 License: GPL-3
 Depends: R (>= 3.5.2) 
-Imports: far 
+Imports: far, progressr, cli
+Suggests: doFuture
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no

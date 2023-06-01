@@ -1,7 +1,6 @@
 #' Calculates the values of the Generalised Ds-criterion and its components
 #'
 #' This function evaluates the Generalised Ds-criterion (Goos et al., 2005) for given primary and potential model matrices.
-#' The weights kappa.Ds, kappa.LoF and kappa.bias are taken from the global environment.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
@@ -15,7 +14,7 @@
 #' @examples 
 #'#Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
 #'# setting up the example
-#'ex.mood <- mood(K = 1, Klev = 5, Nruns = 7, criterion.choice = "GDP", 
+#'ex.mood <- mood(K = 1, Levels = 5, Nruns = 7, criterion.choice = "GDP", 
 #'                kappa.Ds = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3, kappa.DP = 0, 
 #'                tau2 = 1, primary.model = "second_order",
 #'                potential.model = "cubic_terms")
@@ -49,7 +48,7 @@ criteria.GD<-function(X1, X2, search.object, eps = 1e-23)        # X1,X2 -   mat
   
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
-  # kept this form, using the *full* info matrix and dividing by the sum of sqaured intercept column (which could be orth.) 
+  # kept this form, using the *full* info matrix and dividing by the sum of squared intercept column (which could be orth.) 
   # to make the other criteria here work
   M<-crossprod(X1[,-1])
   D <- prod(round(eigen(M,symmetric=TRUE,only.values=TRUE)$values,8)) / sum(X1[, 2]^2)

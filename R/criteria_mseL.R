@@ -2,10 +2,10 @@
 #'
 #' This function evaluates the MSE LPs-criterion for given primary and potential model matrices. Candidate full model matrices do not have to be orthonormalised.
 #' Components: LPs-, LoF(LP)- and MSE(L)-optimality.
-#' The weights kappa.LP, kappa.LoF and kappa.mse, and other parameters (tau2, alpha-s) are taken from the global environment.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
+#' @param search.object Object of class [mood()] specifying experiment parameters.
 #' @param eps Computational tolerance, the default value is 10^-23
 #'
 #' @return A list of values: indicator of whether the evaluation was successful ("eval"), LPs-criterion value -- intercept excluded ("LP"),
@@ -13,23 +13,24 @@
 #' the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 #' @export
 #' @examples 
-#'# Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
-#' K<-1; P<-3; Q<-2;
-#'Levels <- list(1:5)   
-#'# Generating candidate sets: primary and full ones
-#'cand.primary <- candidate_set(Levels);
-#'cand.full <- cbind(cand.primary, cand.primary[,3]^3, cand.primary[,4]^2) #X^3 and X^4 potential terms
-#'# Choosing a design
-#'index <- c(rep(1,2),3,rep(4,2),rep(5,3)); Nruns<- length(index)
-#'Z0<-diag(1,Nruns)-matrix(1/Nruns,nrow=Nruns,ncol=Nruns)
-#'X.primary <- cand.full[index, 1:(P+1)]
-#'X.potential <- cand.full[index, (c(1,(P+2):(P+Q+1)))]
-#'# Evaluating a compound MSE(LP)-criterion
-#'kappa.LP = kappa.LoF = kappa.mse = 1./3; tau2 <-1; tau <- sqrt(tau2)
-#'alpha.LP = alpha.LoFL = 0.05;  
-#'criteria.mseL(X1 = X.primary, X2 = X.potential)
-#' # Output: eval = 1, LP = 2.3863, LoF = 7.1846, mse = 1.5994, df = 4, compound = 2.8047
-#' 
+#' #'# Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
+#' ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "MSE.L", 
+#'                kappa.LP = 1./3, kappa.LoF = 1./3, kappa.mse = 1./3, 
+#'                tau2 = 1, 
+#'                primary.model = "second_order", potential.terms = "x14")
+#' # Generating candidate sets: primary and full orthonormalised ones
+#' K <- ex.mood$K
+#' Levels <- ex.mood$Levels 
+#' cand.not.orth <- candidate_set_full(candidate_trt_set(Levels, K), K)
+#' cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mood$potential.terms)
+#' # Choosing a design
+#' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
+#' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
+#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' # Evaluating a compound GDP-criterion
+#' criteria.mseL(X.primary, X.potential, ex.mood)
+#' # Output: eval = 1, LP = 4.584705, LoF = 3.895182, mse = 0.3926842, df = 4, compound = 1.914084
+
 criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ls<-0; LP<-0; LoF<-0; mse<-0;
@@ -59,7 +60,7 @@ criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
 
   if ((kappa.Ls>0)||(kappa.LP>0))
   {
-    Ls<-W%*%(diag(Minv)[-1])                   # Ls
+    Ls<-W[, -1]%*%(diag(Minv)[-1])                   # Ls
   }
   if (kappa.LP>0)
   {

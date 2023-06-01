@@ -2,10 +2,10 @@
 #'
 #' This function evaluates the MSE DPs-criterion for given primary and potential model matrices. Candidate full model matrices do not have to be orthonormalised.
 #' Components: DPs-, LoF(DP)- and MSE(D)-optimality.
-#' The weights kappa.DP, kappa.LoF and kappa.mse, and other parameters (tau2, alpha-s) are taken from the global environment.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
+#' @param search.object Object of class [mood()] specifying experiment parameters.
 #' @param eps Computational tolerance, the default value is 10^-23
 #'
 #' @return A list of values: indicator of whether the evaluation was successful ("eval"), DPs-criterion value -- intercept excluded ("DP"),
@@ -14,23 +14,24 @@
 #' @export
 #' @examples 
 #'# Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
-#' K<-1; P<-3; Q<-2;
-#'Levels <- list(1:5)   
-#'# Generating candidate sets: primary and full ones
-#'cand.primary <- candidate_set(Levels);
-#'cand.full <- cbind(cand.primary, cand.primary[,3]^3, cand.primary[,4]^2) #X^3 and X^4 potential terms
-#'# Choosing a design
-#'index <- c(rep(1,2),3,rep(4,2),rep(5,3)); Nruns<- length(index)
-#'Z0<-diag(1,Nruns)-matrix(1/Nruns,nrow=Nruns,ncol=Nruns)
-#'X.primary <- cand.full[index, 1:(P+1)]
-#'X.potential <- cand.full[index, (c(1,(P+2):(P+Q+1)))]
-#'# Evaluating a compound MSE(DP)-criterion
-#'kappa.DP = kappa.LoF = kappa.mse = 1./3; tau2 <-1; tau <- sqrt(tau2)
-#'alpha.DP = alpha.LoF = 0.05; Biter <- 1000; 
-#'criteria.mseD(X1 = X.primary, X2 = X.potential)
-#' # Output: eval = 1, DP = 2.682, LoF = 6.455, mse = .8854, df = 4, compound = 2.4842
+#' ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "MSE.D", 
+#'                kappa.DP = 1./3, kappa.LoF = 1./3, kappa.mse = 1./3, 
+#'                tau2 = 1, Biter = 1000, 
+#'                primary.model = "second_order", potential.terms = "x14")
+#' # Generating candidate sets: primary and full orthonormalised ones
+#' K <- ex.mood$K
+#' Levels <- ex.mood$Levels 
+#' cand.not.orth <- candidate_set_full(candidate_trt_set(Levels, K), K)
+#' cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mood$potential.terms)
+#' # Choosing a design
+#' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
+#' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
+#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' # Evaluating a compound GDP-criterion
+#' criteria.mseD(X.primary, X.potential, ex.mood)
+#' # Output: eval = 1, DP = 4.538023, LoF = 3.895182, mse = 1.398032, df = 4, compound = 2.912754
 
-criteria.mseD<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
+criteria.mseD<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {
   Ds<-0; DP<-0; LoF<-0; mse<-0;
   DF<-nlevels(as.factor(X1[,1]))
@@ -52,8 +53,9 @@ criteria.mseD<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
   
   df<-Nruns-DF                                # df - pure error degrees of freedom
 
+  # kept this form, using the *full* info matrix and dividing by the sum of squared intercept column (which could be orth.)
   M<-crossprod(X1[,-1])                       # information matrix of primary terms
-  D<-prod(round(eigen(M,symmetric=TRUE,only.values=TRUE)$values,8)) 
+  D<-prod(round(eigen(M,symmetric=TRUE,only.values=TRUE)$values,8)) / sum(X1[, 2]^2)
   if (D>eps)
   {
     Minv<-solve(M)
@@ -62,7 +64,7 @@ criteria.mseD<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
   {
     if (D^(1.0/(P-1))>0)
     {
-      Ds<-(D/Nruns)^(-1.0/(P-1))
+      Ds<-D^(-1.0/(P-1))
     } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # Ds
   }
   if (kappa.DP>0)
@@ -97,7 +99,7 @@ criteria.mseD<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
       Tvalue<-Tvalue+log(1+Evalue)
     }
     MC<-Tvalue/Biter
-    mse<-(exp(MC)*Nruns/D)^(1./(P-1))                                 # MSE(Ds)
+    mse<-(exp(MC) / D)^(1./(P-1))                                 # MSE(Ds)
   }
   compound<-DP^kappa.DP*LoF^kappa.LoF*mse^kappa.mse
   list (eval=1, DP=DP, LoF=LoF, mse=mse, df=df, compound=compound)

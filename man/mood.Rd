@@ -154,7 +154,7 @@ Possible elements of the \code{potential.model} vector argument:
 \itemize{
 \item Single factor powers,  are coded as a string starting with with "x" and followed by
 the index of the factor and the power: \code{"x32"}.
-For example, \eqn{$x_3^2$} is coded as \code{"x32"}; \code{"x22"} stands for \eqn{x_2^2}, and \code{"x4"} stands for the linear term \eqn{x_4}.
+For example, \eqn{x_3^2} is coded as \code{"x32"}; \code{"x22"} stands for \eqn{x_2^2}, and \code{"x4"} stands for the linear term \eqn{x_4}.
 \item Interaction of factors' powers are coded by merging the individual factors'
 powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is coded as \code{"x1x22"},
 \eqn{x_3x_12x_4} -- as \code{"x12x3x4"}.

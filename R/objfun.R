@@ -1,10 +1,7 @@
 #' Evaluates the design based on a specific optimality criterion
 #'
-#' This function evaluates the design based on a specific optimality criterion.
-#' @param criterion.choice Criterion choice can be "GL", "GLP", "GD", "GDP", "MSE.L", "MSE.D", "MSE.P".
-#' @return A list...
-#' @export
-
+#' This function evaluates the design based on a specific optimality criterion and is called within search functions.
+#' @noRd
 
 objfun<-function(X1, X2, search.object){
   
