@@ -174,7 +174,7 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
     } else {
       crit_values <- rep(0, Nstarts)
       for (k in 1:Nstarts){
-        if(isTRUE(update.info)) p(message = sprintf("Current HH iteration: %i out of %i", k, Nstarts))
+        if(isTRUE(update.info)) p(message = sprintf("Current iteration: %i out of %i", k, Nstarts))
         
         initial <- initial.full(cand.full, Nruns, primary.terms, potential.terms)
         X1 <- initial$X1
