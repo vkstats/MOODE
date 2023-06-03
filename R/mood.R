@@ -8,33 +8,41 @@
 #' @param criterion.choice Compound criterion to be used for the optimal design search or evaluation. 
 #' Possible values are: 
 #' \itemize{
-#' \item "GL", "GD" for Generalised D- and L-optimality (Goos et al., 2005) 
-#' \item "GDP" and "GLP" for Generalised DP- and LP-optimality
-#' \item "MSE.D", "MSE.L" and "MSE.P" for compound criteria with MSE-component: determinant-based, trace-based and determinant-based but with point estimates for the MSE(D)-component
+#' \item `GL`, `GD` for Generalised D- and L-optimality (Goos et al., 2005) 
+#' \item `GDP` and `GLP` for Generalised DP- and LP-optimality (Trinca and Gilmour, 2012)
+#' \item `MSE.D`, `MSE.L` and `MSE.P` for compound criteria with MSE-component: determinant-based, trace-based and determinant-based but with point estimates for the MSE(D)-component
 #'}
-#' @param kappa.Ds Weight of the Ds-criterion; value must be between 0 and 1.
-#' @param kappa.DP Weight of the DP-criterion; value must be between 0 and 1.
-#' @param kappa.Ls Weight of the Ls-criterion; value must be between 0 and 1.
-#' @param kappa.LP Weight of the LP-criterion; value must be between 0 and 1.
-#' @param kappa.LoF Weight of the lack-of-fit component criterion; value must be between 0 and 1.
-#' @param kappa.bias Weight of the bias component criterion; value must be between 0 and 1.
-#' @param kappa.mse Weight of the MSE component criterion; value must be between 0 and 1.
-#' @param Nstarts The number of randomly generated start designs of the search algorithm.
-#' @param Cubic Indicator of whether the experimental region is cubic (`TRUE`) or spherical (`FALSE`).
-#' @param tau2 The variance scaling parameter for the prior distribution of the potential terms.
-#' @param Biter Number of samples for evaluating the MSE determinant-based component criterion.
-#' @param MC Indicator of the multiple comparison (Bonferroni) correction for trace-based criteria.
-#' @param prob.DP Confidence level for the DP-criterion.  
-#' @param prob.LP Confidence level for the LP-criterion; pre-Bonferroni correction.
-#' @param prob.LoF Confidence level for the Lack-of-fit criterion.
-#' @param primary.model The order of the fitted polynomial model. Alternatively polynomial terms can be directly specified through the `primary.terms` parameter, see Details.
-#' @param potential.model The order of the potential/extra polynomial terms. Alternatively can be specified through the `potential.terms` parameter, see Details.
-#' @param primary.terms Vector of the names of the primary terms, see Details.
-#' @param potential.terms Vector of the names of the potential terms, see Details.
-#' @param orth Indicator of whether to orthonormalise the potential and primary terms (`TRUE') or not (`FALSE').
-#' 
+#' @param kappa List specifying the weights used in the compound criterion. Each named entry must be between 0 and 1.
+#' \itemize{
+#' \item `kappa.Ds` Weight of the Ds-criterion (default = 1 if `criterion.choice = GD`)
+#' \item `kappa.DP` Weight of the DP-criterion (default = 1 if `criterion.choice = GDP`)
+#' \item `kappa.Ls` Weight of the Ls-criterion (default = 1 if `criterion.choice = GL`)
+#' \item `kappa.LP` Weight of the LP-criterion (default = 1 if `criterion.choice = GLP`)
+#' \item `kappa.LoF` Weight of the lack-of-fit criterion
+#' \item `kappa.bias` Weight of the bias criterion
+#' \item `kappa.mse` Weight of the MSE criterion (default = 1 if 'criterion.choice = MSE.*')
+#' }
+#' @param prob Named list specifying confidence levels for DP- (`prob.DP`), LP- (`prob.LP`) and Lack-of-fit (`prob.LoF`) criteria (pre-Bonferroni correction).
+#' All default to 0.95.
+#' @param control Named list specifying control parameters for the design search.
+#' \itemize{
+#' \item `Nstarts` The number of randomly generated start designs of the search algorithm (default = `10`).
+#' \item `Cubic` Indicator of whether the experimental region is cubic (`TRUE`, default) or spherical (`FALSE`).
+#' \item `tau2` The variance scaling parameter for the prior distribution of the potential terms (default = 1).
+#' \item `Biter` Number of samples for evaluating the MSE determinant-based component criterion (default = `50`).
+#' \item `MC` Indicator of whether to apply a multiple comparison (Bonferroni) correction for trace-based criteria (`TRUE`, default) or not (`FALSE`).
+#' \item `orth` Indicator of whether to orthonormalise the potential and primary terms (`TRUE', default) or not (`FALSE').
+#' }
+#' @param model_terms A list specifying the primary (fitted) and potential (biased) models with the following named elements (see Details).
+#' \itemize{
+#' \item `primary.model` The order of the fitted polynomial model. Alternatively polynomial terms can be directly specified through the `primary.terms` parameter.
+#' \item `potential.model` The order of the potential/extra polynomial terms. Alternatively can be specified through the `potential.terms` parameter.
+#' \item `primary.terms` Alternative specification of the primary model via character vector of the names of the primary terms.
+#' \item `potential.terms` Alternative specification of the potential model via character vector of the names of the potential terms.
+#'} 
 #' @export
-#' @details The function provides different ways of specifying the levels of the factors and the models.
+#' @details The function provides different ways of specifying the levels of the factors and the models. Although some default options are provided 
+#' for, e.g., `criterion.choice` and `kappa.*` values, specification of these input parameters should be carefully chosen to reflect the aims of the experiment and available prior information.
 #' 
 #' Specifying the factors and levels
 #' 
@@ -44,13 +52,13 @@
 #' 
 #' Specifying the fitted model and the potential terms
 #' 
-#' There are two ways to describe the primary and potential sets of model terms.
-#' `primary.model` and `potential.model` arguments can be used to specify the fitted model and the potential terms in a string from. 
-#' They are used to generate the sets of `primary.terms` and `potential.terms` which can be input directly. 
-#' Possible values of the `primary.model` argument are: 
+#' There are two ways to describe the primary and potential sets of model terms via the `model_terms` list.
+#' Named elements `primary.model` and `potential.model` can be used to specify the fitted model and the potential terms via a string form. 
+#' They are used to generate the sets of `primary.terms` and `potential.terms` which alternatively can be input directly. 
+#' Possible values of `primary.model` are: 
 #' \itemize{
-#' \item `main_effects` -- main effects for all the factors
-#' \item `first_order` -- main effects and linear interactions
+#' \item `main_effects` -- main effects for all the factors (default for all criteria)
+#' \item `first_order` -- main effects and linear interactions 
 #' \item `second_order` -- full second order polynomial 
 #' \item `third_order` -- full second order polynomial model and all interactions of degree 3
 #' \item `cubic` -- third order polynomial model with cubic terms 
@@ -59,7 +67,7 @@
 #'
 #' Possible elements of the `potential.model` vector argument:
 #' \itemize{ 
-#' \item `linear_interactions` -- linear interactions among the factors
+#' \item `linear_interactions` -- linear interactions among the factors (default for MSE criteria)
 #' \item `quadratic_terms` -- quadratic terms for all the factors
 #' \item `third_order_terms` --  all interactions of degree 3: linear-by-linear-by-linear and quadratic terms
 #' \item `cubic_terms` -- cubic terms for all the factors 
@@ -74,6 +82,7 @@
 #' powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is coded as `"x1x22"`, 
 #' \eqn{x_3x_12x_4} -- as `"x12x3x4"`.
 #' }
+#' 
 #' 
 #' 
 #' @return List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
@@ -105,40 +114,100 @@
 #' @examples
 #' 
 #'example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
-#'kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3, 
-#'Nstarts = 50, tau2 = 0.1, primary.model = "second_order",
-#' potential.model = NA, potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5"))
+#' kappa = list(kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3), 
+#' control = list(Nstarts = 50, tau2 = 0.1),
+#' model_terms = list(primary.model = "second_order", potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
 #'example1
 #'
-#'example2 <- mood(K = 3, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
-#'kappa.LP = 1./2, kappa.LoF = 1./4, kappa.mse = 1./4,
-#'Nstarts = 50, tau2 = 1, primary.terms = "first_order",
-#' potential.model = NA, potential.terms = c("x12", "x12x2", "x12x3"))
+#'example2 <- mood(K = 3, Nruns = 12, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
+#' kappa = list(kappa.LP = 1./2, kappa.LoF = 1./4, kappa.mse = 1./4),
+#' control = list(Nstarts = 50, tau2 = 1), 
+#' model_terms = list(primary.terms = "first_order",
+#' potential.terms = c("x12", "x12x2", "x12x3")))
 #' example2
 #' 
 mood <- function(K, 
                  Levels, 
-                 Nruns = 15, 
-                 criterion.choice = "MSE.P", 
-                 kappa.Ds = 0.0, kappa.DP = 1.0, 
-                 kappa.Ls = 0.0, kappa.LP = 0.0,
-                 kappa.LoF = 0.0, kappa.bias = 0.0, kappa.mse = 0.0,  
-                 Nstarts = 10,     # Number of random starts of the search
-                 Cubic = TRUE,     # Cubic experimental region (T) or spherical (F)
-                 tau2 = 1, 
-                 Biter=50,         # Number of MC iterations for the MSE criteria
-                 MC = TRUE,        # Bonferroni correction for multiple comparisons
-                 
-                 prob.DP = 0.95, prob.LP = 0.95, prob.LoF = 0.95, prob.LoFL = 0.95,
-                 
-                 primary.model = "first_order",
-                 potential.model = NA, 
-                 
-                 primary.terms = NA, potential.terms = NA,
-                 
-                 orth=FALSE){      # Orthonormalised terms 
+                 Nruns, 
+                 criterion.choice = c("GD", "GL", "GDP", "GLP", "MSE.D", "MSE.L", "MSE.P"),
+                 kappa = list(),
+                 control = list(),
+                 prob = list(),
+                 model_terms = list(primary.model = "first_order")){       
   
   warning.msg <- c()
+  
+  criterion.choice <- match.arg(criterion.choice)
+  
+  kappa_used <- list(kappa.Ds = 0, kappa.DP = 0, kappa.Ls = 0, kappa.LP = 0, kappa.LoF = 0, kappa.bias = 0, kappa.mse = 0)
+  kappa_used_name <- names(kappa_used)
+  model_used <- list(primary.model = NA, potential.model = NA, primary.terms = NA, potential.terms = NA)
+  model_used_name <- names(model_used)
+  
+  # set some defaults depending on criteria - ugly!
+  if(!length(kappa)) {
+    if(identical(criterion.choice, "GD")) kappa_used$kappa.Ds <- 1
+    if(identical(criterion.choice, "GL")) kappa_used$kappa.Ls <- 1
+    if(identical(criterion.choice, "GDP")) kappa_used$kappa.DP <- 1
+    if(identical(criterion.choice, "GLP")) kappa_used$kappa.LP <- 1
+    if(identical(criterion.choice, "MSE.D")) kappa_used$kappa.mse <- 1
+    if(identical(criterion.choice, "MSE.L")) kappa_used$kappa.mse <- 1
+    if(identical(criterion.choice, "MSE.P")) kappa_used$kappa.mse <- 1
+  }
+  
+  if(!length(model_terms)) {
+    model_used$primary.model <- "main_effects"
+    if(identical(criterion.choice, "MSE.D")) potential.model <- "linear_interactions"
+    if(identical(criterion.choice, "MSE.L")) potential.model <- "linear_interactions"
+    if(identical(criterion.choice, "MSE.P")) potential.model <- "linear_interactions"
+  }
+  
+  # check which kappa have been specified
+  kappa_used[kappa_name <- names(kappa)] <- kappa
+  if(length(noNms <- kappa_name[!kappa_name %in% kappa_used_name])) {
+    warning("unknown names in kappa: ", paste(noNms, collapse = ", "))
+    warning.msg <- append(warning.msg, paste("Warning: unknown names in kappa: ", paste(noNms, collapse = ", ")))
+  }
+  list2env(kappa_used, envir = environment())
+  
+  # checking which kappa have been specified, and setting others via defaults for criteria
+  kappa.names <- c("kappa.Ds", "kappa.DP", "kappa.Ls", "kappa.LP", "kappa.LoF", "kappa.bias", "kappa.mse")
+  kappa <- lapply(kappa.names, 
+                   \(x) {
+                     if(!(x %in% names(kappa))) kappa[[x]] <- 0 else kappa[[x]] <- kappa[[x]]
+                     }
+                   )
+  names(kappa) <- kappa.names
+  
+  # checking which confidence levels have been specified, and setting others to default
+  prob_used <- list(prob.DP = .95, prob.LP = .95, prob.LoF = .95, prob.LoFL = .95)
+  prob_used_name <- names(prob_used)
+  prob_used[(prob_name <- names(prob))] <- prob
+  if(length(noNms <- prob_name[!prob_name %in% prob_used_name])) {
+    warning("unknown names in prob: ", paste(noNms, collapse = ", "))
+    warning.msg <- append(warning.msg, paste("Warning: unknown names in prob: ", paste(noNms, collapse = ", ")))
+  }
+  list2env(prob_used, envir = environment())
+  
+  # checking model specification
+  model_used[model_name <- names(model_terms)] <- model_terms
+  if(length(noNms <- model_name[!model_name %in% model_used_name])) {
+    warning("unknown names in model_terms: ", paste(noNms, collapse = ", "))
+    warning.msg <- append(warning.msg, paste("Warning: unknown names in model_terms: ", paste(noNms, collapse = ", ")))
+  }
+  list2env(model_used, envir = environment())
+  
+  # checking the control parameters
+  control_used = list(tau2 = 1, orth = FALSE, Nstarts = 10, Biter = 50, Cubic = TRUE, MC = TRUE)
+  control_used_name <- names(control_used)
+  control_used[control_name <- names(control)] <- control
+  if(length(noNms <- control_name[!control_name %in% control_used_name])) {
+    warning("unknown names in control: ", paste(noNms, collapse = ", "))
+    warning.msg <- append(warning.msg, paste("Warning: unknown names in control: ", paste(noNms, collapse = ", ")))
+  }
+  list2env(control_used, envir = environment())
+  
+
   
 # need some checks on inputs
   Klev = NA
@@ -217,6 +286,7 @@ mood <- function(K,
           }
         }
       } else {
+        warning("No linear interactions can be added, too few factors.")
         warning.msg <- append(warning.msg, 
                               "Warning: no linear interactions can be added, too few factors.")
       }
@@ -238,6 +308,7 @@ mood <- function(K,
           }
         }
       } else {
+        warning("No third order terms can be added, too few factors.")
         warning.msg <- append(warning.msg, 
                               "Warning: no third order terms can be added, too few factors.")
         }
@@ -274,6 +345,7 @@ mood <- function(K,
           }
         }
       } else {
+        warning("No fourth order terms can be added, too few factors.")
         warning.msg <- append(warning.msg,
                               "Warning: no fourth order terms can be added, too few factors.")
         }
@@ -337,9 +409,8 @@ mood <- function(K,
  
   
   if (!(criterion.choice %in% c("GD", "GL", "GDP", "GLP", "MSE.D", "MSE.L", "MSE.P"))) {
-    print ("Error: invalid criterion choice. Please choose any of the following: 
+  stop("invalid criterion choice. Please choose any of the following: 
            GD, GL, GDP, GLP, MSE.D, MSE.L, MSE.P")
-    return()
   }
  
  
@@ -348,50 +419,40 @@ mood <- function(K,
   if ((any(is.na(potential.terms)) || is.null(potential.terms) || (length(potential.terms) == 0)) && 
       (any(is.na(potential.model)) || is.null(potential.model) || (length(potential.model) == 0))){
     kappa.LoF <- 0; kappa.mse <- 0; kappa.bias <- 0
-    warning.msg <- append(warning.msg,  "No potential terms have been specified. 
-                                        Corresponding weights have been set to 0. 
-                                        Please check the other weights.")
+    warning("No potential terms have been specified. Corresponding criteria weights (kappa.LoF; kappa.mse; kappa.bias) have been set to 0. 
+            Please check the other weights.")
+    warning.msg <- append(warning.msg,  
+                          "No potential terms have been specified. Corresponding criteria weights (kappa.LoF; kappa.mse; kappa.bias) have been set to 0. Please check the other weights.")
   }
   
+#  cat(warning.msg, sep = "\n\n") # print out warning messages
   kappa.all <- c(kappa.Ds, kappa.Ls, kappa.DP, kappa.LP, 
                  kappa.LoF, kappa.bias, kappa.mse)
   
   if ((any(kappa.all < 0)) || (any(kappa.all>1))) {
-    print("Error: criteria weights should be between 0 and 1")
-    return()
+    stop("criteria weights should be between 0 and 1")
   }
   
   if ((criterion.choice == "GD") && ((kappa.Ds + kappa.LoF + kappa.bias) != 1.0)) {
-    print("Error: the sum of criteria weights kappa.Ds, kappa.LoF and kappa.bias should be equal to 1")
-    return()
+    stop("the sum of criteria weights kappa.Ds, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice == "GL") && ((kappa.Ls + kappa.LoF + kappa.bias) != 1.0)) {
-    print("Error: the sum of criteria weights kappa.Ls, kappa.LoF and kappa.bias should be equal to 1")
-    return()
+    stop("the sum of criteria weights kappa.Ls, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice == "GDP") && ((kappa.Ds + kappa.DP +kappa.LoF + kappa.bias) != 1.0)) {
-    print("Error: the sum of criteria weights kappa.Ds, kappa.DP, kappa.LoF and kappa.bias should be equal to 1")
-    return()
+    stop("the sum of criteria weights kappa.Ds, kappa.DP, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice == "GLP") && ((kappa.Ls + kappa.LP +kappa.LoF + kappa.bias) != 1.0)) {
-    print("Error: the sum of criteria weights kappa.Ls, kappa.LP, kappa.LoF and kappa.bias should be equal to 1")
-    return()
+    stop("the sum of criteria weights kappa.Ls, kappa.LP, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice %in% c("MSE.D", "MSE.P")) && ((kappa.DP + kappa.LoF + kappa.mse) != 1.0)) {
-    print("Error: the sum of criteria weights kappa.DP, kappa.LoF and kappa.mse should be equal to 1")
-    return()
+    stop("the sum of criteria weights kappa.DP, kappa.LoF and kappa.mse should be equal to 1")
   }
   
   
   if ((criterion.choice == "MSE.L") && ((kappa.LP + kappa.LoF + kappa.mse) != 1.0)) {
-    print("Error: the sum of criteria weights kappa.LP, kappa.LoF and kappa.mse should be equal to 1")
-    return()
+    stop("the sum of criteria weights kappa.LP, kappa.LoF and kappa.mse should be equal to 1")
   }
-
-  
-    
-  cat(warning.msg, sep = "\n") # print out warning messages
-  
   
   # create the output
   out <- list("K" = K,
@@ -413,7 +474,7 @@ mood <- function(K,
               "kappa.LoF" = kappa.LoF, "kappa.bias" = kappa.bias, "kappa.mse" = kappa.mse,
               "warning messages" = warning.msg)
   
-  class(out) <- append(class(out), "settings")
+  class(out) <- append("settings", class(out))
   #  return(attach(out, warn.conflicts = F)) ## remember, this also basically does "print(out)"
   return(out) 
 }

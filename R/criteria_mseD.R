@@ -14,10 +14,11 @@
 #' @export
 #' @examples 
 #'# Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
+#'set.seed(20210930)
 #' ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "MSE.D", 
-#'                kappa.DP = 1./3, kappa.LoF = 1./3, kappa.mse = 1./3, 
-#'                tau2 = 1, Biter = 1000, 
-#'                primary.model = "second_order", potential.terms = "x14")
+#'                kappa = list(kappa.DP = 1./3, kappa.LoF = 1./3, kappa.mse = 1./3), 
+#'                control = list(Biter = 1000), 
+#'                model_terms = list(primary.model = "second_order", potential.terms = "x14"))
 #' # Generating candidate sets: primary and full orthonormalised ones
 #' K <- ex.mood$K
 #' Levels <- ex.mood$Levels 
@@ -29,7 +30,7 @@
 #' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #' # Evaluating a compound GDP-criterion
 #' criteria.mseD(X.primary, X.potential, ex.mood)
-#' # Output: eval = 1, DP = 4.538023, LoF = 3.895182, mse = 1.398032, df = 4, compound = 2.912754
+#' # Output: eval = 1, DP = 4.538023, LoF = 3.895182, mse = 0.6986903, df = 4, compound = 2.310728
 
 criteria.mseD<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
 {

@@ -7,29 +7,12 @@
 mood(
   K,
   Levels,
-  Nruns = 15,
-  criterion.choice = "MSE.P",
-  kappa.Ds = 0,
-  kappa.DP = 1,
-  kappa.Ls = 0,
-  kappa.LP = 0,
-  kappa.LoF = 0,
-  kappa.bias = 0,
-  kappa.mse = 0,
-  Nstarts = 10,
-  Cubic = TRUE,
-  tau2 = 1,
-  Biter = 50,
-  MC = TRUE,
-  prob.DP = 0.95,
-  prob.LP = 0.95,
-  prob.LoF = 0.95,
-  prob.LoFL = 0.95,
-  primary.model = "first_order",
-  potential.model = NA,
-  primary.terms = NA,
-  potential.terms = NA,
-  orth = FALSE
+  Nruns,
+  criterion.choice = c("GD", "GL", "GDP", "GLP", "MSE.D", "MSE.L", "MSE.P"),
+  kappa = list(),
+  control = list(),
+  prob = list(),
+  model_terms = list(primary.model = "first_order")
 )
 }
 \arguments{
@@ -42,50 +25,42 @@ mood(
 \item{criterion.choice}{Compound criterion to be used for the optimal design search or evaluation.
 Possible values are:
 \itemize{
-\item "GL", "GD" for Generalised D- and L-optimality (Goos et al., 2005)
-\item "GDP" and "GLP" for Generalised DP- and LP-optimality
-\item "MSE.D", "MSE.L" and "MSE.P" for compound criteria with MSE-component: determinant-based, trace-based and determinant-based but with point estimates for the MSE(D)-component
+\item \code{GL}, \code{GD} for Generalised D- and L-optimality (Goos et al., 2005)
+\item \code{GDP} and \code{GLP} for Generalised DP- and LP-optimality (Trinca and Gilmour, 2012)
+\item \code{MSE.D}, \code{MSE.L} and \code{MSE.P} for compound criteria with MSE-component: determinant-based, trace-based and determinant-based but with point estimates for the MSE(D)-component
 }}
 
-\item{kappa.Ds}{Weight of the Ds-criterion; value must be between 0 and 1.}
+\item{kappa}{List specifying the weights used in the compound criterion. Each named entry must be between 0 and 1.
+\itemize{
+\item \code{kappa.Ds} Weight of the Ds-criterion (default = 1 if \code{criterion.choice = GD})
+\item \code{kappa.DP} Weight of the DP-criterion (default = 1 if \code{criterion.choice = GDP})
+\item \code{kappa.Ls} Weight of the Ls-criterion (default = 1 if \code{criterion.choice = GL})
+\item \code{kappa.LP} Weight of the LP-criterion (default = 1 if \code{criterion.choice = GLP})
+\item \code{kappa.LoF} Weight of the lack-of-fit criterion
+\item \code{kappa.bias} Weight of the bias criterion
+\item \code{kappa.mse} Weight of the MSE criterion (default = 1 if 'criterion.choice = MSE.*')
+}}
 
-\item{kappa.DP}{Weight of the DP-criterion; value must be between 0 and 1.}
+\item{control}{Named list specifying control parameters for the design search.
+\itemize{
+\item \code{Nstarts} The number of randomly generated start designs of the search algorithm (default = \code{10}).
+\item \code{Cubic} Indicator of whether the experimental region is cubic (\code{TRUE}, default) or spherical (\code{FALSE}).
+\item \code{tau2} The variance scaling parameter for the prior distribution of the potential terms (default = 1).
+\item \code{Biter} Number of samples for evaluating the MSE determinant-based component criterion (default = \code{50}).
+\item \code{MC} Indicator of whether to apply a multiple comparison (Bonferroni) correction for trace-based criteria (\code{TRUE}, default) or not (\code{FALSE}).
+\item \code{orth} Indicator of whether to orthonormalise the potential and primary terms (\verb{TRUE', default) or not (}FALSE').
+}}
 
-\item{kappa.Ls}{Weight of the Ls-criterion; value must be between 0 and 1.}
+\item{prob}{Named list specifying confidence levels for DP- (\code{prob.DP}), LP- (\code{prob.LP}) and Lack-of-fit (\code{prob.LoF}) criteria (pre-Bonferroni correction).
+All default to 0.95.}
 
-\item{kappa.LP}{Weight of the LP-criterion; value must be between 0 and 1.}
-
-\item{kappa.LoF}{Weight of the lack-of-fit component criterion; value must be between 0 and 1.}
-
-\item{kappa.bias}{Weight of the bias component criterion; value must be between 0 and 1.}
-
-\item{kappa.mse}{Weight of the MSE component criterion; value must be between 0 and 1.}
-
-\item{Nstarts}{The number of randomly generated start designs of the search algorithm.}
-
-\item{Cubic}{Indicator of whether the experimental region is cubic (\code{TRUE}) or spherical (\code{FALSE}).}
-
-\item{tau2}{The variance scaling parameter for the prior distribution of the potential terms.}
-
-\item{Biter}{Number of samples for evaluating the MSE determinant-based component criterion.}
-
-\item{MC}{Indicator of the multiple comparison (Bonferroni) correction for trace-based criteria.}
-
-\item{prob.DP}{Confidence level for the DP-criterion.}
-
-\item{prob.LP}{Confidence level for the LP-criterion; pre-Bonferroni correction.}
-
-\item{prob.LoF}{Confidence level for the Lack-of-fit criterion.}
-
-\item{primary.model}{The order of the fitted polynomial model. Alternatively polynomial terms can be directly specified through the \code{primary.terms} parameter, see Details.}
-
-\item{potential.model}{The order of the potential/extra polynomial terms. Alternatively can be specified through the \code{potential.terms} parameter, see Details.}
-
-\item{primary.terms}{Vector of the names of the primary terms, see Details.}
-
-\item{potential.terms}{Vector of the names of the potential terms, see Details.}
-
-\item{orth}{Indicator of whether to orthonormalise the potential and primary terms (\verb{TRUE') or not (}FALSE').}
+\item{model_terms}{A list specifying the primary (fitted) and potential (biased) models with the following named elements (see Details).
+\itemize{
+\item \code{primary.model} The order of the fitted polynomial model. Alternatively polynomial terms can be directly specified through the \code{primary.terms} parameter.
+\item \code{potential.model} The order of the potential/extra polynomial terms. Alternatively can be specified through the \code{potential.terms} parameter.
+\item \code{primary.terms} Alternative specification of the primary model via character vector of the names of the primary terms.
+\item \code{potential.terms} Alternative specification of the potential model via character vector of the names of the potential terms.
+}}
 }
 \value{
 List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
@@ -119,7 +94,8 @@ Creates an object containing the parameters of the experiment, compound optimali
 weights and parameters of the search.
 }
 \details{
-The function provides different ways of specifying the levels of the factors and the models.
+The function provides different ways of specifying the levels of the factors and the models. Although some default options are provided
+for, e.g., \code{criterion.choice} and \verb{kappa.*} values, specification of these input parameters should be carefully chosen to reflect the aims of the experiment and available prior information.
 
 Specifying the factors and levels
 
@@ -129,12 +105,12 @@ Otherwise, \code{Levels} is set to be a list of vectors containing the values of
 
 Specifying the fitted model and the potential terms
 
-There are two ways to describe the primary and potential sets of model terms.
-\code{primary.model} and \code{potential.model} arguments can be used to specify the fitted model and the potential terms in a string from.
-They are used to generate the sets of \code{primary.terms} and \code{potential.terms} which can be input directly.
-Possible values of the \code{primary.model} argument are:
+There are two ways to describe the primary and potential sets of model terms via the \code{model_terms} list.
+Named elements \code{primary.model} and \code{potential.model} can be used to specify the fitted model and the potential terms via a string form.
+They are used to generate the sets of \code{primary.terms} and \code{potential.terms} which alternatively can be input directly.
+Possible values of \code{primary.model} are:
 \itemize{
-\item \code{main_effects} -- main effects for all the factors
+\item \code{main_effects} -- main effects for all the factors (default for all criteria)
 \item \code{first_order} -- main effects and linear interactions
 \item \code{second_order} -- full second order polynomial
 \item \code{third_order} -- full second order polynomial model and all interactions of degree 3
@@ -144,7 +120,7 @@ The intercept is always included as a primary term.
 
 Possible elements of the \code{potential.model} vector argument:
 \itemize{
-\item \code{linear_interactions} -- linear interactions among the factors
+\item \code{linear_interactions} -- linear interactions among the factors (default for MSE criteria)
 \item \code{quadratic_terms} -- quadratic terms for all the factors
 \item \code{third_order_terms} --  all interactions of degree 3: linear-by-linear-by-linear and quadratic terms
 \item \code{cubic_terms} -- cubic terms for all the factors
@@ -163,15 +139,16 @@ powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is c
 \examples{
 
 example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
-kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3, 
-Nstarts = 50, tau2 = 0.1, primary.model = "second_order",
-potential.model = NA, potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5"))
+kappa = list(kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3), 
+control = list(Nstarts = 50, tau2 = 0.1),
+model_terms = list(primary.model = "second_order", potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
 example1
 
-example2 <- mood(K = 3, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
-kappa.LP = 1./2, kappa.LoF = 1./4, kappa.mse = 1./4,
-Nstarts = 50, tau2 = 1, primary.terms = "first_order",
-potential.model = NA, potential.terms = c("x12", "x12x2", "x12x3"))
+example2 <- mood(K = 3, Nruns = 12, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
+kappa = list(kappa.LP = 1./2, kappa.LoF = 1./4, kappa.mse = 1./4),
+control = list(Nstarts = 50, tau2 = 1), 
+model_terms = list(primary.terms = "first_order",
+potential.terms = c("x12", "x12x2", "x12x3")))
 example2
 
 }

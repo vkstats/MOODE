@@ -27,9 +27,8 @@ Components: Ls-, LPs-, LoF(LP)- and Bias(L)-optimality.
 \examples{
 #' # Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
 ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "GLP", 
-               kappa.Ls = .25, kappa.LoF = .25, kappa.bias = .25, kappa.LP = .25, 
-               tau2 = 1, primary.model = "second_order",
-               potential.terms = "x14")
+               kappa = list(kappa.Ls = .25, kappa.LoF = .25, kappa.bias = .25, kappa.LP = .25), 
+               model_terms = list(primary.model = "second_order", potential.terms = "x14"))
 # Generating candidate sets: primary and full orthonormalised ones
 K <- ex.mood$K
 Levels <- ex.mood$Levels 

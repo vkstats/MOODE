@@ -1,4 +1,4 @@
-print.settings <- function(object) {
+print.settings <- function(object, ...) {
   cat("Number of factors:", object$K, "\n", "\n")
   cat("Number of levels:", object$Klev, "\n", "\n")
   cat("Number of runs of the experiment:", object$Nruns, "\n", "\n")

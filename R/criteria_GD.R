@@ -15,9 +15,8 @@
 #'#Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
 #'# setting up the example
 #'ex.mood <- mood(K = 1, Levels = 5, Nruns = 7, criterion.choice = "GDP", 
-#'                kappa.Ds = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3, kappa.DP = 0, 
-#'                tau2 = 1, primary.model = "second_order",
-#'                potential.model = "cubic_terms")
+#'                kappa = list(kappa.Ds = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3), 
+#'                model_terms = list(primary.model = "second_order", potential.model = "cubic_terms"))
 #'# Generating candidate set: orthonormalised
 #'K <- ex.mood$K
 #'Levels <- ex.mood$Levels 

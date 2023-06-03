@@ -15,9 +15,8 @@
 #' @examples 
 #' # Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
 #' ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "GDP", 
-#'                kappa.Ds = .25, kappa.LoF = .25, kappa.bias = .25, kappa.DP = .25, 
-#'                tau2 = 1, primary.model = "second_order",
-#'                potential.terms = "x14")
+#'                kappa = list(kappa.Ds = .25, kappa.LoF = .25, kappa.bias = .25, kappa.DP = .25), 
+#'                model_terms = list(primary.model = "second_order", potential.terms = "x14"))
 #' # Generating candidate sets: primary and full orthonormalised ones
 #' K <- ex.mood$K
 #' Levels <- ex.mood$Levels 
@@ -30,7 +29,7 @@
 #' # Evaluating a compound GDP-criterion
 #' criteria.GDP(X1 = X.primary, X2 = X.potential, ex.mood)
 #' 
-#' # Output: eval = 1, Ds = 1.177281, DP = 7.759911, LoF = 3.895182, bias = 1.03807, df = 4, compound = 2.465318
+#' # Output: eval = 1, Ds = 0.6884783, DP = 4.4538023, LoF = 3.895182, bias = 1.03807, df = 4, compound = 2.465318
 #'
 
 criteria.GDP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
