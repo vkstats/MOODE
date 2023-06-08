@@ -142,6 +142,13 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
   progressr::with_progress({
     p <- progressr::progressor(along = kx)
   
+    if(isTRUE(parallel) & !requireNamespace("doFuture", quietly = TRUE)) {
+      warning(
+        "Package \"doFuture\" required for parallel computing, running in squential mode."
+        )
+      parallel <- FALSE
+    }
+    
     if(isTRUE(parallel)) {
       designs <- foreach::foreach(k = kx, .options.future = list(seed = TRUE)) %dofuture% {
         if(isTRUE(update.info)) p(message = sprintf("Current iteration: %i out of %i", k, Nstarts))
