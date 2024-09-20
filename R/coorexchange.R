@@ -17,7 +17,7 @@ coord.swap <- function(X1, X2, K, Levels, search.object) {
   
   all.terms = c(primary.terms, potential.terms)
   # all linear terms, i.e. factor levels to be swapped
-  treatments = all.terms[sapply(all.terms, function(x) (nchar(x) == 2))]   
+  treatments = all.terms[sapply(all.terms, function(x) (nchar(x) < 4))]   
   
   d <- X1[, c("label", treatments)] # swapping just the linear terms
   dc <- d

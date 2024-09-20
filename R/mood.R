@@ -446,7 +446,7 @@ mood <- function(K,
     stop("the sum of criteria weights kappa.Ls, kappa.LP, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice %in% c("MSE.D", "MSE.P")) && ((kappa.DP + kappa.LoF + kappa.mse) != 1.0)) {
-    stop("the sum of criteria weights kappa.DP, kappa.LoF and kappa.mse should be equal to 1")
+    stop(paste("Sum = ", kappa.DP + kappa.LoF + kappa.mse, ": the sum of criteria weights kappa.DP, kappa.LoF and kappa.mse should be equal to 1"))
   }
   
   
