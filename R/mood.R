@@ -378,10 +378,10 @@ mood <- function(K,
     }
   }
   
-  P <- length(primary.terms) + 1    # number of the primary parameters, including intercept
-#  P <- length(primary.terms)    # number of the primary parameters, including intercept
+  #P <- length(primary.terms) + 1    # number of the primary parameters, including intercept
+  P <- length(primary.terms)    # number of the primary parameters, including intercept
   
-    Q <- length(potential.terms)      # number of the potential terms 
+  Q <- length(potential.terms)      # number of the potential terms 
   
   Z0 <- diag(1, Nruns)-matrix(1/Nruns, nrow=Nruns, ncol=Nruns)   # for excluding the intercept
   tau<-tau2^0.5 
