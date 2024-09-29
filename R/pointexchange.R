@@ -1,4 +1,19 @@
 ### Swapping treatments
+#' Swapping points between the current design and candidate set 
+#' @description Performing point-exchange algorithm, extensive swap of points procedure between the current design 
+#' and candidate set.
+#' 
+#' @param X1 Current fitted (primary) model matrix
+#' @param X2 Current potential terms matrix
+#' @param cand.full Full candidate matrix
+#' @param search.object Object for the search
+#' 
+#' @details \code{point.swap} is called within the \code{Search} function
+#' 
+#' 
+#' @return 
+#' @examples
+#' 
 point.swap<-function(X1, X2, cand.full, search.object) {
   
   Xcrit<-objfun(X1, X2, search.object)  
