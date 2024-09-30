@@ -388,7 +388,7 @@ mood <- function(K,
   
   # Weights on parameters for Ls/LP-criteria. 
   # Default: quadratic terms are assigned 1/4 of the weights on the rest of the parameters  
-  W<-matrix(1, nrow=1, ncol = P-1)
+  W<-matrix(1, nrow=1, ncol = P)
   colnames(W) <- primary.terms
   quadratic.names <- c()
   for (k in 1:K){      # quadratic terms
