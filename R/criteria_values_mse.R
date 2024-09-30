@@ -30,7 +30,7 @@ criteria.values.mse<-function(search.obj, mood.obj, eps=10^-20, Biter=1000)     
   df<- search.obj$df                     # df - pure error degrees of freedom
   
   P <- mood.obj$P; Q <- mood.obj$Q
-  tau <- mood.obj$tau
+  tau <- mood.obj$tau; tau2 <- mood.obj$tau2
   Nruns <- mood.obj$Nruns
   
   alpha.DP <- mood.obj$alpha.DP
@@ -38,6 +38,7 @@ criteria.values.mse<-function(search.obj, mood.obj, eps=10^-20, Biter=1000)     
   alpha.LoF <- mood.obj$alpha.LoF
   alpha.LoFL <- mood.obj$alpha.LoFL
   Z0 <- mood.obj$Z0
+  W <- mood.obj$W
 
   M<-crossprod(X1[,-1])                  # information matrix of primary terms
   D<-prod(round(eigen(M, symmetric=TRUE, only.values=TRUE)$values,8))
