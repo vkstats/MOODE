@@ -387,15 +387,17 @@ mood <- function(K,
   tau<-tau2^0.5 
   
   # Weights on parameters for Ls/LP-criteria. 
-  # Default: quadratic terms are assigned 1/4 of the weights on the rest of the parameters  
+  # Default: for cubic region -- quadratic terms are assigned 1/4 of the weights on the rest of the parameters  
   W<-matrix(1, nrow=1, ncol = P)
   colnames(W) <- primary.terms
-  quadratic.names <- c()
-  for (k in 1:K){      # quadratic terms
-    quadratic.names <- c(quadratic.names, paste("x", as.character(k), as.character(2), sep = ""))
+  if (Cubic) {
+    quadratic.names <- c()
+    for (k in 1:K){      # quadratic terms
+      quadratic.names <- c(quadratic.names, paste("x", as.character(k), as.character(2), sep = ""))
+    }
+    W[(colnames(W) %in% quadratic.names)] <- 1./4
   }
-  W[(colnames(W) %in% quadratic.names)] <- 1./4
-  W <- matrix(W/sum(W), nrow=1)
+  W <- matrix(W/sum(W), nrow=1)  
   
   # Confidence levels
   prob.LP<-ifelse(MC, prob.LP^(1./(P-1)), prob.LP)            # Corrections for multiple comparisons             
@@ -406,15 +408,12 @@ mood <- function(K,
   
   # Criterion choice check
   
- 
-  
   if (!(criterion.choice %in% c("GD", "GL", "GDP", "GLP", "MSE.D", "MSE.L", "MSE.P"))) {
   stop("invalid criterion choice. Please choose any of the following: 
            GD, GL, GDP, GLP, MSE.D, MSE.L, MSE.P")
   }
  
  
-   
   # Kappa-s check
   if ((any(is.na(potential.terms)) || is.null(potential.terms) || (length(potential.terms) == 0)) && 
       (any(is.na(potential.model)) || is.null(potential.model) || (length(potential.model) == 0))){
