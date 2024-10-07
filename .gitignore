@@ -5,6 +5,7 @@ script.R
 test_examples_script.R
 design_evaluation.R
 output_mse.R
+output_G.R
 .Rhistory
 .Rproj.user
 .DS_Store
