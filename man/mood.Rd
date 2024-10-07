@@ -122,7 +122,7 @@ Possible elements of the \code{potential.model} vector argument:
 \itemize{
 \item \code{linear_interactions} -- linear interactions among the factors (default for MSE criteria)
 \item \code{quadratic_terms} -- quadratic terms for all the factors
-\item \code{third_order_terms} --  all interactions of degree 3: linear-by-linear-by-linear and quadratic terms
+\item \code{third_order_terms} --  all interactions of degree 3: linear-by-linear-by-linear and quadratic-by-linear terms
 \item \code{cubic_terms} -- cubic terms for all the factors
 \item \code{fourth_order_terms} -- all interactions of degree 4, similar to \code{third_order_terms}
 }
