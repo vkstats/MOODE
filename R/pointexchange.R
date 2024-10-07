@@ -11,8 +11,8 @@
 #' @details \code{point.swap} is called within the \code{Search} function
 #' 
 #' 
-#' @return 
-#' @examples
+#' @return A list of model matrices, criteria values and 
+#' whether the search needs to continue
 #' 
 point.swap<-function(X1, X2, cand.full, search.object) {
   
