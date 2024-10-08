@@ -21,6 +21,7 @@
 #' \item `LoFLP` LoF(LP)-criterion value from the GLP-criterion
 #' \item `biasL` bias(L)-criterion value from the GL-criterion
 #' }
+#' @export
 
 criteria.values.G<-function(search.obj, mood.obj, eps=10^-23)             
 {

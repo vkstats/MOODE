@@ -21,6 +21,7 @@
 #' \item `LoFLP` LoF(LP)-criterion value
 #' \item `mseL` mse(L)-criterion value
 #' }
+#' @export
 
 criteria.values.mse<-function(search.obj, mood.obj, eps=10^-20, Biter=1000)      # X1,X2 - not orthonormalised matrices
 {
