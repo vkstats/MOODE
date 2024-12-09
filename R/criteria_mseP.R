@@ -83,7 +83,8 @@ criteria.mseP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
   {
     if (df>0)
     {
-      L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
+       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
+       
       LoF<-(det(L0))^(-1.0/Q)*qf(1-alpha.LoF,Q,df)
     } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
