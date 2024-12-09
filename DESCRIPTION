@@ -1,7 +1,7 @@
 Package: MOODE
 Type: Package
 Title: Multi-objective optimal design of experiments
-Version: 0.1.0
+Version: 0.2.0
 Author: Olga Egorova, Vasiliki Koutra, Steven Gilmour, Luzia Trinca
 Maintainer: Vasiliki Koutra <vasiliki.koutra@kcl.ac.uk>
 Description: Multi-objective Optimal Design of Experiments (MOODE) for targeting the experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
