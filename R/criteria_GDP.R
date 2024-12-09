@@ -25,11 +25,13 @@
 #' # Choosing a design
 #' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
 #' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' X.potential <- cand.full.orth[index, 
+#' (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #' # Evaluating a compound GDP-criterion
 #' criteria.GDP(X1 = X.primary, X2 = X.potential, ex.mood)
 #' 
-#' # Output: eval = 1, Ds = 0.6884783, DP = 4.4538023, LoF = 3.895182, bias = 1.03807, df = 4, compound = 2.465318
+#' # Output: eval = 1, Ds = 0.6884783, DP = 4.4538023, LoF = 3.895182, 
+#' # bias = 1.03807, df = 4, compound = 2.465318
 #'
 
 criteria.GDP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
@@ -75,7 +77,7 @@ criteria.GDP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matri
   {
     if (df>0)
     {
-      DP<-Ds*qf(1-alpha.DP,P-1,df)
+      DP<-Ds * stats::qf(1-alpha.DP,P-1,df)
     } else {return (list (eval=0, Ds=0, DP=0, LoF=0, bias=0, df=df, compound=10^6));} # df=0
   }
 
@@ -89,7 +91,7 @@ criteria.GDP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matri
     if (df>0)
     {
       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
-      LoF<-(det(L0))^(-1.0/Q)*qf(1-alpha.LoF,Q,df)
+      LoF<-(det(L0))^(-1.0/Q) * stats::qf(1-alpha.LoF,Q,df)
     } else {return (list (eval=0, Ds=0, DP=0, LoF=0, bias=0, df=df, compound=10^6));} # df=0
   }
   if (kappa.bias>0)

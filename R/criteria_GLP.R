@@ -25,10 +25,12 @@
 #' # Choosing a design
 #' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
 #' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' X.potential <- cand.full.orth[index, 
+#' (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #' # Evaluating a compound GDP-criterion
 #' criteria.GLP(X1 = X.primary, X2 = X.potential, ex.mood)
-#'# Output: eval = 1, Ls = 0.2952603, LP = 4.584705, LoF = 3.895182, bias = 1.03807, df = 4, compound = 1.529564
+#'# Output: eval = 1, Ls = 0.2952603, LP = 4.584705, LoF = 3.895182, 
+#'# bias = 1.03807, df = 4, compound = 1.529564
 #'
 
 criteria.GLP<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
@@ -71,7 +73,7 @@ criteria.GLP<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- matr
   {
     if (df>0)
     {
-      LP<-Ls*qf(1-alpha.LP,1,df)
+      LP <- Ls * stats::qf(1-alpha.LP,1,df)
     } else {return (list (eval=0, Ls=Ls, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
   }
   if (((kappa.LoF>0) && (df>0))||(kappa.bias>0))  # check for A calculation
@@ -85,7 +87,7 @@ criteria.GLP<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- matr
     {
       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)         # dispersion matrix + Iq/tau2
       L0.inv.trace<-Re(sum(1./eigen(L0,only.values=TRUE)$values))    # trace of the inverse matrix
-      LoF<-L0.inv.trace*qf(1-alpha.LoFL,1,df)/Q
+      LoF<-L0.inv.trace * stats::qf(1-alpha.LoFL,1,df)/Q
     } else {return (list (Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
   }
   if (kappa.bias>0)

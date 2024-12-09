@@ -25,7 +25,8 @@
 #' # Choosing a design
 #' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
 #' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' X.potential <- cand.full.orth[index, 
+#' (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #' # Evaluating a compound GDP-criterion
 #' criteria.mseL(X.primary, X.potential, ex.mood)
 #' # Output: eval = 1, LP = 4.584705, LoF = 3.895182, mse = 0.3926842, df = 4, compound = 1.914084
@@ -65,7 +66,7 @@ criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
   {
     if (df>0)
     {
-      LP<-Ls*qf(1-alpha.LP,1,df)              # LPs
+      LP<-Ls * stats::qf(1-alpha.LP,1,df)              # LPs
     } else {return (list (eval=0, LP=0, LoF=0, mse=0, df=df, compound=10^6));}
   }
   if (((kappa.LoF>0) && (df>0))||(kappa.mse>0))         # check for A calculation
@@ -79,7 +80,7 @@ criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
     {
       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)            # dispersion matrix + Iq/tau2
       L0.inv.trace<-Re(sum(1./eigen(L0,only.values=TRUE)$values))       # trace of the inverse matrix
-      LoF<-L0.inv.trace*qf(1-alpha.LoFL,1,df)/Q
+      LoF<-L0.inv.trace * stats::qf(1-alpha.LoFL,1,df)/Q
     } else {return (list (eval=0, LP=0, LoF=0, mse=0, df=df, compound=10^6));}
   }
   if (kappa.mse>0)

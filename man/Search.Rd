@@ -54,7 +54,8 @@ Search_point
 # Using coordinate exchange (the default for K>4)
 Search_coord <- Search(example1)
 Search_coord
-# Using doFuture and foreach to perform the Nstarts = 10 random starts of the search algorithm in parallel
+# Using doFuture and foreach to perform the Nstarts = 10 random starts 
+# of the search algorithm in parallel
 library(doFuture)
 plan(multisession)
 Search_coord_p <- Search(example1, parallel = TRUE)

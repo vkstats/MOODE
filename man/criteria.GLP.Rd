@@ -37,9 +37,11 @@ cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mo
 # Choosing a design
 index <- c(rep(1,2),3,rep(4,2),rep(5,3))
 X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+X.potential <- cand.full.orth[index, 
+(c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 # Evaluating a compound GDP-criterion
 criteria.GLP(X1 = X.primary, X2 = X.potential, ex.mood)
-# Output: eval = 1, Ls = 0.2952603, LP = 4.584705, LoF = 3.895182, bias = 1.03807, df = 4, compound = 1.529564
+# Output: eval = 1, Ls = 0.2952603, LP = 4.584705, LoF = 3.895182, 
+# bias = 1.03807, df = 4, compound = 1.529564
 
 }

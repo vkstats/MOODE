@@ -27,7 +27,8 @@
 #' # Choosing a design
 #' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
 #' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' X.potential <- cand.full.orth[index, 
+#' (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #' # Evaluating a compound GDP-criterion
 #' criteria.mseD(X.primary, X.potential, ex.mood)
 #' # Output: eval = 1, DP = 4.538023, LoF = 3.895182, mse = 0.6986903, df = 4, compound = 2.310728
@@ -72,7 +73,7 @@ criteria.mseD<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- mat
   {
     if (df>0)
     {
-      DP<-Ds*qf(1-alpha.DP,P-1,df)             # DPs
+      DP <- Ds * stats::qf(1-alpha.DP,P-1,df)             # DPs
     } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
   if (((kappa.LoF>0) && (df>0))||(kappa.mse>0))  # check for A calculation
@@ -85,7 +86,7 @@ criteria.mseD<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- mat
     if (df>0)
     {
       L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
-      LoF<-(det(L0))^(-1.0/Q)*qf(1-alpha.LoF,Q,df) #Ds
+      LoF<-(det(L0))^(-1.0/Q) * stats::qf(1-alpha.LoF,Q,df) #Ds
     } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
   if (kappa.mse>0)
@@ -94,7 +95,7 @@ criteria.mseD<-function(X1, X2, search.object, eps = 1e-23)      # X1, X2 -- mat
     M120<-t(X1[,-c(1,2)])%*%Z0%*%X2[,-1]
     for (j in 1:Biter)                                         # MC estimation of the second part of the MSE(D)-component
     {
-      beta2<-rnorm(Q,mean=0,sd=tau)
+      beta2 <- stats::rnorm(Q,mean=0,sd=tau)
       M12b<-M120%*%beta2
       Evalue<-t(M12b)%*%(Minv[-1,-1])%*%M12b
       Tvalue<-Tvalue+log(1+Evalue)

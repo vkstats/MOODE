@@ -25,7 +25,8 @@
 #' # Choosing a design
 #' index <- c(rep(1,2),3,rep(4,2),rep(5,3))
 #' X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-#' X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+#' X.potential <- cand.full.orth[index, 
+#' (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #' # Evaluating a compound GDP-criterion
 #' criteria.mseP(X.primary, X.potential, ex.mood)
 #' # Output: eval = 1, DP = 4.538023, LoF = 3.895182, mse = 0.6992699, df = 4, compound = 2.312135
@@ -70,7 +71,7 @@ criteria.mseP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
   {
     if (df>0)
     {
-      DP<-Ds*qf(1-alpha.DP,P-1,df)
+      DP <- Ds * stats::qf(1-alpha.DP,P-1,df)
     } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
 
@@ -85,7 +86,7 @@ criteria.mseP<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
     {
        L0<-crossprod(X2[,-1])-t(M12)%*%A+diag(1./tau2,nrow=Q)
        
-      LoF<-(det(L0))^(-1.0/Q)*qf(1-alpha.LoF,Q,df)
+      LoF<-(det(L0))^(-1.0/Q) * stats::qf(1-alpha.LoF,Q,df)
     } else {return (list (eval=0, DP=0, LoF=0, mse=0, df=df, compound=10^6));} # if df=0
   }
   if (kappa.mse>0)

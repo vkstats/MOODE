@@ -141,7 +141,8 @@ powers, ordered by the factors' indexes. For example, \eqn{x_2^2\times x_1} is c
 example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
 kappa = list(kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3), 
 control = list(Nstarts = 50, tau2 = 0.1),
-model_terms = list(primary.model = "second_order", potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
+model_terms = list(primary.model = "second_order", 
+potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
 example1
 
 example2 <- mood(K = 3, Nruns = 12, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",

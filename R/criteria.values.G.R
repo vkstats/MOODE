@@ -66,11 +66,11 @@ criteria.values.G<-function(search.obj, mood.obj, eps=10^-23)
 
   if (df>0)
   {
-    DP<-Ds*qf(1-alpha.DP, P-1, df)                               # DP component
-    LP<-Ls*qf(1-alpha.LP, 1, df)                                 # LP component
-    LoFDP<-LoFD*qf(1-alpha.LoF, Q, df)                           # LoF (DP)
+    DP<-Ds * stats::qf(1-alpha.DP, P-1, df)                               # DP component
+    LP<-Ls * stats::qf(1-alpha.LP, 1, df)                                 # LP component
+    LoFDP<-LoFD * stats::qf(1-alpha.LoF, Q, df)                           # LoF (DP)
     L0.inv.trace<-sum(1./eigen(L0, only.values=TRUE)$values)
-    LoFLP<-L0.inv.trace*qf(1-alpha.LoFL, 1, df)/Q                 # LoF (LP)
+    LoFLP<-L0.inv.trace * stats::qf(1-alpha.LoFL, 1, df)/Q                 # LoF (LP)
   } else {DP<-0;LoFDP<0; LoFLP<-0}
 
   list (df = df, 

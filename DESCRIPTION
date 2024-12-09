@@ -8,9 +8,9 @@ Description: Multi-objective Optimal Design of Experiments (MOODE) for targeting
 License: GPL-3
 Depends: R (>= 3.5.2) 
 Imports: far, progressr, cli
-Suggests: doFuture
+Suggests: doFuture, foreach
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 NeedsCompilation: no
 Packaged: 2021-07-19 16:43:03 UTC; vallia
 Roxygen: list(markdown = TRUE)

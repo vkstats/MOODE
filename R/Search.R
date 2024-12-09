@@ -36,7 +36,8 @@
 #' # Using coordinate exchange (the default for K>4)
 #'Search_coord <- Search(example1)
 #'Search_coord
-#' # Using doFuture and foreach to perform the Nstarts = 10 random starts of the search algorithm in parallel
+#' # Using doFuture and foreach to perform the Nstarts = 10 random starts 
+#' # of the search algorithm in parallel
 #' library(doFuture)
 #' plan(multisession)
 #' Search_coord_p <- Search(example1, parallel = TRUE)
@@ -49,7 +50,9 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
   K <- mood.object$K
   if(K > 4 && length(algorithm) > 1 && !mood.object$orth) {
     algorithm <- "coordex"
-    warning("For K > 4, algorithm is set to coordinate exchange (\"coordex\") for performance.", immediate. = TRUE)
+    cli::cli_warn(c("Changed algorithm to coordinate exchange", 
+                   "!" = "For K > 4, algorithm is set to coordinate exchange (\"coordex\") for performance."), 
+                 immediate. = TRUE)
   } else {
     algorithm <- match.arg(algorithm)
   }
@@ -150,6 +153,7 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
     }
     
     if(isTRUE(parallel)) {
+      `%dofuture%` <- doFuture::`%dofuture%`
       designs <- foreach::foreach(k = kx, .options.future = list(seed = TRUE)) %dofuture% {
         if(isTRUE(update.info)) p(message = sprintf("Current iteration: %i out of %i", k, Nstarts))
       

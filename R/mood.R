@@ -116,7 +116,8 @@
 #'example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
 #' kappa = list(kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3), 
 #' control = list(Nstarts = 50, tau2 = 0.1),
-#' model_terms = list(primary.model = "second_order", potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
+#' model_terms = list(primary.model = "second_order", 
+#' potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
 #'example1
 #'
 #'example2 <- mood(K = 3, Nruns = 12, Levels = list(1:3, 1:2, 1:2), criterion.choice = "MSE.L",
@@ -136,6 +137,13 @@ mood <- function(K,
                  model_terms = list(primary.model = "first_order")){       
   
   warning.msg <- c()
+  
+  ## binding variables that will later be set via list2env
+  prob.DP <- prob.LP <- prob.LoF <- prob.LoFL <- NULL
+  primary.model <- primary.terms <- potential.model <- potential.terms <- NULL
+  tau2 <- orth <- Nstarts <- Biter <- Cubic <- MC <- NULL
+  kappa.Ds <- kappa.Ls <- kappa.DP <- kappa.LP <- kappa.LoF <- kappa.mse <- kappa.bias <- NULL
+  
   
   criterion.choice <- match.arg(criterion.choice)
   
@@ -157,15 +165,15 @@ mood <- function(K,
   
   if(!length(model_terms)) {
     model_used$primary.model <- "main_effects"
-    if(identical(criterion.choice, "MSE.D")) potential.model <- "linear_interactions"
-    if(identical(criterion.choice, "MSE.L")) potential.model <- "linear_interactions"
-    if(identical(criterion.choice, "MSE.P")) potential.model <- "linear_interactions"
+    if(identical(criterion.choice, "MSE.D")) model_used$potential.model <- "linear_interactions"
+    if(identical(criterion.choice, "MSE.L")) model_used$potential.model <- "linear_interactions"
+    if(identical(criterion.choice, "MSE.P")) model_used$potential.model <- "linear_interactions"
   }
   
   # check which kappa have been specified
   kappa_used[kappa_name <- names(kappa)] <- kappa
   if(length(noNms <- kappa_name[!kappa_name %in% kappa_used_name])) {
-    warning("unknown names in kappa: ", paste(noNms, collapse = ", "))
+    cli::cli_warn("unknown names in kappa: ", paste(noNms, collapse = ", "))
     warning.msg <- append(warning.msg, paste("Warning: unknown names in kappa: ", paste(noNms, collapse = ", ")))
   }
   list2env(kappa_used, envir = environment())
@@ -184,7 +192,7 @@ mood <- function(K,
   prob_used_name <- names(prob_used)
   prob_used[(prob_name <- names(prob))] <- prob
   if(length(noNms <- prob_name[!prob_name %in% prob_used_name])) {
-    warning("unknown names in prob: ", paste(noNms, collapse = ", "))
+    cli::cli_warn("unknown names in prob: ", paste(noNms, collapse = ", "))
     warning.msg <- append(warning.msg, paste("Warning: unknown names in prob: ", paste(noNms, collapse = ", ")))
   }
   list2env(prob_used, envir = environment())
@@ -192,7 +200,7 @@ mood <- function(K,
   # checking model specification
   model_used[model_name <- names(model_terms)] <- model_terms
   if(length(noNms <- model_name[!model_name %in% model_used_name])) {
-    warning("unknown names in model_terms: ", paste(noNms, collapse = ", "))
+    cli::cli_warn("unknown names in model_terms: ", paste(noNms, collapse = ", "))
     warning.msg <- append(warning.msg, paste("Warning: unknown names in model_terms: ", paste(noNms, collapse = ", ")))
   }
   list2env(model_used, envir = environment())
@@ -202,12 +210,10 @@ mood <- function(K,
   control_used_name <- names(control_used)
   control_used[control_name <- names(control)] <- control
   if(length(noNms <- control_name[!control_name %in% control_used_name])) {
-    warning("unknown names in control: ", paste(noNms, collapse = ", "))
+    cli::cli_warn("unknown names in control: ", paste(noNms, collapse = ", "))
     warning.msg <- append(warning.msg, paste("Warning: unknown names in control: ", paste(noNms, collapse = ", ")))
   }
   list2env(control_used, envir = environment())
-  
-
   
 # need some checks on inputs
   Klev = NA
@@ -286,7 +292,7 @@ mood <- function(K,
           }
         }
       } else {
-        warning("No linear interactions can be added, too few factors.")
+        cli::cli_warn("No linear interactions can be added, too few factors.")
         warning.msg <- append(warning.msg, 
                               "Warning: no linear interactions can be added, too few factors.")
       }
@@ -308,7 +314,7 @@ mood <- function(K,
           }
         }
       } else {
-        warning("No third order terms can be added, too few factors.")
+        cli::cli_warn("No third order terms can be added, too few factors.")
         warning.msg <- append(warning.msg, 
                               "Warning: no third order terms can be added, too few factors.")
         }
@@ -345,7 +351,7 @@ mood <- function(K,
           }
         }
       } else {
-        warning("No fourth order terms can be added, too few factors.")
+        cli::cli_warn("No fourth order terms can be added, too few factors.")
         warning.msg <- append(warning.msg,
                               "Warning: no fourth order terms can be added, too few factors.")
         }
@@ -418,7 +424,7 @@ mood <- function(K,
   if ((any(is.na(potential.terms)) || is.null(potential.terms) || (length(potential.terms) == 0)) && 
       (any(is.na(potential.model)) || is.null(potential.model) || (length(potential.model) == 0))){
     kappa.LoF <- 0; kappa.mse <- 0; kappa.bias <- 0
-    warning("No potential terms have been specified. Corresponding criteria weights (kappa.LoF; kappa.mse; kappa.bias) have been set to 0. 
+    cli::cli_warn("No potential terms have been specified. Corresponding criteria weights (kappa.LoF; kappa.mse; kappa.bias) have been set to 0. 
             Please check the other weights.")
     warning.msg <- append(warning.msg,  
                           "No potential terms have been specified. Corresponding criteria weights (kappa.LoF; kappa.mse; kappa.bias) have been set to 0. Please check the other weights.")

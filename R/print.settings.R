@@ -1,12 +1,16 @@
-print.settings <- function(object, ...) {
-  cat("Number of factors:", object$K, "\n", "\n")
-  cat("Number of levels:", object$Klev, "\n", "\n")
-  cat("Number of runs of the experiment:", object$Nruns, "\n", "\n")
-  cat("Number of random starts of the search:", object$Nstarts , "\n", "\n")
-  cat("Number of MC iterations for the MSE criteria:", object$Biter, "\n", "\n")
-  cat("Criterion choice: GL or GLP or GD or GDP or MSE.L or MSE.D or MSE.P:", object$criterion.choice, "\n", "\n")
-  cat("Scaling parameter of the prior variance, squared:", object$tau2, "\n", "\n")
-  cat("Weight for DP:", object$kappa.DP, "\n", "\n")
-  cat("Weight for loF:", object$kappa.LoF, "\n", "\n")
-  cat("Weight for MSE:", object$kappa.mse, "\n", "\n")
+#' S3 print method
+#' @param x mood object
+#' @param ... further arguments passed to or from other methods
+#' @export
+print.settings <- function(x, ...) {
+  cat("Number of factors:", x$K, "\n", "\n")
+  cat("Number of levels:", x$Klev, "\n", "\n")
+  cat("Number of runs of the experiment:", x$Nruns, "\n", "\n")
+  cat("Number of random starts of the search:", x$Nstarts , "\n", "\n")
+  cat("Number of MC iterations for the MSE criteria:", x$Biter, "\n", "\n")
+  cat("Criterion choice: GL or GLP or GD or GDP or MSE.L or MSE.D or MSE.P:", x$criterion.choice, "\n", "\n")
+  cat("Scaling parameter of the prior variance, squared:", x$tau2, "\n", "\n")
+  cat("Weight for DP:", x$kappa.DP, "\n", "\n")
+  cat("Weight for loF:", x$kappa.LoF, "\n", "\n")
+  cat("Weight for MSE:", x$kappa.mse, "\n", "\n")
   }

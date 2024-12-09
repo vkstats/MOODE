@@ -37,7 +37,8 @@ cand.full.orth <- candidate_set_orth(cand.not.orth, ex.mood$primary.terms, ex.mo
 # Choosing a design
 index <- c(rep(1, 2), 3, 4, rep(5, 3))
 X.primary <- cand.full.orth[index, c(1, match(ex.mood$primary.terms, colnames(cand.full.orth)))]
-X.potential <- cand.full.orth[index, (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
+X.potential <- cand.full.orth[index, 
+(c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 # Evaluating a compound GD-criterion
 criteria.GD(X1 = X.primary, X2 = X.potential, ex.mood)
 # Output: eval = 1, Ds = 0.7334291, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.9202307

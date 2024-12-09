@@ -62,11 +62,11 @@ criteria.values.mse<-function(search.obj, mood.obj, eps=10^-20, Biter=1000)     
 
   if (df>0)
   {
-    DP<-Ds*qf(1-alpha.DP,P-1,df)                               # DPs component
-    LP<-Ls*qf(1-alpha.LP, 1, df)                                 # LPs component
-    LoFDP<-LoFD*qf(1-alpha.LoF, Q, df)                           # LoF (DP)
+    DP<-Ds * stats::qf(1-alpha.DP,P-1,df)                               # DPs component
+    LP<-Ls * stats::qf(1-alpha.LP, 1, df)                                 # LPs component
+    LoFDP<-LoFD * stats::qf(1-alpha.LoF, Q, df)                           # LoF (DP)
     L0.inv.trace<-sum(1./eigen(L0, only.values=TRUE)$values)
-    LoFLP<-L0.inv.trace*qf(1-alpha.LoFL, 1, df)/Q                # LoF (LP)
+    LoFLP<-L0.inv.trace * stats::qf(1-alpha.LoFL, 1, df)/Q                # LoF (LP)
   } else {DP<-0;LoFDP<0; LoFLP<-0}
 
   mseL<-sum(diag(Minv+tau2*tcrossprod(A))[-1])/(P-1)                   # MSE(Ls)
@@ -75,7 +75,7 @@ criteria.values.mse<-function(search.obj, mood.obj, eps=10^-20, Biter=1000)     
   M120<-t(X1[,-c(1,2)])%*%Z0%*%X2[,-1]
   for (j in 1:Biter)                              # random beta-s, MC for the expectation
   {
-    beta2<-rnorm(Q,mean=0,sd=tau)
+    beta2 <- stats::rnorm(Q,mean=0,sd=tau)
     M12b<-M120%*%beta2
     Evalue<-t(M12b)%*%(Minv[-1,-1])%*%M12b
     Tvalue<-Tvalue+log(1+Evalue)
