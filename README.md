@@ -21,9 +21,9 @@ As a basic example, consider an experiment with `K=2` factors, each
 having `Levels = 3` levels. The primary (assumed) model contains
 first-order terms, and the potential model also contains squared terms.
 The experiment will have `Nruns = 24` runs. An optimal compound design
-will be sought combining $DP_S$-, $LoF$-$D$- and $MSE(D)$-optimality;
-see Egorova (2017, PhD Thesis). We define the parameters for this
-expriment using the `mood` function.
+will be sought combining $DP_S$-, $LoF-D$- and $MSE(D)$-optimality; see
+[Egorova and Gilmour](https://arxiv.org/pdf/2208.05366). We define the
+parameters for this expriment using the `mood` function.
 
 ``` r
 library("MOODE")
@@ -56,18 +56,18 @@ cbind(fd[1:12, ], fd[13:24, ])
 ```
 
           x1 x2 x1 x2
-     [1,] -1 -1  0  1
+     [1,] -1 -1  0  0
      [2,] -1 -1  0  1
-     [3,] -1 -1  1 -1
+     [3,] -1 -1  0  1
      [4,] -1 -1  1 -1
      [5,] -1  0  1 -1
      [6,] -1  0  1 -1
      [7,] -1  1  1  0
      [8,] -1  1  1  0
      [9,] -1  1  1  1
-    [10,]  0 -1  1  1
+    [10,] -1  1  1  1
     [11,]  0 -1  1  1
-    [12,]  0  0  1  1
+    [12,]  0 -1  1  1
 
 The `path` element records the compound objective function value from
 each of the (by default) 10 attempts of the algorithm from different
@@ -77,5 +77,5 @@ random starting designs.
 search.ex$path
 ```
 
-     [1] 0.1979960 0.1971942 0.1979960 0.1971696 0.1971662 0.1990148 0.1971457
-     [8] 0.1979960 0.1971299 0.1971564
+     [1] 0.1979960 0.1971360 0.1979960 0.1974816 0.1971280 0.1971744 0.1979960
+     [8] 0.1979960 0.1979960 0.1972309
