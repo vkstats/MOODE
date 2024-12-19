@@ -2,7 +2,7 @@
 % Please edit documentation in R/criteria_GLP.R
 \name{criteria.GLP}
 \alias{criteria.GLP}
-\title{Calculates the values of the Generalised LPs-criterion and its components}
+\title{Calculates the values of the Generalised LP-criterion and its components}
 \usage{
 criteria.GLP(X1, X2, search.object, eps = 1e-23)
 }
@@ -16,18 +16,18 @@ criteria.GLP(X1, X2, search.object, eps = 1e-23)
 \item{eps}{Computational tolerance, the default value is 10^-23}
 }
 \value{
-A list of values: indicator of whether the evaluation was successful ("eval"), Ls-criterion value -- intercept excluded ("Ls"),
-LPs-criterion value -- intercept excluded ("LPs"), Lack-of-fit(LP) criterion value ("LoF"), the bias component value ("bias"),
+A list of values: indicator of whether the evaluation was successful ("eval"), Ls-criterion value -- intercept excluded ("L"),
+LP-criterion value -- intercept excluded ("LP"), Lack-of-fit(LP) criterion value ("LoF"), the bias component value ("bias"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{
-This function evaluates the Generalised LPs-criterion for given primary and potential model matrices.
-Components: Ls-, LPs-, LoF(LP)- and Bias(L)-optimality.
+This function evaluates the Generalised LP-criterion for given primary and potential model matrices.
+Components: L-, LP-, LoF(LP)- and Bias(L)-optimality.
 }
 \examples{
 #' # Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.
 ex.mood <- mood(K = 1, Levels = 5, Nruns = 8, criterion.choice = "GLP", 
-               kappa = list(kappa.Ls = .25, kappa.LoF = .25, kappa.bias = .25, kappa.LP = .25), 
+               kappa = list(kappa.L = .25, kappa.LoF = .25, kappa.bias = .25, kappa.LP = .25), 
                model_terms = list(primary.model = "second_order", potential.terms = "x14"))
 # Generating candidate sets: primary and full orthonormalised ones
 K <- ex.mood$K
@@ -41,7 +41,7 @@ X.potential <- cand.full.orth[index,
 (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 # Evaluating a compound GDP-criterion
 criteria.GLP(X1 = X.primary, X2 = X.potential, ex.mood)
-# Output: eval = 1, Ls = 0.2952603, LP = 4.584705, LoF = 3.895182, 
+# Output: eval = 1, L = 0.2952603, LP = 4.584705, LoF = 3.895182, 
 # bias = 1.03807, df = 4, compound = 1.529564
 
 }

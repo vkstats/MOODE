@@ -1,6 +1,6 @@
-#' Calculates the values of the Generalised Ls-criterion and its components
+#' Calculates the values of the Generalised L-criterion and its components
 #'
-#' This function evaluates the Generalised Ls-criterion (Goos et al., 2005) for given primary and potential model matrices.
+#' This function evaluates the Generalised L-criterion \insertCite{Goos2005model}{MOODE} for given primary and potential model matrices.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
@@ -11,11 +11,13 @@
 #' Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the number of pure error degrees of freedom ("df") 
 #' and the value of the compound criterion ("compound").
 #' @export
+#' @references 
+#'    \insertAllCited
 #' @examples 
 #'#Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
 #'# setting up the example
 #'ex.mood <- mood(K = 1, Levels = 5, Nruns = 7, criterion.choice = "GL", 
-#'                kappa = list(kappa.Ls = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3), 
+#'                kappa = list(kappa.L = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3), 
 #'                model_terms = list(primary.model = "second_order", potential.model = "cubic_terms"))
 #'# Generating candidate set: orthonormalised
 #'K <- ex.mood$K
@@ -29,7 +31,7 @@
 #'(c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 #'# Evaluating a compound GD-criterion
 #'criteria.GL(X1 = X.primary, X2 = X.potential, ex.mood)
-#' # Output: eval = 1, Ls = 0.3118626, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.6919878
+#' # Output: eval = 1, L = 0.3118626, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.6919878
 #'
 
 criteria.GL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matrices of primary and potential terms, both with labels
@@ -42,7 +44,7 @@ criteria.GL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matric
   tau2<-search.object$tau2
   W<-search.object$W
   
-  kappa.Ls<-search.object$kappa.Ls
+  kappa.L<-search.object$kappa.L
   kappa.LoF<-search.object$kappa.LoF
   kappa.bias<-search.object$kappa.bias
   
@@ -56,7 +58,7 @@ criteria.GL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matric
     Minv<-solve(M)
   } else {return (list (eval=0, Ls=0, LP=0, LoF=0, bias=0, df=df, compound=10^6));}
 
-  if (kappa.Ls>0)
+  if (kappa.L>0)
   {
     # to remove intercept as nuisance parameter  
     M0 <- search.object$Z0 %*% X1[, -c(1, 2)]
@@ -81,6 +83,6 @@ criteria.GL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matric
     bias<-sum(diag(A0))/Q                                        # (averaged) trace of the A'A+Iq
   }
 
-  compound<-Ls^kappa.Ls*LoF^kappa.LoF*bias^kappa.bias
-  list (eval=1, Ls=Ls, LoF=LoF, bias=bias, df=df, compound=compound)
+  compound<-Ls^kappa.L*LoF^kappa.LoF*bias^kappa.bias
+  list (eval=1, L=Ls, LoF=LoF, bias=bias, df=df, compound=compound)
 }

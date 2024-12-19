@@ -1,4 +1,4 @@
-#' Forms the full candidate set of treatments polynomial terms
+#' Forms the full candidate set of treatments for all polynomial terms
 #'
 #' This function forms the full extended candidate set with all polynomial terms, with labels, not orthonormalised.
 #' @param cand.trt Candidate set of treatments, the first column contains treatment labels. 

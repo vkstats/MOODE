@@ -16,8 +16,8 @@
 #' \item `LoFDP` LoF(DP)-criterion value
 #' \item `mseD` mse(D)-criterion value, obtained via MC sampling
 #' \item `mseP` mse(D)-criterion value, obtained using point prior 
-#' \item `Ls` Ls-criterion value, intercept excluded
-#' \item `LP` LPs-criterion value, intercept excluded
+#' \item `L` L-criterion value, intercept excluded
+#' \item `LP` LP-criterion value, intercept excluded
 #' \item `LoFLP` LoF(LP)-criterion value
 #' \item `mseL` mse(L)-criterion value
 #' }
@@ -89,5 +89,5 @@ criteria.values.mse<-function(search.obj, mood.obj, eps=10^-20, Biter=1000)     
   mseP <- (Tvalue*Nruns/D)^(1./(P-1))                         # MSE(D)_s_point
 
   list (df = df, Ds=Ds, DP=DP, LoFDP=LoFDP, mseD=mseD, mseP=mseP, 
-        Ls=Ls, LP=LP, LoFLP=LoFLP,mseL = mseL)
+        L=Ls, LP=LP, LoFLP=LoFLP,mseL = mseL)
 }

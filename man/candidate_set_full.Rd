@@ -2,7 +2,7 @@
 % Please edit documentation in R/candidate_set_full.R
 \name{candidate_set_full}
 \alias{candidate_set_full}
-\title{Forms the full candidate set of treatments polynomial terms}
+\title{Forms the full candidate set of treatments for all polynomial terms}
 \usage{
 candidate_set_full(cand.trt, K)
 }

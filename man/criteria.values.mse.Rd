@@ -24,8 +24,8 @@ List of the calculated values:
 \item \code{LoFDP} LoF(DP)-criterion value
 \item \code{mseD} mse(D)-criterion value, obtained via MC sampling
 \item \code{mseP} mse(D)-criterion value, obtained using point prior
-\item \code{Ls} Ls-criterion value, intercept excluded
-\item \code{LP} LPs-criterion value, intercept excluded
+\item \code{L} L-criterion value, intercept excluded
+\item \code{LP} LP-criterion value, intercept excluded
 \item \code{LoFLP} LoF(LP)-criterion value
 \item \code{mseL} mse(L)-criterion value
 }

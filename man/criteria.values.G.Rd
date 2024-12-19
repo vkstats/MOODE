@@ -2,7 +2,7 @@
 % Please edit documentation in R/criteria.values.G.R
 \name{criteria.values.G}
 \alias{criteria.values.G}
-\title{Evaluating individual criteria of the designs, from the Generalized compound criteria (Goos et al., 2005), (Egorova, 2017)}
+\title{Evaluating individual criteria of the designs, from the Generalized compound criteria \insertCite{Goos2005model,Olga2017}{MOODE}}
 \usage{
 criteria.values.G(search.obj, mood.obj, eps = 10^-23)
 }
@@ -33,4 +33,7 @@ List of the calculated values:
 Calculating values of determinant- and trace-based components of
 Generalized D-, DP-, L- and LP- criteria for an output of a search object,
 with model and control parameters set in a mood object.
+}
+\references{
+\insertAllCited
 }

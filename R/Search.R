@@ -82,7 +82,7 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
   Cubic <- mood.object$Cubic
   orth<- mood.object$orth
   
-  kappa.Ls <- mood.object$kappa.Ls
+  kappa.L <- mood.object$kappa.L
   kappa.LP <- mood.object$kappa.LP
   kappa.Ds <- mood.object$kappa.Ds
   kappa.DP <- mood.object$kappa.DP
@@ -104,7 +104,7 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
                         "alpha.DP" = alpha.DP,"alpha.LP" = alpha.LP,
                         "alpha.LoF" = alpha.LoF, "alpha.LoFL" = alpha.LoFL,
                         "kappa.Ds" = kappa.Ds, "kappa.DP" = kappa.DP,
-                        "kappa.Ls" = kappa.Ls, "kappa.LP" = kappa.LP,
+                        "kappa.L" = kappa.L, "kappa.LP" = kappa.LP,
                         "kappa.LoF" = kappa.LoF, "kappa.bias" = kappa.bias, 
                         "kappa.mse" = kappa.mse)
   

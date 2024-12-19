@@ -2,7 +2,7 @@
 % Please edit documentation in R/criteria_mseL.R
 \name{criteria.mseL}
 \alias{criteria.mseL}
-\title{Calculates the values of the MSE LPs-criterion and its components}
+\title{Calculates the values of the MSE LP-criterion and its components}
 \usage{
 criteria.mseL(X1, X2, search.object, eps = 10^-23)
 }
@@ -16,13 +16,13 @@ criteria.mseL(X1, X2, search.object, eps = 10^-23)
 \item{eps}{Computational tolerance, the default value is 10^-23}
 }
 \value{
-A list of values: indicator of whether the evaluation was successful ("eval"), LPs-criterion value -- intercept excluded ("LP"),
+A list of values: indicator of whether the evaluation was successful ("eval"), LP-criterion value -- intercept excluded ("LP"),
 Lack-of-fit(LP) criterion value ("LoF"), the MSE(L) component value ("mse"),
 the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 }
 \description{
-This function evaluates the MSE LPs-criterion for given primary and potential model matrices. Candidate full model matrices do not have to be orthonormalised.
-Components: LPs-, LoF(LP)- and MSE(L)-optimality.
+This function evaluates the MSE LP-criterion for given primary and potential model matrices. Candidate full model matrices do not have to be orthonormalised.
+Components: LP-, LoF(LP)- and MSE(L)-optimality.
 }
 \examples{
 #'# Experiment: one 5-level factor, primary model -- full quadratic, X^3 and X^4 potential terms.

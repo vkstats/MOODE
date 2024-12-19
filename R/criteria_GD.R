@@ -1,6 +1,6 @@
 #' Calculates the values of the Generalised Ds-criterion and its components
 #'
-#' This function evaluates the Generalised Ds-criterion (Goos et al., 2005) for given primary and potential model matrices.
+#' This function evaluates the Generalised Ds-criterion \insertCite{Goos2005model}{MOODE} for given primary and potential model matrices.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
@@ -11,6 +11,8 @@
 #' Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the number of pure error degrees of freedom ("df") 
 #' and the value of the compound criterion ("compound").
 #' @export
+#' @references 
+#'    \insertAllCited
 #' @examples 
 #'#Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
 #'# setting up the example

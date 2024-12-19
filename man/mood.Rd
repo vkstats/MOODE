@@ -25,8 +25,8 @@ mood(
 \item{criterion.choice}{Compound criterion to be used for the optimal design search or evaluation.
 Possible values are:
 \itemize{
-\item \code{GL}, \code{GD} for Generalised D- and L-optimality (Goos et al., 2005)
-\item \code{GDP} and \code{GLP} for Generalised DP- and LP-optimality (Trinca and Gilmour, 2012)
+\item \code{GL}, \code{GD} for Generalised D- and L-optimality \insertCite{Goos2005model}{MOODE}
+\item \code{GDP} and \code{GLP} for Generalised DP- and LP-optimality \insertCite{GilmourandTrinca2012}{MOODE}
 \item \code{MSE.D}, \code{MSE.L} and \code{MSE.P} for compound criteria with MSE-component: determinant-based, trace-based and determinant-based but with point estimates for the MSE(D)-component
 }}
 
@@ -34,7 +34,7 @@ Possible values are:
 \itemize{
 \item \code{kappa.Ds} Weight of the Ds-criterion (default = 1 if \code{criterion.choice = GD})
 \item \code{kappa.DP} Weight of the DP-criterion (default = 1 if \code{criterion.choice = GDP})
-\item \code{kappa.Ls} Weight of the Ls-criterion (default = 1 if \code{criterion.choice = GL})
+\item \code{kappa.L} Weight of the L-criterion (default = 1 if \code{criterion.choice = GL})
 \item \code{kappa.LP} Weight of the LP-criterion (default = 1 if \code{criterion.choice = GLP})
 \item \code{kappa.LoF} Weight of the lack-of-fit criterion
 \item \code{kappa.bias} Weight of the bias criterion
@@ -85,7 +85,7 @@ List of parameters of the experiment, compound criterion of choice, and primary 
 \item \code{potential.terms} Potential terms.
 \item \code{P} The number of terms in the fitted model (including intercept).
 \item \code{Q} The number of potential terms.
-\item \verb{kappa.Ds, kappa.DP, kappa.Ls, kappa.LP,  kappa.LoF, kappa.bias, kappa.mse} Compound criterion weights.
+\item \verb{kappa.Ds, kappa.DP, kappa.L, kappa.LP,  kappa.LoF, kappa.bias, kappa.mse} Compound criterion weights.
 \item \code{warning.msg} Warning messages.
 }
 }
@@ -152,4 +152,7 @@ model_terms = list(primary.terms = "first_order",
 potential.terms = c("x12", "x12x2", "x12x3")))
 example2
 
+}
+\references{
+\insertAllCited
 }

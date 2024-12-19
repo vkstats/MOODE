@@ -1,4 +1,4 @@
-#' Evaluating individual criteria of the designs, from the Generalized compound criteria (Goos et al., 2005), (Egorova, 2017)
+#' Evaluating individual criteria of the designs, from the Generalized compound criteria \insertCite{Goos2005model,Olga2017}{MOODE}
 #' @description Calculating values of determinant- and trace-based components of 
 #' Generalized D-, DP-, L- and LP- criteria for an output of a search object, 
 #' with model and control parameters set in a mood object.
@@ -22,6 +22,8 @@
 #' \item `biasL` bias(L)-criterion value from the GL-criterion
 #' }
 #' @export
+#' @references 
+#'    \insertAllCited
 
 criteria.values.G<-function(search.obj, mood.obj, eps=10^-23)             
 {

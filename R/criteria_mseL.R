@@ -1,14 +1,14 @@
-#' Calculates the values of the MSE LPs-criterion and its components
+#' Calculates the values of the MSE LP-criterion and its components
 #'
-#' This function evaluates the MSE LPs-criterion for given primary and potential model matrices. Candidate full model matrices do not have to be orthonormalised.
-#' Components: LPs-, LoF(LP)- and MSE(L)-optimality.
+#' This function evaluates the MSE LP-criterion for given primary and potential model matrices. Candidate full model matrices do not have to be orthonormalised.
+#' Components: LP-, LoF(LP)- and MSE(L)-optimality.
 #'
 #' @param X1 The primary model matrix, with the first column containing the labels of treatments, and the second -- the intercept term.
 #' @param X2 The matrix of potential terms, with the first column containing the labels of treatments.
 #' @param search.object Object of class [mood()] specifying experiment parameters.
 #' @param eps Computational tolerance, the default value is 10^-23
 #'
-#' @return A list of values: indicator of whether the evaluation was successful ("eval"), LPs-criterion value -- intercept excluded ("LP"),
+#' @return A list of values: indicator of whether the evaluation was successful ("eval"), LP-criterion value -- intercept excluded ("LP"),
 #' Lack-of-fit(LP) criterion value ("LoF"), the MSE(L) component value ("mse"), 
 #' the number of pure error degrees of freedom ("df") and the value of the compound criterion ("compound").
 #' @export
@@ -41,7 +41,7 @@ criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
   tau2<-search.object$tau2
   W<-search.object$W
   
-  kappa.Ls<-search.object$kappa.Ls
+  kappa.L<-search.object$kappa.L
   kappa.LP<-search.object$kappa.LP
   kappa.LoF<-search.object$kappa.LoF
   kappa.mse<-search.object$kappa.mse
@@ -58,7 +58,7 @@ criteria.mseL<-function(X1, X2, search.object, eps=10^-23)      # X1, X2 -- matr
     Minv<-solve(M)
   } else {return (list (eval=0, LP=0, LoF=0, mse=0, df=df, compound=10^6));}
 
-  if ((kappa.Ls>0)||(kappa.LP>0))
+  if ((kappa.L>0)||(kappa.LP>0))
   {
     Ls<-W[, -1]%*%(diag(Minv)[-1])                   # Ls
   }

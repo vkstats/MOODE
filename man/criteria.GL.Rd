@@ -2,7 +2,7 @@
 % Please edit documentation in R/criteria_GL.R
 \name{criteria.GL}
 \alias{criteria.GL}
-\title{Calculates the values of the Generalised Ls-criterion and its components}
+\title{Calculates the values of the Generalised L-criterion and its components}
 \usage{
 criteria.GL(X1, X2, search.object, eps = 10^-23)
 }
@@ -21,13 +21,13 @@ Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the numb
 and the value of the compound criterion ("compound").
 }
 \description{
-This function evaluates the Generalised Ls-criterion (Goos et al., 2005) for given primary and potential model matrices.
+This function evaluates the Generalised L-criterion \insertCite{Goos2005model}{MOODE} for given primary and potential model matrices.
 }
 \examples{
 #Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
 # setting up the example
 ex.mood <- mood(K = 1, Levels = 5, Nruns = 7, criterion.choice = "GL", 
-               kappa = list(kappa.Ls = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3), 
+               kappa = list(kappa.L = 1./3, kappa.LoF = 1./3, kappa.bias = 1./3), 
                model_terms = list(primary.model = "second_order", potential.model = "cubic_terms"))
 # Generating candidate set: orthonormalised
 K <- ex.mood$K
@@ -41,6 +41,9 @@ X.potential <- cand.full.orth[index,
 (c(1, match(ex.mood$potential.terms, colnames(cand.full.orth))))]
 # Evaluating a compound GD-criterion
 criteria.GL(X1 = X.primary, X2 = X.potential, ex.mood)
-# Output: eval = 1, Ls = 0.3118626, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.6919878
+# Output: eval = 1, L = 0.3118626, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.6919878
 
+}
+\references{
+\insertAllCited
 }

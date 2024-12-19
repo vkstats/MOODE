@@ -8,15 +8,15 @@
 #' @param criterion.choice Compound criterion to be used for the optimal design search or evaluation. 
 #' Possible values are: 
 #' \itemize{
-#' \item `GL`, `GD` for Generalised D- and L-optimality (Goos et al., 2005) 
-#' \item `GDP` and `GLP` for Generalised DP- and LP-optimality (Trinca and Gilmour, 2012)
+#' \item `GL`, `GD` for Generalised D- and L-optimality \insertCite{Goos2005model}{MOODE} 
+#' \item `GDP` and `GLP` for Generalised DP- and LP-optimality \insertCite{GilmourandTrinca2012}{MOODE}
 #' \item `MSE.D`, `MSE.L` and `MSE.P` for compound criteria with MSE-component: determinant-based, trace-based and determinant-based but with point estimates for the MSE(D)-component
 #'}
 #' @param kappa List specifying the weights used in the compound criterion. Each named entry must be between 0 and 1.
 #' \itemize{
 #' \item `kappa.Ds` Weight of the Ds-criterion (default = 1 if `criterion.choice = GD`)
 #' \item `kappa.DP` Weight of the DP-criterion (default = 1 if `criterion.choice = GDP`)
-#' \item `kappa.Ls` Weight of the Ls-criterion (default = 1 if `criterion.choice = GL`)
+#' \item `kappa.L` Weight of the L-criterion (default = 1 if `criterion.choice = GL`)
 #' \item `kappa.LP` Weight of the LP-criterion (default = 1 if `criterion.choice = GLP`)
 #' \item `kappa.LoF` Weight of the lack-of-fit criterion
 #' \item `kappa.bias` Weight of the bias criterion
@@ -107,10 +107,12 @@
 #' \item `potential.terms` Potential terms.
 #' \item `P` The number of terms in the fitted model (including intercept).
 #' \item `Q` The number of potential terms.
-#' \item `kappa.Ds, kappa.DP, kappa.Ls, kappa.LP, 
+#' \item `kappa.Ds, kappa.DP, kappa.L, kappa.LP, 
 #' kappa.LoF, kappa.bias, kappa.mse` Compound criterion weights.
 #' \item `warning.msg` Warning messages.
 #' }
+#' @references 
+#'    \insertAllCited
 #' @examples
 #' 
 #'example1 <- mood(K = 5, Levels = 3, Nruns = 40, criterion.choice = "GDP", 
@@ -142,12 +144,12 @@ mood <- function(K,
   prob.DP <- prob.LP <- prob.LoF <- prob.LoFL <- NULL
   primary.model <- primary.terms <- potential.model <- potential.terms <- NULL
   tau2 <- orth <- Nstarts <- Biter <- Cubic <- MC <- NULL
-  kappa.Ds <- kappa.Ls <- kappa.DP <- kappa.LP <- kappa.LoF <- kappa.mse <- kappa.bias <- NULL
+  kappa.Ds <- kappa.L <- kappa.DP <- kappa.LP <- kappa.LoF <- kappa.mse <- kappa.bias <- NULL
   
   
   criterion.choice <- match.arg(criterion.choice)
   
-  kappa_used <- list(kappa.Ds = 0, kappa.DP = 0, kappa.Ls = 0, kappa.LP = 0, kappa.LoF = 0, kappa.bias = 0, kappa.mse = 0)
+  kappa_used <- list(kappa.Ds = 0, kappa.DP = 0, kappa.L = 0, kappa.LP = 0, kappa.LoF = 0, kappa.bias = 0, kappa.mse = 0)
   kappa_used_name <- names(kappa_used)
   model_used <- list(primary.model = NA, potential.model = NA, primary.terms = NA, potential.terms = NA)
   model_used_name <- names(model_used)
@@ -155,7 +157,7 @@ mood <- function(K,
   # set some defaults depending on criteria - ugly!
   if(!length(kappa)) {
     if(identical(criterion.choice, "GD")) kappa_used$kappa.Ds <- 1
-    if(identical(criterion.choice, "GL")) kappa_used$kappa.Ls <- 1
+    if(identical(criterion.choice, "GL")) kappa_used$kappa.L <- 1
     if(identical(criterion.choice, "GDP")) kappa_used$kappa.DP <- 1
     if(identical(criterion.choice, "GLP")) kappa_used$kappa.LP <- 1
     if(identical(criterion.choice, "MSE.D")) kappa_used$kappa.mse <- 1
@@ -179,7 +181,7 @@ mood <- function(K,
   list2env(kappa_used, envir = environment())
   
   # checking which kappa have been specified, and setting others via defaults for criteria
-  kappa.names <- c("kappa.Ds", "kappa.DP", "kappa.Ls", "kappa.LP", "kappa.LoF", "kappa.bias", "kappa.mse")
+  kappa.names <- c("kappa.Ds", "kappa.DP", "kappa.L", "kappa.LP", "kappa.LoF", "kappa.bias", "kappa.mse")
   kappa <- lapply(kappa.names, 
                    \(x) {
                      if(!(x %in% names(kappa))) kappa[[x]] <- 0 else kappa[[x]] <- kappa[[x]]
@@ -431,7 +433,7 @@ mood <- function(K,
   }
   
 #  cat(warning.msg, sep = "\n\n") # print out warning messages
-  kappa.all <- c(kappa.Ds, kappa.Ls, kappa.DP, kappa.LP, 
+  kappa.all <- c(kappa.Ds, kappa.L, kappa.DP, kappa.LP, 
                  kappa.LoF, kappa.bias, kappa.mse)
   
   if ((any(kappa.all < 0)) || (any(kappa.all>1))) {
@@ -441,14 +443,14 @@ mood <- function(K,
   if ((criterion.choice == "GD") && ((kappa.Ds + kappa.LoF + kappa.bias) != 1.0)) {
     stop("the sum of criteria weights kappa.Ds, kappa.LoF and kappa.bias should be equal to 1")
   }
-  if ((criterion.choice == "GL") && ((kappa.Ls + kappa.LoF + kappa.bias) != 1.0)) {
-    stop("the sum of criteria weights kappa.Ls, kappa.LoF and kappa.bias should be equal to 1")
+  if ((criterion.choice == "GL") && ((kappa.L + kappa.LoF + kappa.bias) != 1.0)) {
+    stop("the sum of criteria weights kappa.L, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice == "GDP") && ((kappa.Ds + kappa.DP +kappa.LoF + kappa.bias) != 1.0)) {
     stop("the sum of criteria weights kappa.Ds, kappa.DP, kappa.LoF and kappa.bias should be equal to 1")
   }
-  if ((criterion.choice == "GLP") && ((kappa.Ls + kappa.LP +kappa.LoF + kappa.bias) != 1.0)) {
-    stop("the sum of criteria weights kappa.Ls, kappa.LP, kappa.LoF and kappa.bias should be equal to 1")
+  if ((criterion.choice == "GLP") && ((kappa.L + kappa.LP +kappa.LoF + kappa.bias) != 1.0)) {
+    stop("the sum of criteria weights kappa.L, kappa.LP, kappa.LoF and kappa.bias should be equal to 1")
   }
   if ((criterion.choice %in% c("MSE.D", "MSE.P")) && ((kappa.DP + kappa.LoF + kappa.mse) != 1.0)) {
     stop(paste("Sum = ", kappa.DP + kappa.LoF + kappa.mse, ": the sum of criteria weights kappa.DP, kappa.LoF and kappa.mse should be equal to 1"))
@@ -475,7 +477,7 @@ mood <- function(K,
               "primary.terms" = primary.terms, "potential.terms" = potential.terms,
               "P" = P, "Q" = Q,
               "kappa.Ds" = kappa.Ds, "kappa.DP" = kappa.DP,
-              "kappa.Ls" = kappa.Ls, "kappa.LP" = kappa.LP,
+              "kappa.L" = kappa.L, "kappa.LP" = kappa.LP,
               "kappa.LoF" = kappa.LoF, "kappa.bias" = kappa.bias, "kappa.mse" = kappa.mse,
               "warning messages" = warning.msg)
   

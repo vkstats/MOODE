@@ -21,7 +21,7 @@ Lack-of-fit criterion value ("LoF"), the bias component value ("bias"), the numb
 and the value of the compound criterion ("compound").
 }
 \description{
-This function evaluates the Generalised Ds-criterion (Goos et al., 2005) for given primary and potential model matrices.
+This function evaluates the Generalised Ds-criterion \insertCite{Goos2005model}{MOODE} for given primary and potential model matrices.
 }
 \examples{
 #Experiment: one 5-level factor, primary model -- full quadratic, one potential (cubic) term
@@ -42,4 +42,7 @@ X.potential <- cand.full.orth[index,
 # Evaluating a compound GD-criterion
 criteria.GD(X1 = X.primary, X2 = X.potential, ex.mood)
 # Output: eval = 1, Ds = 0.7334291, LoF = 0.7212544, bias = 1.473138, df = 3, compound = 0.9202307
+}
+\references{
+\insertAllCited
 }

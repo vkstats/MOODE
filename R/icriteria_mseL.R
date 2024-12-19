@@ -21,8 +21,8 @@ icriteria.mseL <- function(X1, X2, search.object) {
   search.object$kappa.LP <- 1; search.object$kappa.LoF <- 1; search.object$kappa.mse <- 1
   crit_values[4] <- criteria.mseL(X1, X2, search.object)$df
   ## Ls
-  search.object$kappa.LP <- 0; search.object$kappa.LoF <- 0; search.object$kappa.mse <- 0; search.object$kappa.Ls <- 1
+  search.object$kappa.LP <- 0; search.object$kappa.LoF <- 0; search.object$kappa.mse <- 0; search.object$kappa.L <- 1
   search.object$criterion.choice <- "GL"
-  crit_values[5] <- criteria.GL(X1, X2, search.object)$Ls
-  list(LP = crit_values[1], LoF = crit_values[2], mse = crit_values[3], df = crit_values[4], Ls = crit_values[5])
+  crit_values[5] <- criteria.GL(X1, X2, search.object)$L
+  list(LP = crit_values[1], LoF = crit_values[2], mse = crit_values[3], df = crit_values[4], L = crit_values[5])
 }
