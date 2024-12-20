@@ -4,8 +4,27 @@
 \name{MOODE-package}
 \alias{MOODE}
 \alias{MOODE-package}
-\title{MOODE: Multi-objective optimal design of experiments}
+\title{MOODE: Multi-Objective Optimal Design of Experiments}
 \description{
-Multi-objective Optimal Design of Experiments (MOODE) for targeting the experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
+Provides functionality to generate compound optimal designs for targeting the multiple experimental objectives directly, ensuring as such that the full set of research questions is answered as economically as possible.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/vkstats/MOODE}
+  \item Report bugs at \url{https://github.com/vkstats/MOODE/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Vasiliki Koutra \email{vasiliki.koutra@kcl.ac.uk} (\href{https://orcid.org/0000-0002-1117-4554}{ORCID})
+
+Authors:
+\itemize{
+  \item Olga Egorova
+  \item Steven Gilmour
+  \item Luzia Trinca
+}
+
 }
 \keyword{internal}
