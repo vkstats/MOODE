@@ -113,7 +113,7 @@ Search <- function(mood.object, algorithm = c("ptex", "coordex"), parallel = FAL
   cand.trt <- candidate_trt_set(Levels, K, Cubic)   # form the candidate set of treatments
   cand.full <- candidate_set_full(cand.trt, K)      # build candidate set, with potential terms
   
-  if (orth){
+  if (orth) {
     cand.full <- candidate_set_orth(cand.full,
                                     primary.terms, potential.terms)
     print("Point exchange algorithm will be used for othonormalised candidate sets")

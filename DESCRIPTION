@@ -3,16 +3,13 @@ Package: MOODE
 Title: Multi-Objective Optimal Design of Experiments
 Version: 0.2.0
 Authors@R: c(
-    person("Vasiliki", "Koutra", , "vasiliki.koutra@kcl.ac.uk", role = c("aut", "cre"),
+    person("Vasiliki", "Koutra", , "vasiliki.koutra@kcl.ac.uk", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-1117-4554")),
-    person("Olga", "Egorova", role = "aut"),
-    person("Steven", "Gilmour", role = "aut"),
-    person("Luzia", "Trinca", role = "aut")
+    person("Olga", "Egorova", role = c("aut", "cph")),
+    person("Steven", "Gilmour", role = c("aut", "cph")),
+    person("Luzia", "Trinca", role = c("aut", "cph"))
   )
-Description: Provides functionality to generate compound optimal designs
-    for targeting the multiple experimental objectives directly, ensuring
-    as such that the full set of research questions is answered as
-    economically as possible.
+Description: Provides functionality to generate compound optimal designs for targeting the multiple experimental objectives directly, ensuring that the full set of research questions is answered as economically as possible. Designs can be found using point or coordinate exchange algorithms combining estimation, inference and lack-of-fit criteria that account for model inadequacy. Details and examples are given by Koutra et al. (2024) <doi.org/10.48550/arXiv.2412.17158>.
 License: GPL (>= 3)
 URL: https://github.com/vkstats/MOODE
 BugReports: https://github.com/vkstats/MOODE/issues
