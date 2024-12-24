@@ -40,28 +40,24 @@ Performing search for a (nearly) optimum factorial design, optimising with respe
 }
 \details{
 \code{Search} takes the mood object as an input with all the parameters of the experiment. Runs a point-exchange or a coordinate-exchange algorithm, returns design and model matrices, computation time and criteria values.
+See \insertCite{KoutraMOODE}{MOODE} for examples of using \code{parallel = TRUE}.
 }
 \examples{
 
-example1 <- mood(K = 5, Levels = 3, Nruns = 25, criterion.choice = "GDP", 
+example1 <- mood(K = 2, Levels = 3, Nruns = 10, criterion.choice = "GDP", 
                 kappa = list(kappa.Ds = 1./3, kappa.DP = 1./3, kappa.LoF = 1./3), 
                 control = list(tau2 = 0.1), 
-                model_terms = list(primary.model = "second_order", 
-                potential.terms = c("x12x2", "x22x3", "x32x4", "x42x5")))
+                model_terms = list(primary.model = "first_order", 
+                potential.terms = c("x12", "x22", "x1x2")))
 # Using point exchange
 Search_point <- Search(example1, algorithm = 'ptex')
 Search_point
 # Using coordinate exchange (the default for K>4)
 Search_coord <- Search(example1)
 Search_coord
-# Using doFuture and foreach to perform the Nstarts = 10 random starts 
-# of the search algorithm in parallel
-library(doFuture)
-plan(multisession)
-Search_coord_p <- Search(example1, parallel = TRUE)
-plan(sequential)
-Search_coord_p
-
+}
+\references{
+\insertAllCited
 }
 \seealso{
 \link{mood}
