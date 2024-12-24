@@ -6,7 +6,7 @@
 \alias{MOODE-package}
 \title{MOODE: Multi-Objective Optimal Design of Experiments}
 \description{
-Provides functionality to generate compound optimal designs for targeting the multiple experimental objectives directly, ensuring that the full set of research questions is answered as economically as possible. Designs can be found using point or coordinate exchange algorithms combining estimation, inference and lack-of-fit criteria that account for model inadequacy. Details and examples are given by Koutra et al. (2024) <doi.org/10.48550/arXiv.2412.17158>.
+Provides functionality to generate compound optimal designs for targeting the multiple experimental objectives directly, ensuring that the full set of research questions is answered as economically as possible. Designs can be found using point or coordinate exchange algorithms combining estimation, inference and lack-of-fit criteria that account for model inadequacy. Details and examples are given by Koutra et al. (2024) \doi{10.48550/arXiv.2412.17158}.
 }
 \seealso{
 Useful links:

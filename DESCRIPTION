@@ -17,8 +17,7 @@ Imports:
     cli,
     far,
     progressr,
-    Rdpack,
-    rlang
+    Rdpack
 Suggests: 
     doFuture,
     foreach
