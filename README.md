@@ -1,5 +1,11 @@
 # MOODE
 
+
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/vkstats/MOODE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vkstats/MOODE/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 Multi-objective Optimal Design of experiments (MOODE) for targeting the
 experimental objectives directly, ensuring as such that the full set of
 research questions is answered as economically as possible.
@@ -44,7 +50,7 @@ Optimal designs are found using a point exchange algorithm, via the
 search.ex <- Search(ex.mood)
 ```
 
-    #> ✔ Design search complete. Final compound objective function value = 0.19724
+    #> ✔ Design search complete. Final compound objective function value = 0.19728
 
 The best design found is available as element `X.design`, ordered here
 by treatment number.
@@ -55,18 +61,18 @@ cbind(fd[1:12, ], fd[13:24, ])
 ```
 
     #>       x1 x2 x1 x2
-    #>  [1,] -1 -1  0  1
+    #>  [1,] -1 -1  0  0
     #>  [2,] -1 -1  0  1
-    #>  [3,] -1 -1  1 -1
-    #>  [4,] -1  0  1 -1
+    #>  [3,] -1 -1  0  1
+    #>  [4,] -1 -1  1 -1
     #>  [5,] -1  0  1 -1
-    #>  [6,] -1  1  1 -1
+    #>  [6,] -1  0  1 -1
     #>  [7,] -1  1  1  0
     #>  [8,] -1  1  1  0
     #>  [9,] -1  1  1  1
-    #> [10,]  0 -1  1  1
+    #> [10,] -1  1  1  1
     #> [11,]  0 -1  1  1
-    #> [12,]  0  0  1  1
+    #> [12,]  0 -1  1  1
 
 The `path` element records the compound objective function value from
 each of the (by default) 10 attempts of the algorithm from different
@@ -76,5 +82,5 @@ random starting designs.
 search.ex$path
 ```
 
-    #>  [1] 0.1974816 0.1979960 0.1979960 0.1979960 0.1979960 0.1979960 0.1979960
-    #>  [8] 0.1972157 0.1979960 0.1971801
+    #>  [1] 0.1979960 0.1971018 0.1979960 0.1971172 0.1971906 0.1972072 0.1979960
+    #>  [8] 0.1974816 0.1979960 0.1971598
