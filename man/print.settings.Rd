@@ -11,6 +11,11 @@
 
 \item{...}{further arguments passed to or from other methods}
 }
+\value{
+No return value, prints summary of object to output
+}
 \description{
-S3 print method
+Prints a summary of the mood object, including parameters that define the
+experiment and the (compound) criterion under which the design
+will be sought.
 }

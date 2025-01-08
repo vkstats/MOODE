@@ -1,6 +1,11 @@
 #' S3 print method
 #' @param x mood object
+#' @description
+#' Prints a summary of the mood object, including parameters that define the 
+#' experiment and the (compound) criterion under which the design 
+#' will be sought. 
 #' @param ... further arguments passed to or from other methods
+#' @return No return value, prints summary of object to output
 #' @export
 print.settings <- function(x, ...) {
   cat("Number of factors:", x$K, "\n", "\n")

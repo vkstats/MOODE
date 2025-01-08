@@ -12,6 +12,12 @@ research questions is answered as economically as possible.
 
 ## Installation
 
+Install from [CRAN](https://cran.r-project.org) with:
+
+``` r
+install.packages("MOODE")
+```
+
 You can install the development version of `MOODE` from
 [GitHub](https://github.com/vkstats/MOODE) with:
 
@@ -50,7 +56,7 @@ Optimal designs are found using a point exchange algorithm, via the
 search.ex <- Search(ex.mood)
 ```
 
-    #> ✔ Design search complete. Final compound objective function value = 0.19728
+    #> ✔ Design search complete. Final compound objective function value = 0.19732
 
 The best design found is available as element `X.design`, ordered here
 by treatment number.
@@ -82,5 +88,5 @@ random starting designs.
 search.ex$path
 ```
 
-    #>  [1] 0.1979960 0.1971018 0.1979960 0.1971172 0.1971906 0.1972072 0.1979960
-    #>  [8] 0.1974816 0.1979960 0.1971598
+    #>  [1] 0.1979960 0.1971856 0.1979960 0.1990148 0.1974816 0.1979960 0.1971446
+    #>  [8] 0.1971591 0.1979960 0.1971569
