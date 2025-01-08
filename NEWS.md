@@ -1,3 +1,5 @@
+# MOODE (development version)
+
 # MOODE 1.0.1
 
 * Edits to man pages and minor change to verbose output from `Search`.
