@@ -1,11 +1,11 @@
 ## Resubmission
 
-This is a resubmission. In this version I have:
+This is a resubmission. 
 
-* Search.R: replaced the call to `print` with a call to `cli::cli_alert_info
+* Search.R: replaced the call to `print` with a call to `cli::cli_alert_info`
 and renamed the `info.update` argument to `verbose`.
 
-* print.settings.R: added a \value tag specifying that no values are returned.
+* print.settings.R: added a `\value` tag specifying that no values are returned.
 A description has been added to the help file, indicating the parameters which
 are summarised.
 
