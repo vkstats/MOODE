@@ -1,7 +1,7 @@
 Type: Package
 Package: MOODE
 Title: Multi-Objective Optimal Design of Experiments
-Version: 1.0.1.9000
+Version: 1.1.0
 Authors@R: c(
     person("Vasiliki", "Koutra", , "vasiliki.koutra@kcl.ac.uk", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-1117-4554")),
