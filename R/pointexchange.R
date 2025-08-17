@@ -13,7 +13,8 @@
 #' 
 #' @return A list of model matrices, criteria values and 
 #' whether the search needs to continue
-#' 
+#' @keywords internal
+
 point.swap<-function(X1, X2, cand.full, search.object) {
   
   Xcrit<-objfun(X1, X2, search.object)  

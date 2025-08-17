@@ -26,3 +26,4 @@ and candidate set.
 \details{
 \code{point.swap} is called within the \code{Search} function
 }
+\keyword{internal}

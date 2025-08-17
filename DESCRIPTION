@@ -13,6 +13,8 @@ Description: Provides functionality to generate compound optimal designs for tar
 License: GPL (>= 3)
 URL: https://github.com/vkstats/MOODE
 BugReports: https://github.com/vkstats/MOODE/issues
+Depends:
+    R (>= 4.1.0)
 Imports:
     cli,
     far,

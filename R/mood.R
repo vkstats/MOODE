@@ -2,6 +2,9 @@
 #' @description Creates an object containing the parameters of the experiment, compound optimality criterion with the
 #'  weights and parameters of the search.
 #' 
+#' @rdname mood
+#' @order 1
+#' 
 #' @param K Number of factors.
 #' @param Levels Either (a) a common number of levels for each factor or (b) a list of length K of the vectors containing levels of each factor.
 #' @param Nruns Number of runs of the experiment.
@@ -85,7 +88,7 @@
 #' 
 #' 
 #' 
-#' @return List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
+#' @return Object of class `mood` specifying parameters of the experiment, compound criterion of choice, and primary and potential model terms.
 #' \itemize{
 #' \item `K` Number of factors.
 #' \item `Klev` Number of levels of each factor, if all factors have the same number of levels.
@@ -479,10 +482,9 @@ mood <- function(K,
               "kappa.Ds" = kappa.Ds, "kappa.DP" = kappa.DP,
               "kappa.L" = kappa.L, "kappa.LP" = kappa.LP,
               "kappa.LoF" = kappa.LoF, "kappa.bias" = kappa.bias, "kappa.mse" = kappa.mse,
-              "warning messages" = warning.msg)
-  
-  class(out) <- append("settings", class(out))
-  #  return(attach(out, warn.conflicts = F)) ## remember, this also basically does "print(out)"
+              "warning messages" = warning.msg,
+              "searched" = FALSE)
+  class(out) <- "mood"
   return(out) 
 }
 

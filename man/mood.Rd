@@ -63,7 +63,7 @@ All default to 0.95.}
 }}
 }
 \value{
-List of parameters of the experiment, compound criterion of choice, and primary and potential model terms.
+Object of class \code{mood} specifying parameters of the experiment, compound criterion of choice, and primary and potential model terms.
 \itemize{
 \item \code{K} Number of factors.
 \item \code{Klev} Number of levels of each factor, if all factors have the same number of levels.

@@ -56,7 +56,7 @@ Optimal designs are found using a point exchange algorithm, via the
 search.ex <- Search(ex.mood)
 ```
 
-    #> ✔ Design search complete. Final compound objective function value = 0.19732
+    #> ✔ Design search complete. Final compound objective function value = 0.19717
 
 The best design found is available as element `X.design`, ordered here
 by treatment number.
@@ -67,18 +67,18 @@ cbind(fd[1:12, ], fd[13:24, ])
 ```
 
     #>       x1 x2 x1 x2
-    #>  [1,] -1 -1  0  0
+    #>  [1,] -1 -1  0  1
     #>  [2,] -1 -1  0  1
-    #>  [3,] -1 -1  0  1
-    #>  [4,] -1 -1  1 -1
+    #>  [3,] -1 -1  1 -1
+    #>  [4,] -1  0  1 -1
     #>  [5,] -1  0  1 -1
-    #>  [6,] -1  0  1 -1
+    #>  [6,] -1  1  1 -1
     #>  [7,] -1  1  1  0
     #>  [8,] -1  1  1  0
     #>  [9,] -1  1  1  1
-    #> [10,] -1  1  1  1
+    #> [10,]  0 -1  1  1
     #> [11,]  0 -1  1  1
-    #> [12,]  0 -1  1  1
+    #> [12,]  0  0  1  1
 
 The `path` element records the compound objective function value from
 each of the (by default) 10 attempts of the algorithm from different
@@ -88,5 +88,5 @@ random starting designs.
 search.ex$path
 ```
 
-    #>  [1] 0.1979960 0.1971856 0.1979960 0.1990148 0.1974816 0.1979960 0.1971446
-    #>  [8] 0.1971591 0.1979960 0.1971569
+    #>  [1] 0.1971797 0.1971700 0.1971714 0.1971458 0.1971621 0.1971951 0.1971238
+    #>  [8] 0.1972105 0.1979960 0.1971959
